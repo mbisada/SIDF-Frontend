@@ -95,10 +95,10 @@ const Login: React.FC = () => {
           borderRadius: 2,
         }}
       >
-        <Typography variant="h4" gutterBottom color="text.primary">
+        <Typography variant="h4" gutterBottom color="white">
           Welcome
         </Typography>
-        <Typography variant="body1" color="text.primary" gutterBottom paddingBottom={2}>
+        <Typography variant="body1" color="white" gutterBottom paddingBottom={2}>
           Please log in to access your dashboard
         </Typography>
 
@@ -154,9 +154,9 @@ const Login: React.FC = () => {
             >
               {formik.isSubmitting ? 'Logging in...' : 'Login'}
             </Button>
-            <Typography variant="body2" color="text.primary">
+            <Typography variant="body2" color="white">
               Don’t have an account?{' '}
-              <Link href="/register" underline="none" color="text.primary">
+              <Link href="/register" underline="none" color="white">
                 Sign up
               </Link>
             </Typography>
@@ -189,13 +189,13 @@ const Login: React.FC = () => {
           flexDirection: 'column',
         }}
       >
-        <Typography variant="h4" gutterBottom color="text.primary">
+        <Typography variant="h4" gutterBottom color="white">
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>
-        <Typography variant="body1" gutterBottom color="text.primary">
+        <Typography variant="body1" gutterBottom color="white">
           Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding solutions that meet your needs.
         </Typography>
-        <Typography variant="body1" color="text.primary" gutterBottom paddingTop={5}>
+        <Typography variant="body1" color="white" gutterBottom paddingTop={5}>
           Powered by neotek
         </Typography>
       </Box>

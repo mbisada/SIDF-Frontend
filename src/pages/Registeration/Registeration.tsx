@@ -72,10 +72,10 @@ const Registration: React.FC = () => {
           borderRadius: 2,
         }}
       >
-        <Typography variant="h4" gutterBottom color="text.primary">
+        <Typography variant="h4" gutterBottom color="white">
           Registration
         </Typography>
-        <Typography variant="body1" color="text.primary" gutterBottom paddingBottom={2}>
+        <Typography variant="body1" color="white" gutterBottom paddingBottom={2}>
           Create your account
         </Typography>
 
@@ -182,9 +182,9 @@ const Registration: React.FC = () => {
             >
               Sign Up
             </Button>
-            <Typography variant="body2" color="text.primary">
+            <Typography variant="body2" color="white">
               Have an account?{' '}
-              <Link href="/login" underline="none" color="text.primary">
+              <Link href="/login" underline="none" color="white">
                 Login
               </Link>
             </Typography>
@@ -217,13 +217,13 @@ const Registration: React.FC = () => {
           flexDirection: 'column',
         }}
       >
-        <Typography variant="h4" gutterBottom color="text.primary">
+        <Typography variant="h4" gutterBottom color="white">
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>
-        <Typography variant="body1" gutterBottom color="text.primary">
+        <Typography variant="body1" gutterBottom color="white">
           Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding solutions that meet your needs.
         </Typography>
-        <Typography variant="body1" color="text.primary" gutterBottom paddingTop={5}>
+        <Typography variant="body1" color="white" gutterBottom paddingTop={5}>
           Powered by neotek
         </Typography>
       </Box>

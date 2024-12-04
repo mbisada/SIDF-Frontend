@@ -1,8 +1,9 @@
 import  { useId } from 'react';
 import { NeotekLayout, NeotekOB } from 'neotek-ob-sdk';
 import Layout from '../../templates/Layout';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
+import { useNavigate } from 'react-router-dom';
 
 const theme = {
   colors: {
@@ -24,8 +25,16 @@ const theme = {
 function NeotekSDK() {
 
   const key = useId();
-  const env = 'prod';
+  const env = 'uat';
   const {customer} = useCustomer()
+const navigate = useNavigate()
+
+  const handleCalulate =() =>{
+// TODO: CALL API TO TRIGGER CALCULATION
+// BASED ON RESPONSE EITHER NAVIGATE TPO FAIL OR SUCCESS
+   navigate('./success')
+    navigate('./fail')
+  }
 
     return (
     <Layout
@@ -40,34 +49,47 @@ function NeotekSDK() {
         sx={{
           width: '100%',
           height: 'fit-content',
+          alignItems:'center',
+          display:'flex',
+          flexDirection:'column',
+          borderColor: 'grey'
+
+        }}
+      >
+        <Box sx={{display:'flex',flexDirection:'row', justifyContent:'flex-end', width: '100%'}}>
+          <Button   variant={'contained'} onClick={handleCalulate}>Calulate Risk Assessment</Button>
+      </Box>
+        <Box
+        sx={{
+          width: '100%',
+          height: 'fit-content',
+          alignItems:'center',
+          display:'flex',
+          flexDirection:'column',
+         // border: '1px solid grey',
+         // borderRadius: '1rem',
+          marginBottom:1
 
         }}
       >
          <NeotekLayout>
               <NeotekOB
-                /*   clientId="566aefcd53e306e908b7dc60a6092ec7"
-                clientSecret="4e4ac28bdd731189a0e46036d1286c79"
-                psuId="255cc"
-                products={['ob_connect', 'iban_verification', 'income_verification', 'single_api', 'e_statements']} */
-                /* clientId="566aefcd53e306e908b7dc60a6092ec7"
-                clientSecret="4e4ac28bdd731189a0e46036d1286c79" */
                  clientId="fb10a17881e58a4527a13b4a0466050c"
                  clientSecret="ac9df777471afb7c760d2ffede093451"
                 psuId={customer?.crNumber??'guestUser'}
-                //product="ob_connect"
                 product="single_api"
+                singleApiClientManagement={false}
                 theme={theme}
-                baseRoute="/open-banking"
+                baseRoute="/ob-connect"
                 key={key} // Replace with an actual key if needed
                 env={env}
                 lang={'en'}
                 role='endUser'
-               /*  renderError={(type, message) => {
-                  const temptype = type[0].toUpperCase() + type.slice(1);
-                  alertHandler(temptype, message);
-                }} */
+         
               />
             </NeotekLayout>
+            </Box>
+
       </Box>
     </Layout>
   );

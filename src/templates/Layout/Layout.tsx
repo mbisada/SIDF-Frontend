@@ -22,7 +22,8 @@ import {
 import {  Dashboard, ListAlt, Notifications, Search } from '@mui/icons-material';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import PersonIcon from '@mui/icons-material/Person';
-
+import { useNavigate } from 'react-router-dom';
+import logo  from '../../assets/Logo.png'
 interface LayoutProps {
   breadcrumbs: { label: string; href?: string }[];
   heading?: string;
@@ -34,16 +35,21 @@ const drawerWidth = 240;
 
 const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, children }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { customer } = useCustomer();
-
+  const { customer, setCustomer } = useCustomer();
+const navigate = useNavigate()
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuLogoutClose = () => {
     setAnchorEl(null);
+    setCustomer(null)
+    navigate('/login')
   };
 
+    const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -96,12 +102,25 @@ const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, child
       >
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-            <IconButton>
+           {/*  <IconButton>
               <Search />
             </IconButton>
             <IconButton>
               <Notifications />
-            </IconButton>
+            </IconButton> */}
+             <Box
+              component="img"
+              sx={{
+                height: 'auto',
+                width: 100,
+                display: { xs: 'none', md: 'flex' },
+                mr: 10,
+                cursor: 'pointer',
+              }}
+              alt="logo"
+              src={logo}
+              //onClick={() => navigate(i18n.language + '/')}
+            />
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="subtitle1">
@@ -109,7 +128,7 @@ const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, child
             </Typography>
             <Avatar
               onClick={handleMenuOpen}
-              sx={{ cursor: 'pointer' }}
+              sx={{ cursor: 'pointer', margin:1 }}
             >
               <PersonIcon/>
               </Avatar>
@@ -120,7 +139,7 @@ const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, child
               sx={{ mt: '45px' }}
             >
               <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+              <MenuItem onClick={handleMenuLogoutClose}>Logout</MenuItem>
             </Menu>
           </Box>
         </Toolbar>

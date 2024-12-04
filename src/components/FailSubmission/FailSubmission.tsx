@@ -11,9 +11,9 @@ function FailSubmission() {
   return (
     <Box alignItems="center" justifyContent="center" display="flex" flexDirection="column" padding={9}>
       <Box component="img" alt="export-image" src={failForm} width="unset" loading="lazy" display="flex" alignItems="center" />
-      <Typography variant="h3">{t('Sorry')}</Typography>
-      <Typography variant="h5">{t('Something went wrong')}</Typography>
-      <Button onClick={() => navigate('/')} >{t('BACK')}</Button>
+      <Typography variant="h3" marginY={2}>{t('Sorry')}</Typography>
+      <Typography variant="h5" marginY={2}>{t('Something went wrong')}</Typography>
+      <Button onClick={() => navigate('/ob-connect')} >{t('BACK')}</Button>
     </Box>
   );
 }

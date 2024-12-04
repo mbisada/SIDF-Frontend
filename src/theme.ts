@@ -32,7 +32,7 @@ const baseTheme = createTheme({
       900: '#212121',
     },
     text: {
-      primary: '#FFFFFF', // White text
+      primary: '#000000', // White text
       secondary: '#B3B3B3', // Light gray for secondary text
     },
   },

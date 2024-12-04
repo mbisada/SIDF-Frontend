@@ -9,16 +9,16 @@ import { Button, CardContent } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useNavigate } from 'react-router-dom';
 
-interface CompanyCardProps {
+interface ProfileCardProps {
 crNumber: string;
  identifier: string;
 }
-export default function CompanyCard({crNumber, identifier }:CompanyCardProps ) {
+export default function ProfileCard({crNumber, identifier }:ProfileCardProps ) {
 
-  const navigate = useNavigate()
+/*   const navigate = useNavigate()
   const handleNavigateClick = () =>{
     navigate('/companies/1235678')
-  }
+  } */
  
   return (
     <Card sx={{ minWidth: 400 ,width: 580,  margin:1}}>
@@ -28,9 +28,9 @@ export default function CompanyCard({crNumber, identifier }:CompanyCardProps ) {
             <AccountBalanceIcon fontSize='small'/>
           </Avatar>
         }
-        action={
+       /*  action={
           <Button variant="contained" onClick={handleNavigateClick}>View Details</Button>
-        }
+        } */
         title={identifier}
         //subheader="September 14, 2016"
       />

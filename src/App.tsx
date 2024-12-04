@@ -7,6 +7,8 @@ import Companies from './pages/Companies';
 import NeotekSDK from './pages/NeotekSDK';
 import { useCustomer } from './contexts/CustomerContext/useContext';
 import  Dashboard from './pages/Dashboard';
+import SuccessSubmission from './components/SuccessSubmission';
+import FailSubmission from './components/FailSubmission';
 
 function App() {
   const {customer} =useCustomer()
@@ -23,6 +25,8 @@ function App() {
           <Route path="/ob-connect" element={<NeotekSDK />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/companies/:id" element={<Dashboard />} />
+          <Route path="/ob-connect/success" element={<SuccessSubmission />} />
+          <Route path="/ob-connect/fail" element={<FailSubmission />} />
           <Route path="*" element={<Login />} />
         </Routes>
       </BrowserRouter>
