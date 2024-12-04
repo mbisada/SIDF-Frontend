@@ -25,7 +25,7 @@ const theme = {
 function NeotekSDK() {
 
   const key = useId();
-  const env = 'uat';
+  const env = 'prod';
   const {customer} = useCustomer()
 const navigate = useNavigate()
 
@@ -33,7 +33,7 @@ const navigate = useNavigate()
 // TODO: CALL API TO TRIGGER CALCULATION
 // BASED ON RESPONSE EITHER NAVIGATE TPO FAIL OR SUCCESS
    navigate('./success')
-    navigate('./fail')
+  //navigate('./fail')
   }
 
     return (
