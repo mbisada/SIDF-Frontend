@@ -25,7 +25,7 @@ const theme = {
 function NeotekSDK() {
 
   const key = useId();
-  const env = 'prod';
+  const env = 'uat';
   const {customer} = useCustomer()
 const navigate = useNavigate()
 
