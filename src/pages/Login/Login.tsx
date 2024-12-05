@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 
 // Mock API call for login
-const mockLoginApi = async (email: string, password: string) => {
+/* const mockLoginApi = async (email: string, password: string) => {
   return new Promise<{ role: string; companyName: string; email: string; crNumber: string; mobileNumber: string; checksum: string }>(
     (resolve, reject) => {
       setTimeout(() => {
@@ -44,7 +44,7 @@ const mockLoginApi = async (email: string, password: string) => {
     }
   );
 };
-
+ */
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
@@ -78,9 +78,9 @@ const Login: React.FC = () => {
         if (mappedData.role.toLowerCase().includes('user')) {
           //navigate('/ob-connect'); // Navigate to user route
           // Retrieve the `from` state or set a default path
-          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
+          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect/ob-connect';
 
-          console.log(from, 'from');
+          // console.log(from, 'from');
           navigate(from, { replace: true });
         } else if (mappedData.role.toLowerCase().includes('admin')) {
           const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
@@ -95,7 +95,7 @@ const Login: React.FC = () => {
           crNumber: mappedData.crNumber,
           mobileNumber: mappedData.mobileNumber,
           role: mappedData.role,
-          checksum: response.data.checksum, // Assuming the token is available in the response
+          checksum: mappedData.checksum, // Assuming the token is available in the response
         };
 
         // Set the customer globally (using a context or global state manager)

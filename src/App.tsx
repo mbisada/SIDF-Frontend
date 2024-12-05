@@ -33,7 +33,7 @@ function App() {
           <Route
             path="/ob-connect/*"
             element={
-              <ProtectedRoute requiredRole="user">
+              <ProtectedRoute requiredRole="ROLE_USER">
                 <NeotekSDK />
               </ProtectedRoute>
             }
@@ -42,7 +42,7 @@ function App() {
           <Route
             path="/companies"
             element={
-              <ProtectedRoute requiredRole="admin">
+              <ProtectedRoute requiredRole="ROLE_ADMIN">
                 <Companies />
               </ProtectedRoute>
             }
@@ -51,7 +51,7 @@ function App() {
           <Route
             path="/companies/:psuid"
             element={
-              <ProtectedRoute requiredRole="admin">
+              <ProtectedRoute requiredRole="ROLE_ADMIN">
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -60,7 +60,7 @@ function App() {
           <Route
             path="/ob-connect/success"
             element={
-              <ProtectedRoute requiredRole="user">
+              <ProtectedRoute requiredRole="ROLE_USER">
                 <SuccessSubmission />
               </ProtectedRoute>
             }
@@ -69,7 +69,7 @@ function App() {
           <Route
             path="/ob-connect/fail"
             element={
-              <ProtectedRoute requiredRole="user">
+              <ProtectedRoute requiredRole="ROLE_USER">
                 <FailSubmission />
               </ProtectedRoute>
             }
