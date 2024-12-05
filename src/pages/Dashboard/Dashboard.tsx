@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Box } from '@mui/material';
 
@@ -7,34 +8,36 @@ import CashFlowCard from '../../components/CashFlowCard/CashFlowCard';
 import CashFlowPieChartCard from '../../components/CashFlowPieChartCard';
 import LoansCard from '../../components/LoansCard';
 import ProfileCard from '../../components/ProfileCard';
-import { RISK_ASSESSMENT_DATA } from '../../constants/dummy';
+import Spinner from '../../components/Spinner';
+import { useDashboardServices } from '../../services/dashboard/dashboard';
+import { DashboardDataReturnedObj } from '../../services/dashboard/dashboard.types';
 import Layout from '../../templates/Layout';
-import { RiskAssessmentData } from '../../types';
 
 export default function Dashboard() {
-  const [companyDetails, setCompanyDetails] = useState({ role: '', companyName: '', email: '', crNumber: '', mobileNumber: '' });
-  const [requestDetails] = useState<RiskAssessmentData | null>(RISK_ASSESSMENT_DATA?.Data);
+  const [requestDetails, setRequestDetails] = useState<DashboardDataReturnedObj | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const userInfo = requestDetails?.userInfo;
+  const financialData = requestDetails?.financialData;
+
+  const { psuid } = useParams<{ psuid: string }>();
+  const { getDashboardData } = useDashboardServices();
+
+  const getDashboardDataHandler = async () => {
+    if (!psuid) return setIsLoading(false);
+
+    setIsLoading(true);
+    const res = await getDashboardData(psuid);
+    if (res) setRequestDetails(res);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    //TODO: API CALL TO GET THE DETAILS OF THE COMPANY BY THE ID
-    setCompanyDetails({
-      role: 'admin',
-      companyName: 'testCompany',
-      email: 'testemail@example.com',
-      crNumber: 'testCR12345',
-      mobileNumber: '966243564567',
-      //token:'12345678'
-    });
-    //TODO: API CALL TO GET THE DATA OF THE DASHBAORD
-
-    //TODO: To be used to test loading and then removed
-    // const timeout = setTimeout(() => {
-    //   setRequestDetails(RISK_ASSESSMENT_DATA?.Data);
-    // }, 3000);
-
-    // // Cleanup the timeout on component unmount
-    // return () => clearTimeout(timeout);
+    getDashboardDataHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div>
@@ -47,10 +50,10 @@ export default function Dashboard() {
         heading="Request Details"
       >
         <ProfileCard
-          crNumber={companyDetails.crNumber}
-          mobileNumber={companyDetails.mobileNumber}
-          email={companyDetails.email}
-          companyName={companyDetails.companyName}
+          crNumber={userInfo?.psuid}
+          mobileNumber={userInfo?.mobileNumber}
+          email={userInfo?.email}
+          companyName={userInfo?.companyName}
         />
         <Box
           sx={{
@@ -65,11 +68,11 @@ export default function Dashboard() {
           }}
         >
           <CashFlowCard
-            totalCashFlow={requestDetails?.TotalCashFlow ?? 0}
-            totalCashIn={requestDetails?.TotalCashIn ?? 0}
-            totalCashOut={requestDetails?.TotalCashOut ?? 0}
+            totalCashFlow={financialData?.TotalCashFlow ?? 0}
+            totalCashIn={financialData?.TotalCashIn ?? 0}
+            totalCashOut={financialData?.TotalCashOut ?? 0}
           />
-          <LoansCard liability={requestDetails?.Liabilities ?? 0} />
+          <LoansCard liability={financialData?.Liabilities ?? 0} />
         </Box>
         <Box
           sx={{
@@ -84,15 +87,15 @@ export default function Dashboard() {
           }}
         >
           <CashFlowBarChartCard
-            inflowTotal={requestDetails?.TotalCashIn ?? 0}
-            outflowTotal={requestDetails?.TotalCashOut ?? 0}
-            monthlyCashFlow={requestDetails?.MonthlyCashFlow ?? []}
+            inflowTotal={financialData?.TotalCashIn ?? 0}
+            outflowTotal={financialData?.TotalCashOut ?? 0}
+            monthlyCashFlow={financialData?.MonthlyCashFlow ?? []}
           />
           <CashFlowPieChartCard
-            inflowTotal={requestDetails?.TotalCashIn ?? 0}
-            outflowTotal={requestDetails?.TotalCashOut ?? 0}
-            cashInTypes={requestDetails?.CashInTypes ?? []}
-            cashOutTypes={requestDetails?.CashOutTypes ?? []}
+            inflowTotal={financialData?.TotalCashIn ?? 0}
+            outflowTotal={financialData?.TotalCashOut ?? 0}
+            cashInTypes={financialData?.CashInTypes ?? []}
+            cashOutTypes={financialData?.CashOutTypes ?? []}
           />
         </Box>
       </Layout>
