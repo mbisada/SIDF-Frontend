@@ -107,5 +107,16 @@
   "ALREADY_SUBSCRIBED": "Subscribed!",
   "SUBSCRIBED_SUCCESS": "Subscribed Successfully!",
   "KNOW_MORE_ABOUT_QAEMA_SUBTITLE": "If you would like know more about qaema, please register here",
-  "KNOW_MORE_ABOUT_QAEMA_TITLE": " know more about Qaema"
+  "KNOW_MORE_ABOUT_QAEMA_TITLE": " know more about Qaema",
+  "CASHFLOW": "Cashflow",
+  "INFLOW": "Inflow",
+  "OUTFLOW": "Outflow",
+  "ACTUAL_CASHFLOW": "Actual Cashflow",
+  "ACTUAL_INFLOW": "Actual Inflow",
+  "ACTUAL_OUTFLOW": "Actual Outflow",
+  "LOANS": "Loans",
+  "LIABILITY": "Liability",
+  "CASHFLOW_PERFORMANCE_THIS_PERIOD": "Cashflow Performance For This Period",
+  "TOTAL_INFLOW": "Total Inflow",
+  "TOTAL_OUTFLOW": "Total Outflow"
 }

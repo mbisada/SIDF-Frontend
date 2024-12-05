@@ -106,6 +106,17 @@
   "COPIED": "تم النسخ!",
   "ALREADY_SUBSCRIBED": "تم الإشتراك!",
   "SUBSCRIBED_SUCCESS": " تم الإشتراك بنجاح!",
-  "KNOW_MORE_ABOUT_QAEMA_SUBTITLE":"اذا كنت ترغب بمعرفة المزيد عن قائمة الرجاء التسجيل هنا",
-  "KNOW_MORE_ABOUT_QAEMA_TITLE":"اعرف المزيد عن قائمة"
+  "KNOW_MORE_ABOUT_QAEMA_SUBTITLE": "اذا كنت ترغب بمعرفة المزيد عن قائمة الرجاء التسجيل هنا",
+  "KNOW_MORE_ABOUT_QAEMA_TITLE": "اعرف المزيد عن قائمة",
+  "CASHFLOW": "التدفق النقدي",
+  "INFLOW": "التدفق الوارد",
+  "OUTFLOW": "التدفق الصادر",
+  "ACTUAL_CASHFLOW": "التدفق النقدي الفعلي",
+  "ACTUAL_INFLOW": "التدفق الوارد الفعلي",
+  "ACTUAL_OUTFLOW": "التدفق الصادر الفعلي",
+  "LOANS": "القروض",
+  "LIABILITY": "الالتزامات",
+  "CASHFLOW_PERFORMANCE_THIS_PERIOD": "أداء التدفق النقدي لهذه الفترة",
+  "TOTAL_INFLOW": "إجمالي التدفق الوارد",
+  "TOTAL_OUTFLOW": "إجمالي التدفق الصادر"
 }

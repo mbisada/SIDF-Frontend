@@ -1,0 +1,533 @@
+openapi: 3.0.0
+info:
+  title: Single API Risk Assessment
+  description: >-
+    This API Swagger is intended to describe the endpoints required for managing
+    single api risk assessment. Through this API, consumers can calculate cashflow statistics on multiple accounts.
+  version: 1.0.0
+servers:
+  - url: /single-api-risk-assessment/v1
+paths:
+  /initiate-risk-assessment:
+    post:
+      tags:
+        - Single API Risk Assessment
+      summary: Initiate Risk Assessment
+      operationId: InitiateRiskAssessment
+      description: This path is used to initiate risk assessment calculations.
+      parameters:
+        - $ref: '#/components/parameters/authorization'
+        - $ref: '#/components/parameters/x-request-id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/InitiateRiskAssessmentRequest'
+        description: Initiate Risk Assessment request payload
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/200InitiateRiskAssessment'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '405':
+          $ref: '#/components/responses/405Error'
+        '406':
+          $ref: '#/components/responses/406Error'
+        '429':
+          $ref: '#/components/responses/429Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+      security:
+        - OAuth2Security:
+            - single_api
+  /get-risk-assessment:
+    get:
+      tags:
+        - Single API Risk Assessment
+      summary: Get Risk Assessment Report
+      operationId: GetRiskAssessmentReport
+      description: This path is used to retrieve the report generated after risk assessment is completed.
+      parameters:
+        - $ref: '#/components/parameters/authorization'
+        - $ref: '#/components/parameters/x-request-id'
+        - $ref: '#/components/parameters/PSUId'
+      responses:
+        '200':
+          $ref: '#/components/responses/200GetRiskAssessmentReport'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '405':
+          $ref: '#/components/responses/405Error'
+        '406':
+          $ref: '#/components/responses/406Error'
+        '429':
+          $ref: '#/components/responses/429Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+      security:
+        - OAuth2Security:
+            - single_api
+components:
+  responses:
+    200InitiateRiskAssessment:
+      description: Risk Assessment Initiated
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+    200GetRiskAssessmentReport:
+      description: Get Risk Assessment Report
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRiskAssessmentReportResponse'
+    400Error:
+      description: Bad request
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: NTSP.ERROR.400.349
+                Message: PSU ID is mandatory
+                Url: https://portal-www.neo-tek.com
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: NTSP.ERROR.400.349
+                Message: PSU ID is mandatory
+                Url: https://portal-www.neo-tek.com
+    401Error:
+      description: Unauthorized
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.401.001
+                Message: Unauthorized to call the target operation.
+                Path: authorization
+                Url: https://portal-www.neo-tek.com
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.401.001
+                Message: Unauthorized to call the target operation.
+                Path: authorization
+                Url: https://portal-www.neo-tek.com
+    403Error:
+      description: Forbidden
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.403.001
+                Message: Can't find any valid subscription.
+                Url: https://portal-www.neo-tek.com
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.403.001
+                Message: Can't find any valid subscription.
+                Url: https://portal-www.neo-tek.com
+    404Error:
+      description: Not found
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Code: ERROR.404.001
+            Message: No resources match requested URI
+            Url: https://portal-www.neo-tek.com
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Code: ERROR.404.001
+            Message: No resources match requested URI
+            Url: https://portal-www.neo-tek.com
+    405Error:
+      description: Method Not Allowed
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.405.001
+                Message: The method is not allowed for the requested URL.
+                Url: https://portal-www.neo-tek.com 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.405.001
+                Message: The method is not allowed for the requested URL.
+                Url: https://portal-www.neo-tek.com 
+    406Error:
+      description: Not Acceptable
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.406.001
+                Message: >-
+                  An appropriate representation of the requested resource could
+                  not be found
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.406.001
+                Message: >-
+                  An appropriate representation of the requested resource could
+                  not be found
+    415Error:
+      description: Unsupported Media Type
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.415.001
+                Message: Unsupported Content-Type
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.415.001
+                Message: Unsupported Content-Type
+    429Error:
+      description: Too Many Requests
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+        Retry-After:
+          description: Number in seconds to wait
+          schema:
+            type: integer
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.429.001
+                Message: Assembly Rate Limit exceeded
+                Url: https://portal-www.neo-tek.com
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.429.001
+                Message: Assembly Rate Limit exceeded
+                Url: https://portal-www.neo-tek.com
+    500Error:
+      description: Internal Server Error
+      headers:
+        x-request-id:
+          description: An RFC4122 UID used as a correlation id.
+          required: true
+          schema:
+            type: string
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.500.001
+                Message: Internal Error
+                Url: https://portal-www.neo-tek.com
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Code: ERROR.500.001
+                Message: Internal Error
+                Url: https://portal-www.neo-tek.com
+  schemas:
+    ErrorResponse:
+      description: >-
+        An array of detail error codes, and messages, and URLs to documentation
+        to help remediation.
+      type: object
+      properties:
+        errors:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+        - errors
+      additionalProperties: false
+    Error:
+      required:
+        - Code
+        - Message
+      type: object
+      properties:
+        Code:
+          type: string
+          description: Low level textual error code, e.g., ERROR.400.001
+          example: ERROR.400.001
+        Message:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: >-
+            A description of the error that occurred. e.g., 'A mandatory field
+            isn't supplied' or 'RequestedExecutionDateTime must be in future'
+            OBIE doesn't standardise this field
+          example: Instructed identification is missing
+        Path:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: >-
+            Recommended but optional reference to the JSON Path of the field
+            with error, e.g., Data.Initiation.InstructedAmount.Currency
+          example: Data.Initiation.InstructionIdentification
+        Url:
+          type: string
+          description: >-
+            URL to help remediate the problem, or provide more information, or
+            to API Reference, or help etc
+          example: 
+    InitiateRiskAssessmentRequest:
+      title: InitiateRiskAssessmentRequest
+      type: object
+      required:
+        - Data
+      properties:
+        Data:
+          type: object
+          required:
+            - PSUId
+          properties:
+            PSUId:
+              $ref: '#/components/schemas/PSUId'
+    GetRiskAssessmentReportResponse:
+      title: GetRiskAssessmentReportResponse
+      type: object
+      required:
+        - Data
+      properties:
+        Data:
+          $ref: '#/components/schemas/RiskAssessmentReportDetails'
+    RiskAssessmentReportDetails:
+      title: RiskAssessmentReportDetails
+      type: object
+      required:
+        - PSUId
+      properties:
+        PSUId:
+          $ref: '#/components/schemas/PSUId'
+        TotalCashFlow:
+          $ref: '#/components/schemas/TotalCashFlow'
+        TotalCashIn:
+          $ref: '#/components/schemas/TotalCashIn'
+        TotalCashOut:
+          $ref: '#/components/schemas/TotalCashOut'
+        Liabilities:
+          $ref: '#/components/schemas/Liabilities'
+        MonthlyCashFlow:
+          type: array
+          items: 
+            $ref: '#/components/schemas/MonthlyCashFlowItem'
+        CashInTypes:
+          type: array
+          items: 
+            $ref: '#/components/schemas/CashFlowCategoriesItem'
+          example:
+            '[{"Category": "POS", "Percentage": 5000}]'
+        CashOutTypes:
+          type: array
+          items: 
+            $ref: '#/components/schemas/CashFlowCategoriesItem'
+          example:
+            '[{"Category": "Transfer", "Percentage": 2000}]'
+    MonthlyCashFlowItem:
+      type: object
+      properties:
+        Month:
+          description: Cash Flow Month
+          type: string
+          example: "Jan"
+        Year:
+          description: Cash Flow Year
+          type: string
+          example: "2024"
+        CashIn:
+          description: Cash In Amount in this month
+          type: number
+          example: 5000
+        CashOut:
+          description: Cash Out Amount in this month
+          type: number
+          example: 1000
+        Profit:
+          description: Profit Amount in this month
+          type: number
+          example: 4000
+    CashFlowCategoriesItem:
+      type: object
+      properties:
+        Category:
+          description: Cash Flow Category
+          type: string
+          example: "Transfer"
+          enum: 
+            - POS
+            - ECommerce
+            - Transfers
+            - Others
+        Total:
+          description: Cash Flow Category Percentage
+          type: number
+          example: 2000
+    PSUId:
+      title: PSUId
+      description: Specifies the Payment Service User Identifier
+      type: string
+      example: "20112"
+    TotalCashFlow:
+      title: TotalCashFlow
+      description: Specifies the PSU total cash flow for the past two years
+      type: number
+      example: "300000"
+    TotalCashIn:
+      title: TotalCashIn
+      description: Specifies the PSU total cash in for the past two years
+      type: number
+      example: "210000"
+    TotalCashOut:
+      title: TotalCashOut
+      description: Specifies the PSU total cash out for the past two years
+      type: number
+      example: "90000"
+    Liabilities:
+      title: Liabilities
+      description: Specifies the PSU total loans in the past month
+      type: number
+      example: "10000"
+  parameters:
+    authorization:
+      in: header
+      name: authorization
+      required: true
+      description: 'An authorization Token as per https://tools.ietf.org/html/rfc6750'
+      schema:
+        type: string
+    x-request-id:
+      in: header
+      name: x-request-id
+      required: false
+      description: An RFC4122 UID used as a correlation id.
+      schema:
+        type: string
+    PSUId:
+      name: PSUId
+      in: query
+      description: Payment Service User Identifier
+      required: true
+      schema:
+        type: string
+        example: "20112"
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      description: >-
+        OAuth2 Client Credentials flow. It is required when TPP client requests access to service APIs.
+      x-ibm-oauth-provider: oauth2security
+      flows:
+        clientCredentials:
+          tokenUrl: >-
+            https://test.api.neotek.sa/oauth2security/oauth2/token
+          scopes:
+            single_api: Single API Aggregator Operations Access
+security:
+  - OAuth2Security:
+      - single_api
