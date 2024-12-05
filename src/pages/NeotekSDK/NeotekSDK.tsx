@@ -35,9 +35,11 @@ const style = {
   p: 2,
 };
 
+type EnvType = 'prod' | 'uat';
+
 function NeotekSDK() {
   const key = useId();
-  const env = 'uat';
+  const env = `${import.meta.env.VITE_ENV}` as EnvType;
   const { customer } = useCustomer();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -45,11 +47,14 @@ function NeotekSDK() {
 
   const handleClose = async () => {
     setOpen(false);
-    // TODO: CALL API TO TRIGGER CALCULATION
     // BASED ON RESPONSE EITHER NAVIGATE TPO FAIL OR SUCCESS
     try {
-      await initiateCalculateRequest();
-      navigate('./success');
+      const response = await initiateCalculateRequest();
+      //console.log('response', response?.data.code, response?.data.fault?.statusDescription);
+      if (response?.data.code === 400 && response?.data.fault.statusDescription.includes('[Calculation Request Already done],')) {
+        //console.log('navihgate', response?.data.code, response?.data.fault?.statusDescription);
+        navigate('./fail');
+      } else navigate('./success');
     } catch (error) {
       navigate('./fail');
     }

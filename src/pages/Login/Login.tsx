@@ -78,7 +78,7 @@ const Login: React.FC = () => {
         if (mappedData.role.toLowerCase().includes('user')) {
           //navigate('/ob-connect'); // Navigate to user route
           // Retrieve the `from` state or set a default path
-          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect/ob-connect';
+          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
 
           // console.log(from, 'from');
           navigate(from, { replace: true });
