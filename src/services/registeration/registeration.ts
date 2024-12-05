@@ -1,31 +1,35 @@
 //import { AxiosError } from "axios";
 import { backendAxiosInstance } from "../axiosInstance";
+import type { LoginPayload, RegisterPayload } from "./registeration.types";
 
-interface RegisterPayload {
-  email: string;
-  password: string;
-  mobileNumber: string;
-  companyName: string;
-  psuid: string
-}
+
 export const useRegisterationServices =()=>{
 
-     const createRegisterationRequest = async (payload: RegisterPayload) => {
-    try {
-      const response = await backendAxiosInstance.post('/register', payload);
-
-      if (!response || !response?.data || !response?.data?.returnedObj) return null;
-      return response?.data?.returnedObj[0];
-    } catch (error: any) {
-      if (error.response && error.response.status === 401) {
-        throw new Error('401'); // Throw the '401' error to propagate it
-      }
-
-      throw error; // Propagate error to the calling function
-    }
+  const createRegisterationRequest = async (payload: RegisterPayload) => {
+    return await backendAxiosInstance.post('/register', payload);
   };
- return {
-    createRegisterationRequest,
 
+/*   const createLoginRequest = async (payload: LoginPayload) =>{
+    return await backendAxiosInstance.post('/login', payload);
+  } */
+
+  const createLoginRequest = async (payload: LoginPayload) => {
+    // Convert payload to URL-encoded format
+    const urlEncodedPayload = new URLSearchParams();
+    Object.entries(payload).forEach(([key, value]) => {
+      urlEncodedPayload.append(key, String(value));
+    });
+
+    // Send the POST request with the correct headers
+    return await backendAxiosInstance.post('/login', urlEncodedPayload, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  };
+
+ return {
+  createRegisterationRequest,
+  createLoginRequest
   }; 
 }

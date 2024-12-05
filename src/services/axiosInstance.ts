@@ -1,4 +1,4 @@
-import axios /* { AxiosError } */ from 'axios';
+import axios from 'axios';
 
 // add axios backend instance
 export const backendAxiosInstance = axios.create({

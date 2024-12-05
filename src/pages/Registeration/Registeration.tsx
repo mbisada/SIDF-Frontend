@@ -1,5 +1,5 @@
 // src/pages/Registration.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -13,7 +13,10 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import GradientBackground from '../../components/GradientBackground';
 import logo from '../../assets/logoWhite.svg';
+import chart from '../../assets/favorite-chart.svg'
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
+import { useRegisterationServices } from '../../services/registeration/registeration';
+import { RegisterationDTOMapper } from '../../services/registeration/registerationMappers';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -34,6 +37,8 @@ const validationSchema = Yup.object({
 const Registration: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
+  const {createRegisterationRequest} = useRegisterationServices();
+  const [isloading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -44,22 +49,37 @@ const Registration: React.FC = () => {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async(values) => {
       console.log('Form Submitted', values);
       // Navigate to the login page upon successful submission
     const registeredCustomer = {
       companyName: formik.values.companyName,
       email: formik.values.email,
-      crNumber: formik.values.crNumber,
+      psuid: formik.values.crNumber,
       mobileNumber: formik.values.mobileNumber,
       password: formik.values.password,
-      role:'user'
+      //role:'user'
     };
 
-    setCustomer(registeredCustomer);
-    console.log('Customer registered and saved globally!');
-    // TODO: CALL API REGISTER
-      navigate('/login');
+    // Api call to register
+  setIsLoading(true);
+ void await createRegisterationRequest(registeredCustomer)
+    .then((response)=>RegisterationDTOMapper(response.data))
+    .then((data)=>{
+      setCustomer({
+        companyName: data.companyName,
+        email: data.email,
+        crNumber: data.psuid,
+        mobileNumber: data.mobileNumber,
+        password: formik.values.password,
+        role:data.role
+      })
+      navigate('/login');  
+    }
+    ).catch(() => {
+          return;
+    }).finally(() => setIsLoading(false));
+      
     },
   });
 
@@ -92,10 +112,10 @@ const Registration: React.FC = () => {
               error={formik.touched.companyName && Boolean(formik.errors.companyName)}
               helperText={formik.touched.companyName && formik.errors.companyName}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <TextField
@@ -110,10 +130,10 @@ const Registration: React.FC = () => {
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <TextField
@@ -127,10 +147,10 @@ const Registration: React.FC = () => {
               error={formik.touched.crNumber && Boolean(formik.errors.crNumber)}
               helperText={formik.touched.crNumber && formik.errors.crNumber}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <TextField
@@ -145,10 +165,10 @@ const Registration: React.FC = () => {
               error={formik.touched.mobileNumber && Boolean(formik.errors.mobileNumber)}
               helperText={formik.touched.mobileNumber && formik.errors.mobileNumber}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <TextField
@@ -163,10 +183,10 @@ const Registration: React.FC = () => {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <Button
@@ -217,6 +237,18 @@ const Registration: React.FC = () => {
           flexDirection: 'column',
         }}
       >
+         <Box
+          component="img"
+          loading="lazy"
+          sx={{
+            height: 'auto',
+            width: 80,
+          }}
+          alt="neotek logo"
+          src={chart}
+          marginBottom={6}
+          paddingTop={1}
+        />
         <Typography variant="h4" gutterBottom color="white">
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>

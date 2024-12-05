@@ -1,5 +1,5 @@
 // src/pages/Login.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -10,10 +10,13 @@ import {
 } from '@mui/material';
 import GradientBackground from '../../components/GradientBackground';
 import logo from '../../assets/logoWhite.svg';
+import chart from '../../assets/favorite-chart.svg'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
+import { useRegisterationServices } from '../../services/registeration/registeration';
+import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
 
 // Mock API call for login
 const mockLoginApi = async (email: string, password: string) => {
@@ -21,7 +24,7 @@ const mockLoginApi = async (email: string, password: string) => {
       email: string,
       crNumber: string,
       mobileNumber: string,
-      token: string
+      checksum: string
     }>((resolve, reject) => {
     setTimeout(() => {
       if (email === 'user@example.com' && password === 'password') {
@@ -30,13 +33,13 @@ const mockLoginApi = async (email: string, password: string) => {
       email: 'testemail@example.com',
       crNumber: 'testCR12345',
       mobileNumber: '966243564567',
-    token:'12345678' }); // User role
+    checksum:'12345678' }); // User role
       } else if (email === 'admin@example.com' && password === 'password') {
         resolve({ role: 'admin',  companyName: 'testCompany',
       email: 'testemail@example.com',
       crNumber: 'testCR12345',
       mobileNumber: '966243564567',
-    token:'12345678'  }); // Admin role
+    checksum:'12345678'  }); // Admin role
       } else {
         reject(new Error('Invalid credentials'));
       }
@@ -47,6 +50,10 @@ const mockLoginApi = async (email: string, password: string) => {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
+  const {createLoginRequest} = useRegisterationServices()
+  const [isLoading, setIsLoading] = useState(false)
+  const location = useLocation();
+
 
   const formik = useFormik({
     initialValues: {
@@ -59,22 +66,73 @@ const Login: React.FC = () => {
         .required('Email is required'),
       password: Yup.string().required('Password is required'),
     }),
-    onSubmit: async (values, { setSubmitting, setErrors }) => {
+    //TODO: UNCOMMENT THIS
+ /*   onSubmit: async (values, { setSubmitting, setErrors }) => {
+    setIsLoading(true);
+  try {
+    // Call the login API with form values
+    const response = await createLoginRequest({
+      email: values.email,
+      password: values.password,
+    });
+
+    // Map the response using the LoginDTOMapper
+    const mappedData = LoginDTOMapper(response.data);
+
+    // Check the role and navigate accordingly
+    if (mappedData.role.toLowerCase().includes('user')) {
+      navigate('/ob-connect'); // Navigate to user route
+    } else if (mappedData.role.toLowerCase().includes('admin')) {
+      navigate('/companies'); // Navigate to admin route
+    }
+
+    // Create a global customer object
+    const registeredCustomer = {
+      companyName: mappedData.companyName,
+      email: mappedData.email,
+      crNumber: mappedData.crNumber,
+      mobileNumber: mappedData.mobileNumber,
+      role: mappedData.role,
+      checksum: response.data.checksum, // Assuming the token is available in the response
+    };
+
+    // Set the customer globally (using a context or global state manager)
+    setCustomer(registeredCustomer);
+
+  } catch (error: any) {
+    // Handle API errors and display them
+    setErrors({ email: error.response?.data?.message || error.message });
+  } finally {
+    // Stop form submission spinner
+    setSubmitting(false);
+    setIsLoading(false);
+  }
+} */
+ onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         const response = await mockLoginApi(values.email, values.password);
-        if (response.role === 'user') {
-          navigate('/ob-connect'); // Navigate to user route
-        } else if (response.role === 'admin') {
-          navigate('/companies'); // Navigate to admin route
+        
+        if (response.role.toLowerCase().includes('user') ) {
+          //navigate('/ob-connect'); // Navigate to user route
+          // Retrieve the `from` state or set a default path
+          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
+
+          navigate(from, { replace: true });
+
+        } else if (response.role.toLowerCase().includes('admin')) {
+           const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
+          navigate(from, { replace: true });
+
+          //navigate('/companies'); // Navigate to admin route
         }
     
         const registeredCustomer = {
-      companyName: response.companyName,
-      email: response.email,
-      crNumber: response.crNumber,
-      mobileNumber: response.mobileNumber,
-      role:'user',
-      token: response.token
+        companyName: response.companyName,
+        email: response.email,
+        crNumber: response.crNumber,
+        mobileNumber: response.mobileNumber,
+        role:response.role,
+        checksum: response.checksum
     };
 
     setCustomer(registeredCustomer);
@@ -116,10 +174,10 @@ const Login: React.FC = () => {
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <TextField
@@ -134,16 +192,16 @@ const Login: React.FC = () => {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
               InputProps={{
-                style: { color: 'white' },
+                style: { color: 'black', backgroundColor:'white' },
               }}
               InputLabelProps={{
-                style: { color: 'white' },
+                style: { color: 'black' },
               }}
             />
             <Button
               type="submit"
               variant="contained"
-              color="primary"
+              color='primary'
               fullWidth
               disabled={formik.isSubmitting}
               sx={{
@@ -189,6 +247,18 @@ const Login: React.FC = () => {
           flexDirection: 'column',
         }}
       >
+         <Box
+          component="img"
+          loading="lazy"
+          sx={{
+            height: 'auto',
+            width: 80,
+          }}
+          alt="neotek logo"
+          src={chart}
+          marginBottom={6}
+          paddingTop={1}
+        />
         <Typography variant="h4" gutterBottom color="white">
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>

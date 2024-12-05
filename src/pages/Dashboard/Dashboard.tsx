@@ -29,6 +29,7 @@ const [companyDetails, setCompanyDetails] = useState({role: '' , companyName: ''
         <Layout
       breadcrumbs={[
         { label: 'Dashboard', href: '/' },
+        { label: 'Companies List Details' , href:'/companies'},
         { label: 'Request Details' , href:'/'},
       ]}
       heading="Request Details"

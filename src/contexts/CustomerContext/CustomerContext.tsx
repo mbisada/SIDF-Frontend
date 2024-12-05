@@ -1,5 +1,5 @@
 // src/context/CustomerContext.tsx
-import React, { createContext, /* useContext, */ useState, ReactNode } from 'react';
+import React, { createContext, /* useContext, */ useState, ReactNode, useEffect } from 'react';
 
 export interface CustomerInfo {
   companyName: string,
@@ -7,8 +7,8 @@ export interface CustomerInfo {
   crNumber: string,
   mobileNumber: string,
   password?: string,
-  role:string,
-  token?:string
+  role?:string,
+  checksum?:string
 }
 
 export interface CustomerContextType {
@@ -21,7 +21,7 @@ export interface CustomerContextType {
 export const CustomerContext = createContext<CustomerContextType | undefined>(undefined);
 
 export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [customer, setCustomerState] = useState<CustomerInfo | null>(null);
+/*   const [customer, setCustomerState] = useState<CustomerInfo | null>(null);
 
   const setCustomer = (customer: CustomerInfo | null) => {
     setCustomerState(customer);
@@ -29,7 +29,29 @@ export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const clearCustomer = () => {
     setCustomerState(null);
+  }; */
+const [customer, setCustomerState] = useState<CustomerInfo | null>(() => {
+    const savedCustomer = localStorage.getItem("customer");
+    return savedCustomer ? JSON.parse(savedCustomer) : null;
+  });
+
+  const setCustomer = (customer: CustomerInfo) => {
+    setCustomerState(customer);
+    localStorage.setItem("customer", JSON.stringify(customer));
   };
+
+   const clearCustomer = () => {
+    setCustomerState(null);
+    localStorage.removeItem("customer")
+  };
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const savedCustomer = localStorage.getItem("customer");
+    if (savedCustomer) {
+      setCustomerState(JSON.parse(savedCustomer));
+    }
+  }, []);
 
   return (
     <CustomerContext.Provider value={{ customer, setCustomer, clearCustomer }}>

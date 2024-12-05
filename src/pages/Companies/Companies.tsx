@@ -16,7 +16,7 @@ setCompaniesList([{name: 'SUMO', crNumber:'1235678'}, {name: 'Shawrmer', crNumbe
       <Layout
       breadcrumbs={[
         { label: 'Dashboard', href: '/' },
-        { label: 'Companies List Details' , href:'/'},
+        { label: 'Companies List Details' , href:'/companies'},
       ]}
       heading="Companies List Details"
     //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */

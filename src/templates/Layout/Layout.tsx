@@ -16,14 +16,15 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  IconButton,
+  //IconButton,
   ListItemButton
 } from '@mui/material';
-import {  Dashboard, ListAlt, Notifications, Search } from '@mui/icons-material';
+import {  Dashboard, ListAlt } from '@mui/icons-material';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
-import logo  from '../../assets/Logo.png'
+import logo  from '../../assets/Logo.png';
+
 interface LayoutProps {
   breadcrumbs: { label: string; href?: string }[];
   heading?: string;
@@ -35,7 +36,7 @@ const drawerWidth = 240;
 
 const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, children }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { customer, setCustomer } = useCustomer();
+  const { customer, /* setCustomer,  */clearCustomer } = useCustomer();
 const navigate = useNavigate()
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,7 +44,7 @@ const navigate = useNavigate()
 
   const handleMenuLogoutClose = () => {
     setAnchorEl(null);
-    setCustomer(null)
+    clearCustomer(); 
     navigate('/login')
   };
 
