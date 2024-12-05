@@ -59,48 +59,48 @@ const Login: React.FC = () => {
       password: Yup.string().required('Password is required'),
     }),
     //TODO: UNCOMMENT THIS
-    /*   onSubmit: async (values, { setSubmitting, setErrors }) => {
-    setIsLoading(true);
-  try {
-    // Call the login API with form values
-    const response = await createLoginRequest({
-      email: values.email,
-      password: values.password,
-    });
-
-    // Map the response using the LoginDTOMapper
-    const mappedData = LoginDTOMapper(response.data);
-
-    // Check the role and navigate accordingly
-    if (mappedData.role.toLowerCase().includes('user')) {
-      navigate('/ob-connect'); // Navigate to user route
-    } else if (mappedData.role.toLowerCase().includes('admin')) {
-      navigate('/companies'); // Navigate to admin route
-    }
-
-    // Create a global customer object
-    const registeredCustomer = {
-      companyName: mappedData.companyName,
-      email: mappedData.email,
-      crNumber: mappedData.crNumber,
-      mobileNumber: mappedData.mobileNumber,
-      role: mappedData.role,
-      checksum: response.data.checksum, // Assuming the token is available in the response
-    };
-
-    // Set the customer globally (using a context or global state manager)
-    setCustomer(registeredCustomer);
-
-  } catch (error: any) {
-    // Handle API errors and display them
-    setErrors({ email: error.response?.data?.message || error.message });
-  } finally {
-    // Stop form submission spinner
-    setSubmitting(false);
-    setIsLoading(false);
-  }
-} */
     onSubmit: async (values, { setSubmitting, setErrors }) => {
+      setIsLoading(true);
+      try {
+        // Call the login API with form values
+        const response = await createLoginRequest({
+          email: values.email,
+          password: values.password,
+        });
+
+        // Map the response using the LoginDTOMapper
+        const mappedData = LoginDTOMapper(response.data);
+
+        // Check the role and navigate accordingly
+        if (mappedData.role.toLowerCase().includes('user')) {
+          navigate('/ob-connect'); // Navigate to user route
+        } else if (mappedData.role.toLowerCase().includes('admin')) {
+          navigate('/companies'); // Navigate to admin route
+        }
+
+        // Create a global customer object
+        const registeredCustomer = {
+          companyName: mappedData.companyName,
+          email: mappedData.email,
+          crNumber: mappedData.crNumber,
+          mobileNumber: mappedData.mobileNumber,
+          role: mappedData.role,
+          checksum: response.data.checksum, // Assuming the token is available in the response
+        };
+
+        // Set the customer globally (using a context or global state manager)
+        setCustomer(registeredCustomer);
+      } catch (error: any) {
+        // Handle API errors and display them
+        setErrors({ email: error.response?.data?.message || error.message });
+      } finally {
+        // Stop form submission spinner
+        setSubmitting(false);
+        setIsLoading(false);
+      }
+    },
+    //MOCK API
+    /*   onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         const response = await mockLoginApi(values.email, values.password);
 
@@ -132,7 +132,7 @@ const Login: React.FC = () => {
       } finally {
         setSubmitting(false);
       }
-    },
+    }, */
   });
 
   return (

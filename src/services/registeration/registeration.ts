@@ -1,15 +1,13 @@
 //import { AxiosError } from "axios";
-import { backendAxiosInstance } from "../axiosInstance";
-import type { LoginPayload, RegisterPayload } from "./registeration.types";
+import { backendAxiosInstance } from '../axiosInstance';
+import type { LoginPayload, RegisterPayload } from './registeration.types';
 
-
-export const useRegisterationServices =()=>{
-
+export const useRegisterationServices = () => {
   const createRegisterationRequest = async (payload: RegisterPayload) => {
-    return await backendAxiosInstance.post('/register', payload);
+    return await backendAxiosInstance.post('/register', { data: payload });
   };
 
-/*   const createLoginRequest = async (payload: LoginPayload) =>{
+  /*   const createLoginRequest = async (payload: LoginPayload) =>{
     return await backendAxiosInstance.post('/login', payload);
   } */
 
@@ -28,8 +26,8 @@ export const useRegisterationServices =()=>{
     });
   };
 
- return {
-  createRegisterationRequest,
-  createLoginRequest
-  }; 
-}
+  return {
+    createRegisterationRequest,
+    createLoginRequest,
+  };
+};
