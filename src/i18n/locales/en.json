@@ -18,7 +18,6 @@
   "INVALID_EMAIL_VALIDATION_MESSAGE": "Please enter a valid email",
   "REQUESTER_NAME": "Requester Name",
   "ENTITY_NAME": "Entity Name",
-  "EMAIL": "Email",
   "PARTNERSHIP_TYPE": "Partnership Type",
   "MOBILE_NUMBER": "Mobile Number",
   "SELECT_USE_CASE": "Select Use Case",
@@ -119,5 +118,13 @@
   "CASHFLOW_PERFORMANCE_THIS_PERIOD": "Cashflow Performance For This Period",
   "TOTAL_INFLOW": "Total Inflow",
   "TOTAL_OUTFLOW": "Total Outflow",
-  "SAR": "SAR"
+  "SAR": "SAR",
+  "REGISTERATION": "Registration",
+  "CREATE_YOUR_ACCOUNT": "Create your account",
+  "EMAIL": "Email",
+  "CR_NUMBER": "CR Number",
+  "PASSWORD": "Password",
+  "SIGN_UP": "Sign up",
+  "HAVE_ACCOUNT": "Have an account?",
+  "LOGIN": "Login"
 }

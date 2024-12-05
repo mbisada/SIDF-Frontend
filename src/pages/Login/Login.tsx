@@ -3,14 +3,16 @@ import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, /* Button, */ Link, Stack, TextField, Typography } from '@mui/material';
 
 import chart from '../../assets/favorite-chart.svg';
 import logo from '../../assets/logoWhite.svg';
 import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
-// import { useRegisterationServices } from '../../services/registeration/registeration';
-// import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
+import { useRegisterationServices } from '../../services/registeration/registeration';
+import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
+import { useState } from 'react';
+import { LoadingButton } from '@mui/lab';
 
 // Mock API call for login
 const mockLoginApi = async (email: string, password: string) => {
@@ -46,8 +48,8 @@ const mockLoginApi = async (email: string, password: string) => {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
-  // const { createLoginRequest } = useRegisterationServices();
-  // const [isLoading, setIsLoading] = useState(false);
+  const { createLoginRequest } = useRegisterationServices();
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 
   const formik = useFormik({
@@ -60,48 +62,54 @@ const Login: React.FC = () => {
       password: Yup.string().required('Password is required'),
     }),
     //TODO: UNCOMMENT THIS
-    /*   onSubmit: async (values, { setSubmitting, setErrors }) => {
-    setIsLoading(true);
-  try {
-    // Call the login API with form values
-    const response = await createLoginRequest({
-      email: values.email,
-      password: values.password,
-    });
-
-    // Map the response using the LoginDTOMapper
-    const mappedData = LoginDTOMapper(response.data);
-
-    // Check the role and navigate accordingly
-    if (mappedData.role.toLowerCase().includes('user')) {
-      navigate('/ob-connect'); // Navigate to user route
-    } else if (mappedData.role.toLowerCase().includes('admin')) {
-      navigate('/companies'); // Navigate to admin route
-    }
-
-    // Create a global customer object
-    const registeredCustomer = {
-      companyName: mappedData.companyName,
-      email: mappedData.email,
-      crNumber: mappedData.crNumber,
-      mobileNumber: mappedData.mobileNumber,
-      role: mappedData.role,
-      checksum: response.data.checksum, // Assuming the token is available in the response
-    };
-
-    // Set the customer globally (using a context or global state manager)
-    setCustomer(registeredCustomer);
-
-  } catch (error: any) {
-    // Handle API errors and display them
-    setErrors({ email: error.response?.data?.message || error.message });
-  } finally {
-    // Stop form submission spinner
-    setSubmitting(false);
-    setIsLoading(false);
-  }
-} */
     onSubmit: async (values, { setSubmitting, setErrors }) => {
+      setIsLoading(true);
+      try {
+        // Call the login API with form values
+        const response = await createLoginRequest({
+          email: values.email,
+          password: values.password,
+        });
+
+        // Map the response using the LoginDTOMapper
+        const mappedData = LoginDTOMapper(response.data);
+        console.log('mapped data', mappedData);
+        // Check the role and navigate accordingly
+        if (mappedData.role.toLowerCase().includes('user')) {
+          //navigate('/ob-connect'); // Navigate to user route
+          // Retrieve the `from` state or set a default path
+          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
+
+          console.log(from, 'from');
+          navigate(from, { replace: true });
+        } else if (mappedData.role.toLowerCase().includes('admin')) {
+          const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
+          navigate(from, { replace: true });
+
+          //navigate('/companies'); // Navigate to admin route
+        }
+        // Create a global customer object
+        const registeredCustomer = {
+          companyName: mappedData.companyName,
+          email: mappedData.email,
+          crNumber: mappedData.crNumber,
+          mobileNumber: mappedData.mobileNumber,
+          role: mappedData.role,
+          checksum: response.data.checksum, // Assuming the token is available in the response
+        };
+
+        // Set the customer globally (using a context or global state manager)
+        setCustomer(registeredCustomer);
+      } catch (error: any) {
+        // Handle API errors and display them
+        setErrors({ email: error.response?.data?.message || error.message });
+      } finally {
+        // Stop form submission spinner
+        setSubmitting(false);
+        setIsLoading(false);
+      }
+    },
+    /*     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         const response = await mockLoginApi(values.email, values.password);
 
@@ -137,9 +145,10 @@ const Login: React.FC = () => {
       } finally {
         setSubmitting(false);
       }
-    },
+    }, */
   });
 
+  // if (isLoading) return <Spinner />;
   return (
     <GradientBackground>
       <Box
@@ -194,7 +203,7 @@ const Login: React.FC = () => {
                 style: { color: 'black' },
               }}
             />
-            <Button
+            <LoadingButton
               type="submit"
               variant="contained"
               color="primary"
@@ -205,9 +214,10 @@ const Login: React.FC = () => {
                 borderRadius: 2,
                 fontWeight: 700,
               }}
+              loading={isLoading}
             >
               {formik.isSubmitting ? 'Logging in...' : 'Login'}
-            </Button>
+            </LoadingButton>
             <Typography variant="body2" color="white">
               Don’t have an account?{' '}
               <Link href="/register" underline="none" color="white">

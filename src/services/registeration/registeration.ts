@@ -4,7 +4,7 @@ import type { LoginPayload, RegisterPayload } from './registeration.types';
 
 export const useRegisterationServices = () => {
   const createRegisterationRequest = async (payload: RegisterPayload) => {
-    return await backendAxiosInstance.post('/register', { data: payload });
+    return await backendAxiosInstance.post('/register', payload);
   };
 
   /*   const createLoginRequest = async (payload: LoginPayload) =>{

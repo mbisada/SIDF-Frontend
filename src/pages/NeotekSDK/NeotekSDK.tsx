@@ -37,7 +37,7 @@ const style = {
 
 function NeotekSDK() {
   const key = useId();
-  const env = 'prod';
+  const env = 'uat';
   const { customer } = useCustomer();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

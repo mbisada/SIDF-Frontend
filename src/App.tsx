@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import FailSubmission from './components/FailSubmission';
 import SuccessSubmission from './components/SuccessSubmission';
-import { useCustomer } from './contexts/CustomerContext/useContext';
+//import { useCustomer } from './contexts/CustomerContext/useContext';
 import { initializeI18n } from './i18n/i18n';
 import Companies from './pages/Companies';
 import Dashboard from './pages/Dashboard';
@@ -12,12 +12,14 @@ import NeotekSDK from './pages/NeotekSDK';
 import ProtectedRoute from './pages/ProtectedRoutes/ProtectedRoutes';
 import Registration from './pages/Registeration';
 import Unauthorized from './pages/Unauthorized';
+import './i18n/i18n';
 
 function App() {
-  useCustomer();
+  // useCustomer();
 
   useEffect(() => {
-    initializeI18n();
+    //initializeI18n();
+    void initializeI18n();
   }, []);
 
   return (

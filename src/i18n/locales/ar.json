@@ -30,7 +30,7 @@
   "GOALS_FORM_TITLE": "مرحبًا بك! كيف يمكننا مساعدتك في البدء؟",
   "GOALS_FORM_SUBTITLE": "أخبرنا عن أهدافك حتى نتمكن من إيصالك إلى المكان الصحيح.",
   "PARTNERSHIP_FORM_TITLE": "طلب الشراكة",
-  "PARTNERSHIP_FORM_SUBTITLE": "إذا كنت ترغب في أن تكون شريكًا، يرجى التسجيل هنا",
+  "PARTNERSHIP_FORM_SUBTITLE": "إذا كنت ترغب في أن تكون شريكًا, يرجى التسجيل هنا",
   "BUSINESS": "مهنة",
   "BUSINESS_GOAL_DESC": "أرغب في استكشاف فرصة الشراكة مع نيوتيك",
   "EXPLORER": "مستكشف",
@@ -119,5 +119,12 @@
   "CASHFLOW_PERFORMANCE_THIS_PERIOD": "أداء التدفق النقدي لهذه الفترة",
   "TOTAL_INFLOW": "إجمالي التدفق الوارد",
   "TOTAL_OUTFLOW": "إجمالي التدفق الصادر",
-  "SAR": "ر.س."
+  "SAR": "ر.س.",
+  "REGISTERATION": "التسجيل",
+  "CREATE_YOUR_ACCOUNT": "إنشاء حسابك",
+  "CR_NUMBER": "رقم CR",
+  "PASSWORD": "كلمة المرور",
+  "SIGN_UP": "التسجيل",
+  "HAVE_ACCOUNT": "هل لديك حساب؟",
+  "LOGIN": "تسجيل الدخول"
 }
