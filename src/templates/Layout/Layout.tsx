@@ -17,13 +17,13 @@ import {
   Menu,
   MenuItem,
   //IconButton,
-  ListItemButton
+  ListItemButton,
 } from '@mui/material';
-import {  Dashboard, ListAlt } from '@mui/icons-material';
+import { Dashboard, ListAlt } from '@mui/icons-material';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
-import logo  from '../../assets/Logo.png';
+import logo from '../../assets/Logo.png';
 
 interface LayoutProps {
   breadcrumbs: { label: string; href?: string }[];
@@ -36,19 +36,20 @@ const drawerWidth = 240;
 
 const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, children }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { customer, /* setCustomer,  */clearCustomer } = useCustomer();
-const navigate = useNavigate()
+  const { customer, /* setCustomer,  */ clearCustomer } = useCustomer();
+  const navigate = useNavigate();
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuLogoutClose = () => {
     setAnchorEl(null);
-    clearCustomer(); 
-    navigate('/login')
+    clearCustomer();
+    localStorage.clear();
+    navigate('/login');
   };
 
-    const handleMenuClose = () => {
+  const handleMenuClose = () => {
     setAnchorEl(null);
   };
   return (
@@ -59,7 +60,7 @@ const navigate = useNavigate()
       <Drawer
         variant="permanent"
         sx={{
-         // width: drawerWidth,
+          // width: drawerWidth,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
@@ -73,18 +74,18 @@ const navigate = useNavigate()
         <Box sx={{ overflow: 'auto', paddingTop: 2 }}>
           <List>
             <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Dashboard sx={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
+              <ListItemButton>
+                <ListItemIcon>
+                  <Dashboard sx={{ color: 'white' }} />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding >
-            <ListItemButton>
-              <ListItemIcon>
-                <ListAlt sx={{ color: 'white' }} />
-              </ListItemIcon>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ListAlt sx={{ color: 'white' }} />
+                </ListItemIcon>
                 <ListItemText primary="Companies List Details" />
               </ListItemButton>
             </ListItem>
@@ -96,20 +97,20 @@ const navigate = useNavigate()
       <AppBar
         position="fixed"
         sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
+          zIndex: theme => theme.zIndex.drawer + 1,
           backgroundColor: 'white',
           color: 'black',
         }}
       >
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-           {/*  <IconButton>
+            {/*  <IconButton>
               <Search />
             </IconButton>
             <IconButton>
               <Notifications />
             </IconButton> */}
-             <Box
+            <Box
               component="img"
               sx={{
                 height: 'auto',
@@ -124,21 +125,11 @@ const navigate = useNavigate()
             />
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="subtitle1">
-              {customer ? `${customer.crNumber}` : 'Guest'}
-            </Typography>
-            <Avatar
-              onClick={handleMenuOpen}
-              sx={{ cursor: 'pointer', margin:1 }}
-            >
-              <PersonIcon/>
-              </Avatar>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              sx={{ mt: '45px' }}
-            >
+            <Typography variant="subtitle1">{customer ? `${customer.crNumber}` : 'Guest'}</Typography>
+            <Avatar onClick={handleMenuOpen} sx={{ cursor: 'pointer', margin: 1 }}>
+              <PersonIcon />
+            </Avatar>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} sx={{ mt: '45px' }}>
               <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
               <MenuItem onClick={handleMenuLogoutClose}>Logout</MenuItem>
             </Menu>
@@ -169,9 +160,11 @@ const navigate = useNavigate()
             </Link>
           ))}
         </Breadcrumbs>
-        {heading && <Typography variant="h5" gutterBottom>
-          {heading}
-        </Typography>}
+        {heading && (
+          <Typography variant="h5" gutterBottom>
+            {heading}
+          </Typography>
+        )}
         {subheading && (
           <Typography variant="body2" gutterBottom marginBottom={3}>
             {subheading}

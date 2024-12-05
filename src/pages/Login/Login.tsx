@@ -160,7 +160,7 @@ const Login: React.FC = () => {
           <Stack spacing={2}>
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="Email"
               type="email"
               name="email"
@@ -178,7 +178,7 @@ const Login: React.FC = () => {
             />
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="Password"
               type="password"
               name="password"

@@ -94,7 +94,7 @@ const Registration: React.FC = () => {
           <Stack spacing={2}>
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="Company Name"
               name="companyName"
               value={formik.values.companyName}
@@ -111,7 +111,7 @@ const Registration: React.FC = () => {
             />
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="Email"
               name="email"
               type="email"
@@ -129,7 +129,7 @@ const Registration: React.FC = () => {
             />
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="CR Number"
               name="crNumber"
               value={formik.values.crNumber}
@@ -146,7 +146,7 @@ const Registration: React.FC = () => {
             />
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="Mobile Number"
               name="mobileNumber"
               type="tel"
@@ -164,7 +164,7 @@ const Registration: React.FC = () => {
             />
             <TextField
               fullWidth
-              variant="outlined"
+              variant="filled"
               label="Password"
               name="password"
               type="password"

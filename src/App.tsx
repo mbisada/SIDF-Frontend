@@ -29,7 +29,7 @@ function App() {
           <Route path="/unauthorized" element={<Unauthorized />} />
 
           <Route
-            path="/ob-connect"
+            path="/ob-connect/*"
             element={
               <ProtectedRoute requiredRole="user">
                 <NeotekSDK />
@@ -47,7 +47,7 @@ function App() {
           />
 
           <Route
-            path="/companies/:id"
+            path="/companies/:psuid"
             element={
               <ProtectedRoute requiredRole="admin">
                 <Dashboard />
