@@ -1,59 +1,54 @@
 // src/pages/Login.tsx
-import React, { useState } from 'react';
-import {
-  Box,
-  TextField,
-  Typography,
-  Button,
-  Link,
-  Stack,
-} from '@mui/material';
-import GradientBackground from '../../components/GradientBackground';
-import logo from '../../assets/logoWhite.svg';
-import chart from '../../assets/favorite-chart.svg'
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useLocation, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+
+import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+
+import chart from '../../assets/favorite-chart.svg';
+import logo from '../../assets/logoWhite.svg';
+import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
-import { useRegisterationServices } from '../../services/registeration/registeration';
-import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
+// import { useRegisterationServices } from '../../services/registeration/registeration';
+// import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
 
 // Mock API call for login
 const mockLoginApi = async (email: string, password: string) => {
-  return new Promise<{ role: string , companyName: string,
-      email: string,
-      crNumber: string,
-      mobileNumber: string,
-      checksum: string
-    }>((resolve, reject) => {
-    setTimeout(() => {
-      if (email === 'user@example.com' && password === 'password') {
-        resolve({ role: 'user',     
-           companyName: 'testCompany',
-      email: 'testemail@example.com',
-      crNumber: 'testCR12345',
-      mobileNumber: '966243564567',
-    checksum:'12345678' }); // User role
-      } else if (email === 'admin@example.com' && password === 'password') {
-        resolve({ role: 'admin',  companyName: 'testCompany',
-      email: 'testemail@example.com',
-      crNumber: 'testCR12345',
-      mobileNumber: '966243564567',
-    checksum:'12345678'  }); // Admin role
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, 1000);
-  });
+  return new Promise<{ role: string; companyName: string; email: string; crNumber: string; mobileNumber: string; checksum: string }>(
+    (resolve, reject) => {
+      setTimeout(() => {
+        if (email === 'user@example.com' && password === 'password') {
+          resolve({
+            role: 'user',
+            companyName: 'testCompany',
+            email: 'testemail@example.com',
+            crNumber: 'testCR12345',
+            mobileNumber: '966243564567',
+            checksum: '12345678',
+          }); // User role
+        } else if (email === 'admin@example.com' && password === 'password') {
+          resolve({
+            role: 'admin',
+            companyName: 'testCompany',
+            email: 'testemail@example.com',
+            crNumber: 'testCR12345',
+            mobileNumber: '966243564567',
+            checksum: '12345678',
+          }); // Admin role
+        } else {
+          reject(new Error('Invalid credentials'));
+        }
+      }, 1000);
+    }
+  );
 };
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
-  const {createLoginRequest} = useRegisterationServices()
-  const [isLoading, setIsLoading] = useState(false)
+  // const { createLoginRequest } = useRegisterationServices();
+  // const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
-
 
   const formik = useFormik({
     initialValues: {
@@ -61,13 +56,11 @@ const Login: React.FC = () => {
       password: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email('Invalid email address')
-        .required('Email is required'),
+      email: Yup.string().email('Invalid email address').required('Email is required'),
       password: Yup.string().required('Password is required'),
     }),
     //TODO: UNCOMMENT THIS
- /*   onSubmit: async (values, { setSubmitting, setErrors }) => {
+    /*   onSubmit: async (values, { setSubmitting, setErrors }) => {
     setIsLoading(true);
   try {
     // Call the login API with form values
@@ -108,36 +101,39 @@ const Login: React.FC = () => {
     setIsLoading(false);
   }
 } */
- onSubmit: async (values, { setSubmitting, setErrors }) => {
+    onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         const response = await mockLoginApi(values.email, values.password);
-        
-        if (response.role.toLowerCase().includes('user') ) {
+
+        if (response.role.toLowerCase().includes('user')) {
           //navigate('/ob-connect'); // Navigate to user route
           // Retrieve the `from` state or set a default path
           const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
 
           navigate(from, { replace: true });
-
         } else if (response.role.toLowerCase().includes('admin')) {
-           const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
+          const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
           navigate(from, { replace: true });
 
           //navigate('/companies'); // Navigate to admin route
         }
-    
-        const registeredCustomer = {
-        companyName: response.companyName,
-        email: response.email,
-        crNumber: response.crNumber,
-        mobileNumber: response.mobileNumber,
-        role:response.role,
-        checksum: response.checksum
-    };
 
-    setCustomer(registeredCustomer);
-      } catch (error: any) {
-        setErrors({ email: error.message }); // Display error on email field
+        const registeredCustomer = {
+          companyName: response.companyName,
+          email: response.email,
+          crNumber: response.crNumber,
+          mobileNumber: response.mobileNumber,
+          role: response.role,
+          checksum: response.checksum,
+        };
+
+        setCustomer(registeredCustomer);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrors({ email: err.message }); // Display error on email field
+        } else {
+          setErrors({ email: 'An unknown error occurred' }); // Default error message
+        }
       } finally {
         setSubmitting(false);
       }
@@ -174,7 +170,7 @@ const Login: React.FC = () => {
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -192,7 +188,7 @@ const Login: React.FC = () => {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -201,7 +197,7 @@ const Login: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              color='primary'
+              color="primary"
               fullWidth
               disabled={formik.isSubmitting}
               sx={{
@@ -247,7 +243,7 @@ const Login: React.FC = () => {
           flexDirection: 'column',
         }}
       >
-         <Box
+        <Box
           component="img"
           loading="lazy"
           sx={{
@@ -263,7 +259,8 @@ const Login: React.FC = () => {
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>
         <Typography variant="body1" gutterBottom color="white">
-          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding solutions that meet your needs.
+          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding
+          solutions that meet your needs.
         </Typography>
         <Typography variant="body1" color="white" gutterBottom paddingTop={5}>
           Powered by neotek

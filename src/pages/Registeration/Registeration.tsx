@@ -1,19 +1,13 @@
 // src/pages/Registration.tsx
-import React, { useState } from 'react';
-import {
-  Box,
-  TextField,
-  Typography,
-  Button,
-  Link,
-  Stack,
-} from '@mui/material';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import GradientBackground from '../../components/GradientBackground';
+import * as Yup from 'yup';
+
+import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+
+import chart from '../../assets/favorite-chart.svg';
 import logo from '../../assets/logoWhite.svg';
-import chart from '../../assets/favorite-chart.svg'
+import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useRegisterationServices } from '../../services/registeration/registeration';
 import { RegisterationDTOMapper } from '../../services/registeration/registerationMappers';
@@ -21,24 +15,20 @@ import { RegisterationDTOMapper } from '../../services/registeration/registerati
 // Validation schema using Yup
 const validationSchema = Yup.object({
   companyName: Yup.string().required('Company Name is required'),
-  email: Yup.string()
-    .email('Enter a valid email')
-    .required('Email is required'),
+  email: Yup.string().email('Enter a valid email').required('Email is required'),
   crNumber: Yup.string().required('CR Number is required'),
   mobileNumber: Yup.string()
-/*     .matches(/^\d+$/, 'Mobile Number must contain only digits')
+    /*     .matches(/^\d+$/, 'Mobile Number must contain only digits')
     .min(10, 'Mobile Number must be at least 10 digits') */
     .required('Mobile Number is required'),
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters long')
-    .required('Password is required'),
+  password: Yup.string().min(6, 'Password must be at least 6 characters long').required('Password is required'),
 });
 
 const Registration: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
-  const {createRegisterationRequest} = useRegisterationServices();
-  const [isloading, setIsLoading] = useState(false);
+  const { createRegisterationRequest } = useRegisterationServices();
+  // const [isloading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -49,39 +39,40 @@ const Registration: React.FC = () => {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async(values) => {
+    onSubmit: async values => {
       console.log('Form Submitted', values);
       // Navigate to the login page upon successful submission
-    const registeredCustomer = {
-      companyName: formik.values.companyName,
-      email: formik.values.email,
-      psuid: formik.values.crNumber,
-      mobileNumber: formik.values.mobileNumber,
-      password: formik.values.password,
-      //role:'user'
-    };
-
-    // Api call to register
-  setIsLoading(true);
- void await createRegisterationRequest(registeredCustomer)
-    .then((response)=>RegisterationDTOMapper(response.data))
-    .then((data)=>{
-      setCustomer({
-        companyName: data.companyName,
-        email: data.email,
-        crNumber: data.psuid,
-        mobileNumber: data.mobileNumber,
+      const registeredCustomer = {
+        companyName: formik.values.companyName,
+        email: formik.values.email,
+        psuid: formik.values.crNumber,
+        mobileNumber: formik.values.mobileNumber,
         password: formik.values.password,
-        role:data.role
-      })
-      navigate('/login');  
-    }
-    ).catch(() => {
+        //role:'user'
+      };
+
+      // Api call to register
+      // setIsLoading(true);
+      void (await createRegisterationRequest(registeredCustomer)
+        .then(response => RegisterationDTOMapper(response.data))
+        .then(data => {
+          setCustomer({
+            companyName: data.companyName,
+            email: data.email,
+            crNumber: data.psuid,
+            mobileNumber: data.mobileNumber,
+            password: formik.values.password,
+            role: data.role,
+          });
+          navigate('/login');
+        })
+        .catch(() => {
           return;
-    }).finally(() => setIsLoading(false));
-      
+        }));
     },
   });
+
+  // .finally(() => setIsLoading(false)));
 
   return (
     <GradientBackground>
@@ -112,7 +103,7 @@ const Registration: React.FC = () => {
               error={formik.touched.companyName && Boolean(formik.errors.companyName)}
               helperText={formik.touched.companyName && formik.errors.companyName}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -130,7 +121,7 @@ const Registration: React.FC = () => {
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -147,7 +138,7 @@ const Registration: React.FC = () => {
               error={formik.touched.crNumber && Boolean(formik.errors.crNumber)}
               helperText={formik.touched.crNumber && formik.errors.crNumber}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -165,7 +156,7 @@ const Registration: React.FC = () => {
               error={formik.touched.mobileNumber && Boolean(formik.errors.mobileNumber)}
               helperText={formik.touched.mobileNumber && formik.errors.mobileNumber}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -183,7 +174,7 @@ const Registration: React.FC = () => {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
               InputProps={{
-                style: { color: 'black', backgroundColor:'white' },
+                style: { color: 'black', backgroundColor: 'white' },
               }}
               InputLabelProps={{
                 style: { color: 'black' },
@@ -237,7 +228,7 @@ const Registration: React.FC = () => {
           flexDirection: 'column',
         }}
       >
-         <Box
+        <Box
           component="img"
           loading="lazy"
           sx={{
@@ -253,7 +244,8 @@ const Registration: React.FC = () => {
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>
         <Typography variant="body1" gutterBottom color="white">
-          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding solutions that meet your needs.
+          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding
+          solutions that meet your needs.
         </Typography>
         <Typography variant="body1" color="white" gutterBottom paddingTop={5}>
           Powered by neotek
