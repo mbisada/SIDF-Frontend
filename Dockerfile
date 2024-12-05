@@ -8,8 +8,8 @@ RUN apt-get update && \
     apt-get clean
 
 # Create directories with permissions for all users
-RUN mkdir -p /.npm /.cache /app/cache /app/var/run/ /app/cache/client_temp /app/cache/proxy_temp /var/run/ && \
-    chmod -R 777 /.npm /.cache /app/cache /app /app/var/run/ /var/run/
+RUN mkdir -p /.npm /.cache /app/cache /app/var/run/ /app/cache/client_temp /app/cache/proxy_temp /var/run/ /app/node_modules/ && \
+    chmod -R 777 /.npm /.cache /app/cache /app /app/var/run/ /var/run/ /app/node_modules/
 
 # Set permissions for /usr/share/nginx/html to allow all users
 RUN chmod -R 777 /usr/share/nginx/html
