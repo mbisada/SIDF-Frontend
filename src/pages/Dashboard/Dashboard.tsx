@@ -1,68 +1,98 @@
-import {useState, useEffect} from 'react';
-import { PieChart } from '@mui/x-charts/PieChart';
-import Layout from '../../templates/Layout';
+import { useEffect, useState } from 'react';
+
 import { Box } from '@mui/material';
-import { grey } from '@mui/material/colors';
+
+import CashFlowBarChartCard from '../../components/CashFlowBarChartCard';
+import CashFlowCard from '../../components/CashFlowCard/CashFlowCard';
+import CashFlowPieChartCard from '../../components/CashFlowPieChartCard';
+import LoansCard from '../../components/LoansCard';
 import ProfileCard from '../../components/ProfileCard';
+import { RISK_ASSESSMENT_DATA } from '../../constants/dummy';
+import Layout from '../../templates/Layout';
+import { RiskAssessmentData } from '../../types';
 
 export default function Dashboard() {
-const [companyDetails, setCompanyDetails] = useState({role: '' , companyName: '',
-      email: '',
-      crNumber: '',
-      mobileNumber: '',
-      })
+  const [companyDetails, setCompanyDetails] = useState({ role: '', companyName: '', email: '', crNumber: '', mobileNumber: '' });
+  const [requestDetails] = useState<RiskAssessmentData | null>(RISK_ASSESSMENT_DATA?.Data);
 
-  useEffect(()=>{
+  useEffect(() => {
     //TODO: API CALL TO GET THE DETAILS OF THE COMPANY BY THE ID
     setCompanyDetails({
-      role: 'admin', 
+      role: 'admin',
       companyName: 'testCompany',
       email: 'testemail@example.com',
       crNumber: 'testCR12345',
       mobileNumber: '966243564567',
       //token:'12345678'
-    })
+    });
     //TODO: API CALL TO GET THE DATA OF THE DASHBAORD
-  },[])
+
+    //TODO: To be used to test loading and then removed
+    // const timeout = setTimeout(() => {
+    //   setRequestDetails(RISK_ASSESSMENT_DATA?.Data);
+    // }, 3000);
+
+    // // Cleanup the timeout on component unmount
+    // return () => clearTimeout(timeout);
+  }, []);
+
   return (
-    <div>   
-        <Layout
-      breadcrumbs={[
-        { label: 'Dashboard', href: '/' },
-        { label: 'Request Details' , href:'/'},
-      ]}
-      heading="Request Details"
-    >
-      <ProfileCard crNumber={companyDetails.crNumber} mobileNumber={companyDetails.mobileNumber} email={companyDetails.email} companyName={companyDetails.companyName} />
-      <Box
-        sx={{
-          width: '100%',
-          height: 'fit-content',
-          display:'flex',
-          flexDirection:'row',
-          flexWrap: 'wrap',
-          alignItems:'center',
-          justifyContent:'space-between',
-          backgroundColor: grey[400],
-          borderRadius: '1rem',
-          padding:3
-        }}
+    <div>
+      <Layout
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Request Details', href: '/' },
+        ]}
+        heading="Request Details"
       >
-       <PieChart
-      series={[
-        {
-          data: [
-            { id: 0, value: 10, label: 'series A' },
-            { id: 1, value: 15, label: 'series B' },
-            { id: 2, value: 20, label: 'series C' },
-          ],
-        },
-      ]}
-      width={400}
-      height={200}
-    />
-      </Box>
-    </Layout>
-  </div>
+        <ProfileCard
+          crNumber={companyDetails.crNumber}
+          mobileNumber={companyDetails.mobileNumber}
+          email={companyDetails.email}
+          companyName={companyDetails.companyName}
+        />
+        <Box
+          sx={{
+            width: '100%',
+            height: 'fit-content',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <CashFlowCard
+            totalCashFlow={requestDetails?.TotalCashFlow ?? 0}
+            totalCashIn={requestDetails?.TotalCashIn ?? 0}
+            totalCashOut={requestDetails?.TotalCashOut ?? 0}
+          />
+          <LoansCard liability={requestDetails?.Liabilities ?? 0} />
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+            height: 'fit-content',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <CashFlowBarChartCard
+            inflowTotal={requestDetails?.TotalCashIn ?? 0}
+            outflowTotal={requestDetails?.TotalCashOut ?? 0}
+            monthlyCashFlow={requestDetails?.MonthlyCashFlow ?? []}
+          />
+          <CashFlowPieChartCard
+            inflowTotal={requestDetails?.TotalCashIn ?? 0}
+            outflowTotal={requestDetails?.TotalCashOut ?? 0}
+            cashInTypes={requestDetails?.CashInTypes ?? []}
+            cashOutTypes={requestDetails?.CashOutTypes ?? []}
+          />
+        </Box>
+      </Layout>
+    </div>
   );
 }

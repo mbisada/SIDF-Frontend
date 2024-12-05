@@ -1,4 +1,4 @@
-import {  useEffect, /* useState */ } from 'react'
+import { useEffect } from 'react';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Registration from './pages/Registeration';
@@ -6,19 +6,21 @@ import Login from './pages/Login';
 import Companies from './pages/Companies';
 import NeotekSDK from './pages/NeotekSDK';
 import { useCustomer } from './contexts/CustomerContext/useContext';
-import  Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 import SuccessSubmission from './components/SuccessSubmission';
 import FailSubmission from './components/FailSubmission';
+import { initializeI18n } from './i18n/i18n';
 
 function App() {
-  const {customer} =useCustomer()
+  const { customer } = useCustomer();
 
-  useEffect(()=>{
-    console.log('customer registered', customer)
-  },[customer])
+  useEffect(() => {
+    initializeI18n('en');
+  }, []);
+
   return (
     <>
-       <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Registration />} />
@@ -31,7 +33,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

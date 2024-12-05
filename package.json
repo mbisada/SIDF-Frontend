@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "depcheck": "depcheck . --config=.depcheckrc.json"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
@@ -17,6 +18,7 @@
     "@mui/x-charts": "^7.23.0",
     "axios": "^1.7.9",
     "formik": "^2.4.6",
+    "i18next": "^23.16.0",
     "neotek-ob-sdk": "file:neotek-ob-sdk.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,9 +31,11 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "depcheck": "^1.4.7",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^15.12.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.15.0",
