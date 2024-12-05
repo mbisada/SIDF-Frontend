@@ -118,5 +118,6 @@
   "LIABILITY": "Liability",
   "CASHFLOW_PERFORMANCE_THIS_PERIOD": "Cashflow Performance For This Period",
   "TOTAL_INFLOW": "Total Inflow",
-  "TOTAL_OUTFLOW": "Total Outflow"
+  "TOTAL_OUTFLOW": "Total Outflow",
+  "SAR": "SAR"
 }

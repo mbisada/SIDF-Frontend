@@ -5,4 +5,5 @@ export interface CashFlowPieChartProps {
     Category: string; // Type of income (e.g., "Salary")
     Percentage: number; // Percentage of total CashIn
   }[];
+  color?: string;
 }

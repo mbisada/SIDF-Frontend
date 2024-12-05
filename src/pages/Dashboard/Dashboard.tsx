@@ -59,8 +59,9 @@ export default function Dashboard() {
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            alignItems: 'center',
+            alignItems: 'stretch',
             justifyContent: 'space-between',
+            gap: 1,
           }}
         >
           <CashFlowCard
@@ -77,8 +78,9 @@ export default function Dashboard() {
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            alignItems: 'center',
+            alignItems: 'stretch',
             justifyContent: 'space-between',
+            gap: 1,
           }}
         >
           <CashFlowBarChartCard

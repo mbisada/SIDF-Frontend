@@ -12,12 +12,12 @@ export default function LoansCard({ liability }: LoansCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Card sx={{ minWidth: 400, width: 580, margin: 1 }}>
+    <Card sx={{ flex: 3 }}>
       <CardHeader title={t('LOANS')} />
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {formatNumberWithCommas(liability)}
+          <Typography variant="h3" sx={{ color: 'text.primary', marginBottom: 2 }}>
+            {formatNumberWithCommas(liability)} <span style={{ fontStyle: 'italic' }}>{t('SAR')}</span>
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.primary' }}>
             {t('LIABILITY')}

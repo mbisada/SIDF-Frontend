@@ -3,4 +3,5 @@ export interface CashFlowItemProps {
   label: string;
   title: string;
   value: string | number;
+  color?: string;
 }
