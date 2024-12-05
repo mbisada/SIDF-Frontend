@@ -1,12 +1,13 @@
 // src/pages/Registration.tsx
-import React, { useState } from 'react';
-import { Box, TextField, Typography, Button, Link, Stack } from '@mui/material';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import GradientBackground from '../../components/GradientBackground';
-import logo from '../../assets/logoWhite.svg';
+import * as Yup from 'yup';
+
+import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+
 import chart from '../../assets/favorite-chart.svg';
+import logo from '../../assets/logoWhite.svg';
+import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useRegisterationServices } from '../../services/registeration/registeration';
 import { RegisterationDTOMapper } from '../../services/registeration/registerationMappers';
@@ -27,7 +28,7 @@ const Registration: React.FC = () => {
   const navigate = useNavigate();
   const { setCustomer } = useCustomer();
   const { createRegisterationRequest } = useRegisterationServices();
-  const [isloading, setIsLoading] = useState(false);
+  // const [isloading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -51,7 +52,7 @@ const Registration: React.FC = () => {
       };
 
       // Api call to register
-      setIsLoading(true);
+      // setIsLoading(true);
       void (await createRegisterationRequest(registeredCustomer)
         .then(response => RegisterationDTOMapper(response.data))
         .then(data => {
@@ -67,10 +68,11 @@ const Registration: React.FC = () => {
         })
         .catch(() => {
           return;
-        })
-        .finally(() => setIsLoading(false)));
+        }));
     },
   });
+
+  // .finally(() => setIsLoading(false)));
 
   return (
     <GradientBackground>

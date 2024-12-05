@@ -7,7 +7,7 @@ import { formatNumberWithCommas } from '../../../utils/numberHelpers';
 
 import { CashFlowItemProps } from './CashFlowItem.types';
 
-export default function CashFlowItem({ icon, label, title, value }: CashFlowItemProps) {
+export default function CashFlowItem({ icon, label, title, value, color = 'text.primary' }: CashFlowItemProps) {
   const { t } = useTranslation();
 
   return (
@@ -25,7 +25,7 @@ export default function CashFlowItem({ icon, label, title, value }: CashFlowItem
             alignItems: 'center',
           }}
         />
-        <Typography variant="body2" sx={{ color: 'text.primary' }}>
+        <Typography variant="h5" sx={{ color: 'text.primary' }}>
           {t(label) ?? ''}
         </Typography>
       </div>
@@ -33,8 +33,8 @@ export default function CashFlowItem({ icon, label, title, value }: CashFlowItem
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {t(title) ?? ''}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.primary' }}>
-          {formatNumberWithCommas(value)}
+        <Typography variant="h6" sx={{ color: color, fontWeight: 'bold' }}>
+          {formatNumberWithCommas(value)} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', fontStyle: 'italic' }}>{t('SAR')}</span>
         </Typography>
       </div>
     </div>

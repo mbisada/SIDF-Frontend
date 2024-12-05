@@ -1,14 +1,14 @@
 // src/context/CustomerContext.tsx
-import React, { createContext, /* useContext, */ useState, ReactNode, useEffect } from 'react';
+import React, { createContext, /* useContext, */ ReactNode, useEffect, useState } from 'react';
 
 export interface CustomerInfo {
-  companyName: string,
-  email: string,
-  crNumber: string,
-  mobileNumber: string,
-  password?: string,
-  role?:string,
-  checksum?:string
+  companyName: string;
+  email: string;
+  crNumber: string;
+  mobileNumber: string;
+  password?: string;
+  role?: string;
+  checksum?: string;
 }
 
 export interface CustomerContextType {
@@ -21,7 +21,7 @@ export interface CustomerContextType {
 export const CustomerContext = createContext<CustomerContextType | undefined>(undefined);
 
 export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-/*   const [customer, setCustomerState] = useState<CustomerInfo | null>(null);
+  /*   const [customer, setCustomerState] = useState<CustomerInfo | null>(null);
 
   const setCustomer = (customer: CustomerInfo | null) => {
     setCustomerState(customer);
@@ -30,34 +30,30 @@ export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }
   const clearCustomer = () => {
     setCustomerState(null);
   }; */
-const [customer, setCustomerState] = useState<CustomerInfo | null>(() => {
-    const savedCustomer = localStorage.getItem("customer");
+  const [customer, setCustomerState] = useState<CustomerInfo | null>(() => {
+    const savedCustomer = localStorage.getItem('customer');
     return savedCustomer ? JSON.parse(savedCustomer) : null;
   });
 
-  const setCustomer = (customer: CustomerInfo) => {
+  const setCustomer = (customer: CustomerInfo | null) => {
     setCustomerState(customer);
-    localStorage.setItem("customer", JSON.stringify(customer));
+    localStorage.setItem('customer', JSON.stringify(customer));
   };
 
-   const clearCustomer = () => {
+  const clearCustomer = () => {
     setCustomerState(null);
-    localStorage.removeItem("customer")
+    localStorage.removeItem('customer');
   };
 
   useEffect(() => {
     // Check if user is already logged in
-    const savedCustomer = localStorage.getItem("customer");
+    const savedCustomer = localStorage.getItem('customer');
     if (savedCustomer) {
       setCustomerState(JSON.parse(savedCustomer));
     }
   }, []);
 
-  return (
-    <CustomerContext.Provider value={{ customer, setCustomer, clearCustomer }}>
-      {children}
-    </CustomerContext.Provider>
-  );
+  return <CustomerContext.Provider value={{ customer, setCustomer, clearCustomer }}>{children}</CustomerContext.Provider>;
 };
 /* 
 export const useCustomer = (): CustomerContextType => {

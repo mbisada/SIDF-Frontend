@@ -11,23 +11,23 @@ export default function CashFlowPieChartCard({ inflowTotal, outflowTotal, cashIn
   const { t } = useTranslation();
 
   const pieCharts = [
-    { title: 'TOTAL_INFLOW', total: inflowTotal, cashTypes: cashInTypes },
-    { title: 'TOTAL_OUTFLOW', total: outflowTotal, cashTypes: cashOutTypes },
+    { title: 'TOTAL_INFLOW', total: inflowTotal, cashTypes: cashInTypes, color: '#26AE64' },
+    { title: 'TOTAL_OUTFLOW', total: outflowTotal, cashTypes: cashOutTypes, color: '#F85454' },
   ];
 
   return (
-    <Card sx={{ minWidth: 400, width: 580, margin: 1 }}>
+    <Card sx={{ flex: 1, margin: 1 }}>
       <CardHeader title={t('CASHFLOW_PERFORMANCE_THIS_PERIOD')} />
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingTop: 0 }}>
         <Box
           sx={{
             width: '100%',
             height: 'fit-content',
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
             flexWrap: 'wrap',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
           }}
         >
           {pieCharts.map(chart => (

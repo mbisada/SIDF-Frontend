@@ -10,36 +10,37 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useNavigate } from 'react-router-dom';
 
 interface CompanyCardProps {
-crNumber: string;
- identifier: string;
+  crNumber: string;
+  identifier: string;
 }
-export default function CompanyCard({crNumber, identifier }:CompanyCardProps ) {
+export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) {
+  const navigate = useNavigate();
+  const handleNavigateClick = () => {
+    navigate(`/companies/${crNumber}`);
+  };
 
-  const navigate = useNavigate()
-  const handleNavigateClick = () =>{
-    navigate('/companies/1235678')
-  }
- 
   return (
-    <Card sx={{ minWidth: 400 ,width: 580,  margin:1}}>
+    <Card sx={{ minWidth: 400, width: 580, margin: 1 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: grey[500]}} aria-label="recipe">
-            <AccountBalanceIcon fontSize='small'/>
+          <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">
+            <AccountBalanceIcon fontSize="small" />
           </Avatar>
         }
         action={
-          <Button variant="contained" onClick={handleNavigateClick}>View Details</Button>
+          <Button variant="contained" onClick={handleNavigateClick}>
+            View Details
+          </Button>
         }
         title={identifier}
         //subheader="September 14, 2016"
       />
       <CardContent>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-         CR Number
+          CR Number
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.primary' }}>
-         {crNumber}
+          {crNumber}
         </Typography>
       </CardContent>
     </Card>

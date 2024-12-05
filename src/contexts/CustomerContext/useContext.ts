@@ -1,5 +1,6 @@
-import { CustomerContext, CustomerContextType } from "./CustomerContext";
-import {useContext} from 'react'
+import { useContext } from 'react';
+
+import { CustomerContext, CustomerContextType } from './CustomerContext';
 
 export const useCustomer = (): CustomerContextType => {
   const context = useContext(CustomerContext);

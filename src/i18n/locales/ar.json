@@ -118,5 +118,6 @@
   "LIABILITY": "الالتزامات",
   "CASHFLOW_PERFORMANCE_THIS_PERIOD": "أداء التدفق النقدي لهذه الفترة",
   "TOTAL_INFLOW": "إجمالي التدفق الوارد",
-  "TOTAL_OUTFLOW": "إجمالي التدفق الصادر"
+  "TOTAL_OUTFLOW": "إجمالي التدفق الصادر",
+  "SAR": "ر.س."
 }

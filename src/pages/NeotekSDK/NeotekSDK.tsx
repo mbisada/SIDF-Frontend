@@ -4,6 +4,7 @@ import Layout from '../../templates/Layout';
 import { Box, Button, Modal, Stack, Typography } from '@mui/material';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useNavigate } from 'react-router-dom';
+import { useUserServices } from '../../services/user/user';
 
 const theme = {
   colors: {
@@ -40,13 +41,18 @@ function NeotekSDK() {
   const { customer } = useCustomer();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { initiateCalculateRequest } = useUserServices();
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setOpen(false);
     // TODO: CALL API TO TRIGGER CALCULATION
     // BASED ON RESPONSE EITHER NAVIGATE TPO FAIL OR SUCCESS
-    navigate('./success');
-    //navigate('./fail')
+    try {
+      await initiateCalculateRequest();
+      navigate('./success');
+    } catch (error) {
+      navigate('./fail');
+    }
   };
 
   const handleCalulate = () => {

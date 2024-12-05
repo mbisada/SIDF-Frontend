@@ -16,12 +16,12 @@ export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut 
 
   const cardItems = [
     { icon: cashflowIcon, label: 'CASHFLOW', title: 'ACTUAL_CASHFLOW', value: totalCashFlow },
-    { icon: arrowUpIcon, label: 'INFLOW', title: 'ACTUAL_INFLOW', value: totalCashIn },
-    { icon: arrowDownIcon, label: 'OUTFLOW', title: 'ACTUAL_OUTFLOW', value: totalCashOut },
+    { icon: arrowUpIcon, label: 'INFLOW', title: 'ACTUAL_INFLOW', value: totalCashIn, color: '#26AE64' },
+    { icon: arrowDownIcon, label: 'OUTFLOW', title: 'ACTUAL_OUTFLOW', value: totalCashOut, color: '#F85454' },
   ];
 
   return (
-    <Card sx={{ minWidth: 400, width: 580, margin: 1 }}>
+    <Card sx={{ flex: 4 }}>
       <CardHeader title={t('CASHFLOW')} />
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
         {cardItems.map(cardItem => (

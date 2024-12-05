@@ -2,20 +2,52 @@ import { useEffect, useState } from 'react';
 import Layout from '../../templates/Layout';
 import { Box, Typography } from '@mui/material';
 import CompanyCard from '../../components/CompanyCard';
+import { useAdminServices } from '../../services/admin/admin';
+import { CompaniesListDTOMapper } from '../../services/admin/adminDTOMappers';
+import { CompaniesListDTO, Company } from '../../services/admin/admin.types';
 
 function Companies() {
-  const [companiesList, setCompaniesList] = useState<{ name: string; crNumber: string }[]>();
+  const [companiesList, setCompaniesList] = useState<Company[]>([
+    {
+      id: 1,
+      email: 'test@test.com',
+      companyName: 'Tech Solutions Ltd.',
+      mobileNumber: '1234567890',
+      status: 'INITIATED',
+      psuid: null,
+      role: 'ADMIN',
+    },
+    {
+      id: 3,
+      email: 'test1@test.com',
+      companyName: 'Tech Solutions Ltd.',
+      mobileNumber: '1234567890',
+      status: 'INITIATED',
+      psuid: '9999999999',
+      role: 'USER',
+    },
+    {
+      id: 8,
+      email: 'test3@test.com',
+      companyName: 'Tech Solutions Ltd.',
+      mobileNumber: '1234567890',
+      status: 'INITIATED',
+      psuid: 'PSU1233456',
+      role: 'USER',
+    },
+  ]);
+  const { getCompaniesList } = useAdminServices();
 
   useEffect(() => {
-    //TODO: Add api call to get all companies
-    setCompaniesList([
-      { name: 'SUMO', crNumber: '1235678' },
-      { name: 'Shawrmer', crNumber: '1235678' },
-      { name: 'Shawrmer2', crNumber: '1235678' },
-      { name: 'Shawrmer3', crNumber: '1235678' },
-    ]);
+    // setIsLoading(true);
+    void getCompaniesList('NEW') //NOW WE GET NEW REQUESTS ONLY
+      .then(data => CompaniesListDTOMapper(data.data as unknown as CompaniesListDTO))
+      .then(result => setCompaniesList(result))
+      .catch(() => {
+        return;
+      });
+    // .finally(() => setLoading(false));
   }, []);
-
   return (
     <div>
       <Layout
@@ -43,7 +75,7 @@ function Companies() {
           {companiesList &&
             companiesList.length > 0 &&
             companiesList?.map(company => {
-              return <CompanyCard identifier={company.name} crNumber={company.crNumber} />;
+              return <CompanyCard identifier={company.companyName} crNumber={company.psuid ?? ''} />;
             })}
         </Box>
       </Layout>
