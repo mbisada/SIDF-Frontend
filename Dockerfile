@@ -18,7 +18,7 @@ WORKDIR /app
 
 # Copy package.json and SDKs before copying the rest of the app for better caching
 COPY package.json ./
-COPY neotek-ob-sdk ./
+COPY neotek-ob-sdk.tgz ./
 
 # Install dependencies
 RUN npm install
