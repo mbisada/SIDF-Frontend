@@ -20,11 +20,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
 export default ProtectedRoute;
  */
- 
 
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { CustomerContext } from "../../contexts/CustomerContext/CustomerContext";
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+
+import { CustomerContext } from '../../contexts/CustomerContext/CustomerContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -35,7 +35,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
   const customerContext = React.useContext(CustomerContext);
   const location = useLocation();
 
-  console.log('here ', customerContext)
   // Check if customer exists and has a valid checksum
   if (!customerContext?.customer || !customerContext.customer.checksum) {
     return <Navigate to="/login" state={{ from: location }} replace />;
@@ -49,4 +48,4 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
   return <>{children}</>;
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;

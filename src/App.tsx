@@ -12,6 +12,7 @@ import NeotekSDK from './pages/NeotekSDK';
 import ProtectedRoute from './pages/ProtectedRoutes/ProtectedRoutes';
 import Registration from './pages/Registeration';
 import Unauthorized from './pages/Unauthorized';
+
 import './i18n/i18n';
 
 function App() {

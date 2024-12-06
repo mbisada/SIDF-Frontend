@@ -1,10 +1,12 @@
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import { NeotekLayout, NeotekOB } from 'neotek-ob-sdk';
-import Layout from '../../templates/Layout';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { Box, Button, Modal, Stack, Typography } from '@mui/material';
+
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
-import { useNavigate } from 'react-router-dom';
 import { useUserServices } from '../../services/user/user';
+import Layout from '../../templates/Layout';
 
 const theme = {
   colors: {
@@ -38,7 +40,7 @@ const style = {
 type EnvType = 'prod' | 'uat';
 
 function NeotekSDK() {
-  const key = useId();
+  const { key } = useLocation();
   const env = `${import.meta.env.VITE_ENV}` as EnvType;
   const { customer } = useCustomer();
   const navigate = useNavigate();
@@ -50,13 +52,12 @@ function NeotekSDK() {
     // BASED ON RESPONSE EITHER NAVIGATE TPO FAIL OR SUCCESS
     try {
       const response = await initiateCalculateRequest();
-      //console.log('response', response?.data.code, response?.data.fault?.statusDescription);
       if (response?.data.code === 400 && response?.data.fault.statusDescription.includes('[Calculation Request Already done],')) {
-        //console.log('navihgate', response?.data.code, response?.data.fault?.statusDescription);
         navigate('./fail');
       } else navigate('./success');
-    } catch (error) {
+    } catch {
       navigate('./fail');
+      return null;
     }
   };
 
@@ -65,14 +66,7 @@ function NeotekSDK() {
   };
 
   return (
-    <Layout
-      breadcrumbs={[
-        { label: 'Dashboard', href: '/' },
-        { label: 'Connect Bank Account', href: '/' },
-      ]}
-      /*   heading="Connect Bank Account"
-      subheading="Select One Of The Supported Banks To Request Your Financial Data" */
-    >
+    <Layout>
       <Box
         sx={{
           width: '100%',

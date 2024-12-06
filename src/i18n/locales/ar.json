@@ -126,5 +126,9 @@
   "PASSWORD": "كلمة المرور",
   "SIGN_UP": "التسجيل",
   "HAVE_ACCOUNT": "هل لديك حساب؟",
-  "LOGIN": "تسجيل الدخول"
+  "LOGIN": "تسجيل الدخول",
+  "CONSENTS": "الموافقات",
+  "COMPANIES_LIST": "قائمة الشركات",
+  "LOGOUT": "تسجيل الخروج",
+  "INVALID_CREDENTIALS": "بيانات التسجيل غير صحيحة"
 }

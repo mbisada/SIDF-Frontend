@@ -1,32 +1,35 @@
-// src/components/Layout.tsx
 import React, { ReactNode } from 'react';
+import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+
+import { AccountBalance, ListAlt, Logout } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Toolbar,
-  Typography,
+  Avatar,
   Box,
   CssBaseline,
+  Divider,
   Drawer,
+  IconButton,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
-  Breadcrumbs,
-  Link,
-  Avatar,
-  Menu,
-  MenuItem,
-  //IconButton,
-  ListItemButton,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
-import { Dashboard, ListAlt } from '@mui/icons-material';
-import { useCustomer } from '../../contexts/CustomerContext/useContext';
-import PersonIcon from '@mui/icons-material/Person';
-import { useNavigate } from 'react-router-dom';
+
 import logo from '../../assets/Logo.png';
+import { ROLES } from '../../constants/roles';
+import { useCustomer } from '../../contexts/CustomerContext/useContext';
+import { useLogout } from '../../hooks/useLogout';
 
 interface LayoutProps {
-  breadcrumbs: { label: string; href?: string }[];
+  breadcrumbs?: { label: string; href?: string }[];
   heading?: string;
   subheading?: string;
   children: ReactNode;
@@ -34,34 +37,67 @@ interface LayoutProps {
 
 const drawerWidth = 240;
 
-const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, children }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { customer, /* setCustomer,  */ clearCustomer } = useCustomer();
+const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { customer } = useCustomer();
   const navigate = useNavigate();
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const logout = useLogout();
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
-  const handleMenuLogoutClose = () => {
-    setAnchorEl(null);
-    clearCustomer();
-    localStorage.clear();
-    navigate('/login');
-  };
+  const drawerContent = (
+    <Box sx={{ overflow: 'auto', paddingTop: 2 }}>
+      <List>
+        {customer?.role === ROLES.user && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/ob-connect')}>
+              <ListItemIcon sx={{ minWidth: 40 }}>
+                <AccountBalance sx={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary={t('CONSENTS')} />
+            </ListItemButton>
+          </ListItem>
+        )}
+        {customer?.role === ROLES.admin && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/companies')}>
+              <ListItemIcon sx={{ minWidth: 40 }}>
+                <ListAlt sx={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary={t('COMPANIES_LIST')} />
+            </ListItemButton>
+          </ListItem>
+        )}
+      </List>
+      <Divider sx={{ borderColor: 'white', marginY: 1, width: '90%', marginX: 'auto' }} />
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={logout}>
+            <ListItemIcon sx={{ minWidth: 40 }}>
+              <Logout sx={{ color: 'white' }} />
+            </ListItemIcon>
+            <ListItemText primary={t('LOGOUT')} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
       {/* Sidebar */}
       <Drawer
-        variant="permanent"
+        variant={isSmallScreen ? 'temporary' : 'permanent'}
+        open={isSmallScreen ? mobileOpen : true}
+        onClose={handleDrawerToggle}
         sx={{
-          // width: drawerWidth,
-          flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
@@ -71,45 +107,25 @@ const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, child
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: 'auto', paddingTop: 2 }}>
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Dashboard sx={{ color: 'white' }} />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <ListAlt sx={{ color: 'white' }} />
-                </ListItemIcon>
-                <ListItemText primary="Companies List Details" />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Box>
+        {drawerContent}
       </Drawer>
 
       {/* Header */}
       <AppBar
         position="fixed"
         sx={{
-          zIndex: theme => theme.zIndex.drawer + 1,
+          zIndex: theme.zIndex.drawer + 1,
           backgroundColor: 'white',
           color: 'black',
         }}
       >
         <Toolbar>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-            {/*  <IconButton>
-              <Search />
+          {isSmallScreen && (
+            <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+              <MenuIcon />
             </IconButton>
-            <IconButton>
-              <Notifications />
-            </IconButton> */}
+          )}
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
             <Box
               component="img"
               sx={{
@@ -121,18 +137,11 @@ const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, child
               }}
               alt="logo"
               src={logo}
-              //onClick={() => navigate(i18n.language + '/')}
             />
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="subtitle1">{customer ? `${customer.crNumber}` : 'Guest'}</Typography>
-            <Avatar onClick={handleMenuOpen} sx={{ cursor: 'pointer', margin: 1 }}>
-              <PersonIcon />
-            </Avatar>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} sx={{ mt: '45px' }}>
-              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleMenuLogoutClose}>Logout</MenuItem>
-            </Menu>
+            <Avatar sx={{ cursor: 'pointer', margin: 1 }}>{/* Optional Avatar */}</Avatar>
           </Box>
         </Toolbar>
       </AppBar>
@@ -143,23 +152,11 @@ const Layout: React.FC<LayoutProps> = ({ breadcrumbs, heading, subheading, child
         sx={{
           flexGrow: 1,
           padding: 3,
-          marginLeft: `${drawerWidth}px`,
+          marginLeft: { sm: `${drawerWidth}px` },
           marginTop: '64px',
           minHeight: '100vh',
         }}
       >
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
-          {breadcrumbs.map((breadcrumb, index) => (
-            <Link
-              key={index}
-              href={breadcrumb.href || '#'}
-              underline={breadcrumb.href ? 'hover' : 'none'}
-              color={breadcrumb.href ? 'inherit' : 'text.primary'}
-            >
-              {breadcrumb.label}
-            </Link>
-          ))}
-        </Breadcrumbs>
         {heading && (
           <Typography variant="h5" gutterBottom>
             {heading}

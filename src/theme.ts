@@ -1,8 +1,5 @@
-
-
-
-import {  responsiveFontSizes } from '@mui/material/styles';
-import createTheme from "@mui/material/styles/createTheme";
+import { responsiveFontSizes } from '@mui/material/styles';
+import createTheme from '@mui/material/styles/createTheme';
 // Define base theme
 const baseTheme = createTheme({
   palette: {
@@ -161,12 +158,21 @@ export let MuiTheme = createTheme(baseTheme, {
       color: 'rgba(52, 64, 84, 1)',
     },
   },
+  components: {
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          '&.Mui-error': {
+            color: 'rgba(255, 255, 255, 0.9)',
+          },
+        },
+      },
+    },
+  },
 });
 
 // Make the theme responsive
 MuiTheme = responsiveFontSizes(MuiTheme, { breakpoints: ['xs', 'sm', 'md', 'lg'], factor: 2 });
-
-
 
 /* // src/theme.ts
 import { createTheme } from '@mui/material/styles';

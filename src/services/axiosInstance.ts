@@ -1,47 +1,17 @@
-/* import axios from 'axios';
+import axios, { InternalAxiosRequestConfig } from 'axios';
 
-// add axios backend instance
 export const backendAxiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_BACKEND_BASE_URL}/`,
 });
 
-// Add a request interceptor
-backendAxiosInstance.interceptors.request.use(
-  function (config) {
-    // Do something before the request is sent
-    const token = import.meta.env.VITE_BACKEND_API_KEY as string;
-
-    if (token) {
-      config.headers.apikey = token;
-    }
-
-    return config;
-  },
-  function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-  }
-);
- */
-
-import axios, { /* AxiosError,  */ InternalAxiosRequestConfig } from 'axios';
-
-// Add axios backend instance
-export const backendAxiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_BASE_URL}/`,
-});
-
-// Add a request interceptor
 backendAxiosInstance.interceptors.request.use(
   function (config: InternalAxiosRequestConfig) {
-    // Do something before the request is sent
     const token = import.meta.env.VITE_BACKEND_API_KEY as string;
 
     if (token) {
       config.headers.apikey = token;
     }
 
-    // Add checksum header for all routes except /register and /login
     const url = config.url?.toLowerCase();
     if (url && !url.endsWith('/register') && !url.endsWith('/login')) {
       const customerData = localStorage.getItem('customer');
@@ -56,7 +26,22 @@ backendAxiosInstance.interceptors.request.use(
     return config;
   },
   function (error) {
-    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+backendAxiosInstance.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    if (error.response && error.response.status === 401) {
+      const url = error.config.url?.toLowerCase();
+      if (url && !url.endsWith('/login')) {
+        localStorage.clear();
+        window.location.replace('/login');
+      }
+    }
     return Promise.reject(error);
   }
 );

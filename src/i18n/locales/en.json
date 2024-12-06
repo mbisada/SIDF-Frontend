@@ -126,5 +126,10 @@
   "PASSWORD": "Password",
   "SIGN_UP": "Sign up",
   "HAVE_ACCOUNT": "Have an account?",
-  "LOGIN": "Login"
+  "LOGIN": "Login",
+  "DASHBOARD": "Dashboard",
+  "COMPANIES_LIST": "Companies List",
+  "CONSENTS": "Consents",
+  "LOGOUT": "Logout",
+  "INVALID_CREDENTIALS": "Invalid credentials"
 }

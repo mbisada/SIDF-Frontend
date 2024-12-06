@@ -1,8 +1,12 @@
 // src/pages/Registration.tsx
+//import Spinner from '../../components/Spinner';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
+//import { useTranslation } from 'react-i18next';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, /*  Button, */ Link, Stack, TextField, Typography } from '@mui/material';
 
 import chart from '../../assets/favorite-chart.svg';
@@ -11,10 +15,6 @@ import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useRegisterationServices } from '../../services/registeration/registeration';
 import { RegisterationDTOMapper } from '../../services/registeration/registerationMappers';
-//import Spinner from '../../components/Spinner';
-import { useState } from 'react';
-//import { useTranslation } from 'react-i18next';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -44,8 +44,7 @@ const Registration = () => {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async values => {
-      console.log('Form Submitted', values);
+    onSubmit: async () => {
       // Navigate to the login page upon successful submission
       const registeredCustomer = {
         companyName: formik.values.companyName,
