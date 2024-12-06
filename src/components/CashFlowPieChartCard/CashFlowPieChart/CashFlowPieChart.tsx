@@ -121,8 +121,8 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
           height={chartDimensions.height}
           slotProps={{
             legend: {
-              direction: width < 768 ? 'row' : 'column',
-              position: width < 768 ? { vertical: 'bottom', horizontal: 'middle' } : { vertical: 'middle', horizontal: 'right' },
+              direction: 'column',
+              position: { vertical: 'middle', horizontal: 'right' },
               itemMarkWidth: legendDimensions.itemMarkWidth,
               itemMarkHeight: legendDimensions.itemMarkHeight,
               itemGap: legendDimensions.itemGap,
