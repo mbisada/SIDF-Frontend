@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NeotekLayout, NeotekOB } from 'neotek-ob-sdk';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Box, Button, Modal, Stack, Typography } from '@mui/material';
@@ -46,6 +47,7 @@ function NeotekSDK() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { initiateCalculateRequest } = useUserServices();
+  const { t } = useTranslation();
 
   const handleClose = async () => {
     setOpen(false);
@@ -79,7 +81,7 @@ function NeotekSDK() {
       >
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '100%' }}>
           <Button variant={'contained'} onClick={handleCalulate}>
-            Calulate Risk Assessment
+            {t('CALCULATE_RISK_ASSESMENT')}
           </Button>
         </Box>
         <Box
@@ -96,8 +98,8 @@ function NeotekSDK() {
         >
           <NeotekLayout>
             <NeotekOB
-              clientId="fb10a17881e58a4527a13b4a0466050c"
-              clientSecret="ac9df777471afb7c760d2ffede093451"
+              clientId={import.meta.env.VITE_OB_CLIENT_ID}
+              clientSecret={import.meta.env.VITE_OB_CLIENT_SECRET}
               psuId={customer?.crNumber ?? 'guestUser'}
               product="single_api"
               singleApiClientManagement={false}

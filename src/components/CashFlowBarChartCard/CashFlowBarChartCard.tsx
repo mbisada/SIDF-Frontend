@@ -39,7 +39,14 @@ export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthl
   };
 
   return (
-    <Card sx={{ flex: 1, margin: 1 }}>
+    <Card
+      sx={{
+        flex: 1, // Default ratio for desktop
+        '@media (max-width: 900px)': {
+          flex: '1 1 100%', // Full width for medium screens
+        },
+      }}
+    >
       <CardHeader title={t('CASHFLOW_PERFORMANCE_THIS_PERIOD')} />
       <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', width: '100%', paddingTop: 0 }}>
         <Typography variant="h3" sx={{ color: 'text.primary', display: 'block', marginBottom: 2 }}>

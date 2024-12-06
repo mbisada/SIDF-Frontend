@@ -1,3 +1,4 @@
+import { Company } from '../services/admin/admin.types';
 import { DashboardDataResponse } from '../services/dashboard/dashboard.types';
 
 export const DASHBOARD_DATA_RESPONSE: DashboardDataResponse = {
@@ -148,3 +149,33 @@ export const DASHBOARD_DATA_RESPONSE: DashboardDataResponse = {
     ],
   },
 };
+
+export const COMPANIES_DATA: Company[] = [
+  {
+    id: 1,
+    email: 'test@test.com',
+    companyName: 'Tech Solutions Ltd.',
+    mobileNumber: '1234567890',
+    status: 'INITIATED',
+    psuid: null,
+    role: 'ADMIN',
+  },
+  {
+    id: 3,
+    email: 'test1@test.com',
+    companyName: 'Tech Solutions Ltd.',
+    mobileNumber: '1234567890',
+    status: 'INITIATED',
+    psuid: '9999999999',
+    role: 'USER',
+  },
+  {
+    id: 8,
+    email: 'test3@test.com',
+    companyName: 'Tech Solutions Ltd.',
+    mobileNumber: '1234567890',
+    status: 'INITIATED',
+    psuid: 'PSU1233456',
+    role: 'USER',
+  },
+];

@@ -12,7 +12,14 @@ export default function LoansCard({ liability }: LoansCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Card sx={{ flex: 3 }}>
+    <Card
+      sx={{
+        flex: 3, // Default ratio for desktop
+        '@media (max-width: 900px)': {
+          flex: '1 1 100%', // Full width for medium screens
+        },
+      }}
+    >
       <CardHeader title={t('LOANS')} />
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>

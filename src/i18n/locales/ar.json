@@ -130,5 +130,6 @@
   "CONSENTS": "الموافقات",
   "COMPANIES_LIST": "قائمة الشركات",
   "LOGOUT": "تسجيل الخروج",
-  "INVALID_CREDENTIALS": "بيانات التسجيل غير صحيحة"
+  "INVALID_CREDENTIALS": "بيانات التسجيل غير صحيحة",
+  "CALCULATE_RISK_ASSESMENT": "حساب تقييم المخاطر"
 }

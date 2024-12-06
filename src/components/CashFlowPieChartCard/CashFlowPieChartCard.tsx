@@ -16,7 +16,14 @@ export default function CashFlowPieChartCard({ inflowTotal, outflowTotal, cashIn
   ];
 
   return (
-    <Card sx={{ flex: 1, margin: 1 }}>
+    <Card
+      sx={{
+        flex: 1, // Default ratio for desktop
+        '@media (max-width: 900px)': {
+          flex: '1 1 100%', // Full width for medium screens
+        },
+      }}
+    >
       <CardHeader title={t('CASHFLOW_PERFORMANCE_THIS_PERIOD')} />
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingTop: 0 }}>
         <Box

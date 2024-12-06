@@ -1,14 +1,47 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 import { PieChart } from '@mui/x-charts';
 
+import useWindowSize from '../../../hooks/useWindowSize';
 import { formatNumberWithCommas } from '../../../utils/numberHelpers';
 
 import { CashFlowPieChartProps } from './CashFlowPieChart.types';
 
 export default function CashFlowPieChart({ title, total, cashTypes, color = 'text.primary' }: CashFlowPieChartProps) {
   const { t } = useTranslation();
+  const { width } = useWindowSize();
+
+  const [chartDimensions, setChartDimensions] = useState({ innerRadius: 70, outerRadius: 100, height: 250 });
+
+  useEffect(() => {
+    if (width) {
+      let calculatedOuterRadius = 100;
+      let calculatedInnerRadius = 70;
+      let calculatedHeight = Math.min(width / 2.5, 250);
+
+      if (width < 768) {
+        calculatedOuterRadius = Math.min(width / 6, 50);
+        calculatedInnerRadius = calculatedOuterRadius * 0.7;
+        calculatedHeight = Math.min(width / 3, 200);
+      } else if (width < 992) {
+        calculatedOuterRadius = Math.min(width / 5, 80);
+        calculatedInnerRadius = calculatedOuterRadius * 0.7;
+        calculatedHeight = Math.min(width / 2.5, 250);
+      } else {
+        calculatedOuterRadius = Math.min(width / 4, 100);
+        calculatedInnerRadius = calculatedOuterRadius * 0.7;
+        calculatedHeight = Math.min(width / 2.5, 250);
+      }
+
+      setChartDimensions({
+        innerRadius: calculatedInnerRadius,
+        outerRadius: calculatedOuterRadius,
+        height: calculatedHeight,
+      });
+    }
+  }, [width]);
 
   return (
     <div
@@ -47,13 +80,12 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
                 value: type.Percentage,
                 label: type.Category,
               })),
-              innerRadius: 70,
-              outerRadius: 100,
+              innerRadius: chartDimensions.innerRadius,
+              outerRadius: chartDimensions.outerRadius,
             },
           ]}
-          height={250}
+          height={chartDimensions.height}
         />
-        {/* Custom center label */}
       </Box>
     </div>
   );

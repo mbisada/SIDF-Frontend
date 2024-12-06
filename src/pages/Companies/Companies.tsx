@@ -1,53 +1,33 @@
 import { useEffect, useState } from 'react';
-import Layout from '../../templates/Layout';
+
 import { Box, Typography } from '@mui/material';
+
 import CompanyCard from '../../components/CompanyCard';
+import Spinner from '../../components/Spinner';
 import { useAdminServices } from '../../services/admin/admin';
-import { CompaniesListDTOMapper } from '../../services/admin/adminDTOMappers';
 import { CompaniesListDTO, Company } from '../../services/admin/admin.types';
+import { CompaniesListDTOMapper } from '../../services/admin/adminDTOMappers';
+import Layout from '../../templates/Layout';
 
 function Companies() {
-  const [companiesList, setCompaniesList] = useState<Company[]>([
-    {
-      id: 1,
-      email: 'test@test.com',
-      companyName: 'Tech Solutions Ltd.',
-      mobileNumber: '1234567890',
-      status: 'INITIATED',
-      psuid: null,
-      role: 'ADMIN',
-    },
-    {
-      id: 3,
-      email: 'test1@test.com',
-      companyName: 'Tech Solutions Ltd.',
-      mobileNumber: '1234567890',
-      status: 'INITIATED',
-      psuid: '9999999999',
-      role: 'USER',
-    },
-    {
-      id: 8,
-      email: 'test3@test.com',
-      companyName: 'Tech Solutions Ltd.',
-      mobileNumber: '1234567890',
-      status: 'INITIATED',
-      psuid: 'PSU1233456',
-      role: 'USER',
-    },
-  ]);
+  const [companiesList, setCompaniesList] = useState<Company[]>();
+  const [isLoading, setIsLoading] = useState(true);
   const { getCompaniesList } = useAdminServices();
 
   useEffect(() => {
-    // setIsLoading(true);
+    setIsLoading(true);
     void getCompaniesList('NEW') //NOW WE GET NEW REQUESTS ONLY
       .then(data => CompaniesListDTOMapper(data.data as unknown as CompaniesListDTO))
       .then(result => setCompaniesList(result))
       .catch(() => {
         return;
-      });
-    // .finally(() => setLoading(false));
+      })
+      .finally(() => setIsLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoading) return <Spinner />;
+
   return (
     <div>
       <Layout

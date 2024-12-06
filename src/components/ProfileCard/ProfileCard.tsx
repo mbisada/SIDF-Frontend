@@ -24,7 +24,7 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
   } */
 
   return (
-    <Card sx={{ width: '100%', marginY: 3 }}>
+    <Card sx={{ width: '100%', marginY: 1 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">

@@ -21,7 +21,14 @@ export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut 
   ];
 
   return (
-    <Card sx={{ flex: 4 }}>
+    <Card
+      sx={{
+        flex: 4, // Default ratio for desktop
+        '@media (max-width: 900px)': {
+          flex: '1 1 100%', // Full width for medium screens
+        },
+      }}
+    >
       <CardHeader title={t('CASHFLOW')} />
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
         {cardItems.map(cardItem => (

@@ -65,6 +65,7 @@ export default function Dashboard() {
             alignItems: 'stretch',
             justifyContent: 'space-between',
             gap: 1,
+            marginBottom: 1,
           }}
         >
           <CashFlowCard
@@ -84,6 +85,7 @@ export default function Dashboard() {
             alignItems: 'stretch',
             justifyContent: 'space-between',
             gap: 1,
+            marginBottom: 1,
           }}
         >
           <CashFlowBarChartCard
