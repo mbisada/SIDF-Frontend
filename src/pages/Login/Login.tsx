@@ -49,11 +49,11 @@ import { LoginDTOMapper } from '../../services/registeration/registerationMapper
  */
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { setCustomer } = useCustomer();
+  const location = useLocation();
   const { createLoginRequest } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
-  const location = useLocation();
-  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {

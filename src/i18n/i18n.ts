@@ -1,5 +1,5 @@
-import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
 import AR from './locales/ar.json';
 import EN from './locales/en.json';
@@ -30,7 +30,7 @@ export async function initializeI18n(): Promise<void> {
   try {
     await i18n.use(initReactI18next).init({
       lng: 'en',
-      // fallbackLng: 'ar',
+      fallbackLng: 'en',
       interpolation: {
         escapeValue: false,
       },
@@ -44,7 +44,7 @@ export async function initializeI18n(): Promise<void> {
         },
       },
     });
-  } catch (err) {
-    console.error('i18n initialization error:', err);
+  } catch {
+    return;
   }
 }

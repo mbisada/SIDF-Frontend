@@ -1,5 +1,6 @@
 //import { AxiosError } from "axios";
 import { backendAxiosInstance } from '../axiosInstance';
+
 import type { LoginPayload, RegisterPayload } from './registeration.types';
 
 export const useRegisterationServices = () => {

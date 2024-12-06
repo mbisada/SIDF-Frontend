@@ -5,7 +5,7 @@ export const changeLanguage = async (code: string): Promise<void> => {
     await i18n.changeLanguage(code);
     document.dir = i18n.dir();
     localStorage.setItem('code', code);
-  } catch (error) {
+  } catch {
     return;
   }
 };
