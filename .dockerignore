@@ -1,0 +1,9 @@
+.git
+.vscode
+node_modules
+.env
+Dockerfile
+.dockerignore
+.depcheckrc.json
+package-lock.json
+swaggers
