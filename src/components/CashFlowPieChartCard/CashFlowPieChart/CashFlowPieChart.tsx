@@ -12,8 +12,13 @@ import { CashFlowPieChartProps } from './CashFlowPieChart.types';
 export default function CashFlowPieChart({ title, total, cashTypes, color = 'text.primary' }: CashFlowPieChartProps) {
   const { t } = useTranslation();
   const { width } = useWindowSize();
-
   const [chartDimensions, setChartDimensions] = useState({ innerRadius: 70, outerRadius: 100, height: 250 });
+  const [legendDimensions, setLegendDimensions] = useState({
+    itemMarkWidth: 20,
+    itemMarkHeight: 3,
+    itemGap: 10,
+    markGap: 5,
+  });
 
   useEffect(() => {
     if (width) {
@@ -24,7 +29,7 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
       if (width < 768) {
         calculatedOuterRadius = Math.min(width / 6, 50);
         calculatedInnerRadius = calculatedOuterRadius * 0.7;
-        calculatedHeight = Math.min(width / 3, 200);
+        calculatedHeight = Math.min(width / 2, 200);
       } else if (width < 992) {
         calculatedOuterRadius = Math.min(width / 5, 80);
         calculatedInnerRadius = calculatedOuterRadius * 0.7;
@@ -40,6 +45,30 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
         outerRadius: calculatedOuterRadius,
         height: calculatedHeight,
       });
+
+      let newItemMarkWidth = 20;
+      let newItemMarkHeight = 3;
+      let newItemGap = 10;
+      let newMarkGap = 5;
+
+      if (width < 768) {
+        newItemMarkWidth = 12;
+        newItemMarkHeight = 1;
+        newItemGap = 8;
+        newMarkGap = 4;
+      } else if (width < 992) {
+        newItemMarkWidth = 16;
+        newItemMarkHeight = 1.5;
+        newItemGap = 9;
+        newMarkGap = 4.5;
+      }
+
+      setLegendDimensions({
+        itemMarkWidth: newItemMarkWidth,
+        itemMarkHeight: newItemMarkHeight,
+        itemGap: newItemGap,
+        markGap: newMarkGap,
+      });
     }
   }, [width]);
 
@@ -47,10 +76,9 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
     <div
       style={{
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
+        flexDirection: width < 768 ? 'column-reverse' : 'row',
+        justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
         width: '100%',
         padding: '0 5px',
       }}
@@ -71,7 +99,13 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
           {formatNumberWithCommas(total)} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', fontStyle: 'italic' }}>{t('SAR')}</span>
         </Typography>
       </div>
-      <Box flex={3}>
+      <Box
+        flex={width < 768 ? undefined : 3}
+        width={width < 768 ? '100%' : undefined}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <PieChart
           series={[
             {
@@ -85,6 +119,16 @@ export default function CashFlowPieChart({ title, total, cashTypes, color = 'tex
             },
           ]}
           height={chartDimensions.height}
+          slotProps={{
+            legend: {
+              direction: width < 768 ? 'row' : 'column',
+              position: width < 768 ? { vertical: 'bottom', horizontal: 'middle' } : { vertical: 'middle', horizontal: 'right' },
+              itemMarkWidth: legendDimensions.itemMarkWidth,
+              itemMarkHeight: legendDimensions.itemMarkHeight,
+              itemGap: legendDimensions.itemGap,
+              markGap: legendDimensions.markGap,
+            },
+          }}
         />
       </Box>
     </div>
