@@ -132,5 +132,10 @@
   "CONSENTS": "Consents",
   "LOGOUT": "Logout",
   "INVALID_CREDENTIALS": "Invalid credentials",
-  "CALCULATE_RISK_ASSESMENT": "Calculate Risk Assessment"
+  "CALCULATE_RISK_ASSESMENT": "Calculate Risk Assessment",
+  "EXPORT_REPORT": "Export Report",
+  "RETURN_BACK": "Return Back",
+  "UNDER_DEVELOPMENT": "This feature is currently under development. Please check back soon for updates.",
+  "COMING_SOON": "Coming Soon!",
+  "CLOSE": "Close"
 }
