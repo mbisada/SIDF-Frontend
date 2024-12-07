@@ -2,6 +2,7 @@
 .vscode
 node_modules
 .env
+.env-cmdrc.json
 Dockerfile
 .dockerignore
 .depcheckrc.json
