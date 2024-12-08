@@ -22,7 +22,7 @@
     "env-cmd": "^10.1.0",
     "formik": "^2.4.6",
     "i18next": "^23.16.0",
-    "neotek-ob-sdk": "file:neotek-ob-sdk-1.1.6.tgz",
+    "neotek-ob-sdk": "file:neotek-ob-sdk-1.1.9.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.0.3",
