@@ -1,0 +1,68 @@
+pool:
+  name: Azure Pipelines
+
+trigger: none
+
+parameters:
+  - name: buildConfiguration
+    displayName: 'Build Configuration'
+    type: string
+    default: 'Release'
+    values:
+      - 'Test'
+      - 'Release'
+
+variables:
+  tag.name: ''
+  dockerRepo: ''
+
+steps:
+  - task: NodeTool@0
+    displayName: 'Use Node 18.x'
+    inputs:
+      versionSpec: 18.x
+
+  - task: Docker@2
+    displayName: Login
+    inputs:
+      containerRegistry: 'Qaema Docker'
+      command: login
+
+  - powershell: |
+      # Set version number from package.json
+      $version = (Get-Content package.json) -join "`n" | ConvertFrom-Json | Select-Object -ExpandProperty "version"
+
+      # Function to remove invalid characters from feature name
+      function Remove-InvalidCharacters($string) {
+          return $string -replace '[^a-zA-Z0-9.-]', '-'
+      }
+
+      # Check if buildConfiguration is 'Release'
+      if ("${{ parameters.buildConfiguration }}" -eq "Release") {
+          # Release configuration - set tag and repo for production
+          Write-Output "##vso[task.setvariable variable=tag.name]release.v.$version"
+          Write-Output "##vso[task.setvariable variable=dockerRepo]qaema/sidf-frontend"
+      } else {
+          # Test configuration - process featureName if not empty
+          if (-not [string]::IsNullOrEmpty("$(featureName)")) {
+              $sanitizedFeatureName = Remove-InvalidCharacters "$(featureName)"
+          } else {
+              throw "Feature name cannot be empty for Test configuration."
+          }
+
+          # Use versionNumber or default if not provided
+          $finalVersion = if (-not [string]::IsNullOrEmpty("$(versionNumber)")) { "$(versionNumber)" } else { '1.0.0' }
+
+          # Set non-production tag and repo
+          Write-Output "##vso[task.setvariable variable=tag.name]$sanitizedFeatureName.v.$finalVersion"
+          Write-Output "##vso[task.setvariable variable=dockerRepo]qaema/sidf-frontend-nonprod"
+      }
+    displayName: 'Set Tag Name and Docker Repo Based on Build Configuration'
+
+  - task: Docker@2
+    displayName: 'Build & Push'
+    inputs:
+      containerRegistry: 'Qaema Docker'
+      repository: '$(dockerRepo)'
+      Dockerfile: Dockerfile
+      tags: '$(tag.name)'
