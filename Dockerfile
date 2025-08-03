@@ -27,16 +27,20 @@ COPY neotek-ob-sdk*.tgz ./
 # Install dependencies
 RUN npm install
 
+# Copy bootstrap.sh first and set permissions
+COPY bootstrap.sh ./
+RUN chmod +x /app/bootstrap.sh && \
+    chown nginx:nginx /app/bootstrap.sh
+
 # Copy app source code and Nginx configuration
 COPY . .
 
 RUN chown -R nginx:nginx /app && \
     chmod -R 755 /app
     
-RUN ls -la /app/bootstrap.sh || echo "ERROR: bootstrap.sh missing!"
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN ls -la /app/bootstrap.sh
 
-RUN chmod -R 777 bootstrap.sh
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose the port for Nginx
 EXPOSE 8087

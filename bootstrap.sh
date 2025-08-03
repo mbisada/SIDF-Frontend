@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Debug user/group
 echo "Running as user: $(id -u)"
