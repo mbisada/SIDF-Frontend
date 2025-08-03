@@ -31,7 +31,9 @@ RUN npm install
 COPY . .
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN chmod -R 777 bootstrap.sh
+RUN ls -la /app/bootstrap.sh && \
+    chmod +x /app/bootstrap.sh && \
+    ls -la /app/bootstrap.sh
 
 # Expose the port for Nginx
 EXPOSE 8087
