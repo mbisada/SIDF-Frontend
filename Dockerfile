@@ -1,11 +1,15 @@
 FROM nginx:1.19.0
 
 # Install Node.js inside the Nginx image
-RUN apt-get update && \
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until && \
+    apt-get update && \
     apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
-    apt-get clean
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Create directories with permissions for all users
 RUN mkdir -p /.npm /.cache /app/cache /app/var/run/ /app/cache/client_temp /app/cache/proxy_temp /var/run/ /app/node_modules/ && \
