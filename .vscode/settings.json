@@ -8,8 +8,5 @@
   "editor.formatOnSave": true,
   "yaml.schemas": {
     "swaggerviewer:openapi": "file:///d%3A/EJADA/SIDF/apps/SIDF-Frontend/SIDF-Frontend/src/swaggers/single-api-risk-assesment.yml"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

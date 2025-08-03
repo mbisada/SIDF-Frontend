@@ -12,10 +12,6 @@ import Registration from './pages/Registeration';
 import Unauthorized from './pages/Unauthorized';
 
 import './i18n/i18n';
-import RaghiLogin from './pages/RaghiLogin';
-import BankAccounts from './pages/BankAccounts';
-import RaghiBankSuccessfullyLogin from './pages/RaghiBankSuccessfullyLogin';
-import MainScreen from './pages/MainScreen';
 
 function App() {
   initializeI18n();
@@ -72,11 +68,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          <Route path="/raghi-login" element={<RaghiLogin />} />
-          <Route path="/bank-accounts" element={<BankAccounts />} />
-          <Route path="/raghi-bank-success-login" element={<RaghiBankSuccessfullyLogin />} />
-          <Route path="/raghi-home" element={<MainScreen />} />
 
           <Route path="*" element={<Login />} />
         </Routes>
