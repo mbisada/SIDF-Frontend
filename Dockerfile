@@ -24,6 +24,11 @@ RUN npm install
 # Copy the entire app (including bootstrap.sh)
 COPY . .
 
+RUN sed -i 's/\r$//' /app/bootstrap.sh && \
+    chmod +x /app/bootstrap.sh && \
+    echo "Bootstrap.sh first line:" && \
+    head -n1 /app/bootstrap.sh
+
 # DEBUG: Verify bootstrap.sh exists and is executable
 RUN ls -la /app && \
     ls -la /app/bootstrap.sh && \
