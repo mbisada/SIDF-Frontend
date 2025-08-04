@@ -9,6 +9,7 @@ import Dashboard from './Dashbord';
 import ExportDialog from './ExportDialog';
 import SideBar from './SideBar';
 import TopBar from './TopBar';
+import SelectBankAccount from './SelectBankAccount';
 const MainScreen: React.FC = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState('Dashboard');
@@ -51,8 +52,9 @@ const MainScreen: React.FC = () => {
           />
         </Box>
 
-        {selected === 'Dashboard' && <Dashboard />}
-        {selected === 'Consent Details' && <ConsentDetails />}
+        {/* {selected === 'Dashboard' && <Dashboard />}
+        {selected === 'Consent Details' && <ConsentDetails />} */}
+        <SelectBankAccount />
       </Box>
 
       {showBookmark && (
