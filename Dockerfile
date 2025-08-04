@@ -11,37 +11,40 @@ RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Create app directory with proper permissions
+# Create and prepare app directory
 RUN mkdir -p /app && \
     chown -R nginx:nginx /app
 
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY --chown=nginx:nginx package*.json ./
-COPY --chown=nginx:nginx neotek-ob-sdk*.tgz ./
+# Copy package files first for layer caching
+COPY package*.json ./
+COPY neotek-ob-sdk*.tgz ./
 
-# Install dependencies as nginx user
+# Install dependencies
 RUN npm install
 
-# Copy bootstrap script early to verify it exists
-COPY --chown=nginx:nginx bootstrap.sh ./
-
-# Make script executable and verify
-USER root
+# Copy bootstrap script with proper permissions
+COPY bootstrap.sh ./
 RUN chmod +x /app/bootstrap.sh && \
     ls -la /app/bootstrap.sh && \
-    [ -x /app/bootstrap.sh ] || (echo "Bootstrap script is not executable" && exit 1)
+    /bin/sh -c "[ -x /app/bootstrap.sh ] || { echo 'Error: bootstrap.sh not executable'; exit 1; }"
 
-# Copy the rest of the application
-COPY --chown=nginx:nginx . .
+# Copy remaining application files
+COPY . .
 
 # Copy Nginx configuration
-COPY --chown=nginx:nginx nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Set permissions for Nginx
+RUN chown -R nginx:nginx /app && \
+    chmod -R 755 /app && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d
 
 EXPOSE 8087
 
-# Run as nginx user for security
 USER nginx
 
-CMD ["/app/bootstrap.sh"]
+CMD ["/bin/sh", "/app/bootstrap.sh"]
