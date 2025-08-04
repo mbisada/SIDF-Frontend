@@ -22,8 +22,6 @@ WORKDIR /app
 COPY --chown=nginx:nginx package*.json ./
 COPY --chown=nginx:nginx neotek-ob-sdk*.tgz ./
 
-# Install dependencies as nginx user
-USER nginx
 RUN npm install
 
 # Copy bootstrap script with proper permissions
