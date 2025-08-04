@@ -55,7 +55,7 @@ function Companies() {
           {companiesList &&
             companiesList.length > 0 &&
             companiesList?.map(company => {
-              return <CompanyCard identifier={company.companyName} crNumber={company.psuid ?? ''} />;
+              return <CompanyCard identifier={company.companyName} key={company.psuid} crNumber={company.psuid ?? ''} />;
             })}
         </Box>
       </Layout>
