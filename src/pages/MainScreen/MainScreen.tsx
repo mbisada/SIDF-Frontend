@@ -10,10 +10,13 @@ import ExportDialog from './ExportDialog';
 import SideBar from './SideBar';
 import TopBar from './TopBar';
 import SelectBankAccount from './SelectBankAccount';
+import ReviewBelowInformation from './ReviewBelowInformation';
+import PreferredWayDialog from './PreferredWayDialog';
 const MainScreen: React.FC = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState('Dashboard');
   const [showBookmark, setShowBookmark] = useState(false);
+  const [showPreferredDialog, setShowPreferredDialog] = useState(false);
 
   return (
     <Box
@@ -54,7 +57,7 @@ const MainScreen: React.FC = () => {
 
         {/* {selected === 'Dashboard' && <Dashboard />}
         {selected === 'Consent Details' && <ConsentDetails />} */}
-        <SelectBankAccount />
+        <ReviewBelowInformation allowPressed={() => { setShowPreferredDialog(true) }} />
       </Box>
 
       {showBookmark && (
@@ -71,6 +74,12 @@ const MainScreen: React.FC = () => {
           }}
         />
       )} */}
+      {showPreferredDialog && <PreferredWayDialog
+        close={() => {
+          setShowPreferredDialog(false);
+        }}
+      />}
+
     </Box>
   );
 };
