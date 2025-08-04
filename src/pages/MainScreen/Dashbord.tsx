@@ -5,7 +5,10 @@ import alrajhiBankLogo from '../../assets/alrajhiBankLogo.svg';
 import alinmaBankLogo from '../../assets/alinmaBankLogo.svg';
 import React from 'react';
 
-const Dashboard: React.FC = () => {
+interface Prop {
+    bankSelected: Function
+}
+const Dashboard: React.FC<Prop> = ({ bankSelected }) => {
     const navigate = useNavigate();
 
     const [accounts, setAccounts] = useState([
@@ -66,7 +69,7 @@ const Dashboard: React.FC = () => {
                                 autoCapitalize="off"
                                 disableElevation
                                 style={{ backgroundColor: '#FFE9D8', width: "155px", height: "32px", borderRadius: "10px", fontWeight: 600, fontSize: '12px', color: '#F36D21', textTransform: 'none', }}
-                                onClick={() => { navigate('/raghi-bank-success-login') }}
+                                onClick={() => { bankSelected(account) }}
                                 fullWidth
                                 sx={{
                                     padding: 1,

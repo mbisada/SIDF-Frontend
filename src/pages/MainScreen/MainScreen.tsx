@@ -9,10 +9,12 @@ import Dashboard from './Dashbord';
 import ExportDialog from './ExportDialog';
 import SideBar from './SideBar';
 import TopBar from './TopBar';
+import ChartScreen from './ChartScreen';
 const MainScreen: React.FC = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState('Dashboard');
   const [showBookmark, setShowBookmark] = useState(false);
+  const [showCalculation, setShowCalculation] = useState(false);
 
   return (
     <Box
@@ -47,12 +49,14 @@ const MainScreen: React.FC = () => {
             selected={selected}
             onClick={(selected: string) => {
               setSelected(selected);
+              setShowCalculation(false);
             }}
           />
         </Box>
 
-        {selected === 'Dashboard' && <Dashboard />}
+        {selected === 'Dashboard' && !showCalculation && <Dashboard bankSelected={(selected: any) => { setShowCalculation(true) }} />}
         {selected === 'Consent Details' && <ConsentDetails />}
+        {showCalculation && <ChartScreen />}
       </Box>
 
       {showBookmark && (
