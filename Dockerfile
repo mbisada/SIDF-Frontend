@@ -1,6 +1,6 @@
 FROM nginx:1.19.0
 
-# Install Node.js inside the Nginx image
+# Install Node.js (improved version)
 RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
     sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
     echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until && \
@@ -11,39 +11,41 @@ RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Create directories with permissions for all users
-RUN mkdir -p /.npm /.cache /app/cache /app/var/run/ /app/cache/client_temp /app/cache/proxy_temp /var/run/ /app/node_modules/ && \
-    chmod -R 777 /.npm /.cache /app/cache /app /app/var/run/ /var/run/ /app/node_modules/
-
-# Set permissions for /usr/share/nginx/html to allow all users
-RUN chmod -R 777 /usr/share/nginx/html
+# Create app directory and set proper permissions
+RUN mkdir -p /app && \
+    chown -R nginx:nginx /app && \
+    chmod -R 755 /app
 
 WORKDIR /app
 
-# Copy package.json and SDKs before copying the rest of the app for better caching
-COPY package.json ./
-COPY neotek-ob-sdk*.tgz ./
+# Copy package files first for better caching
+COPY --chown=nginx:nginx package*.json ./
+COPY --chown=nginx:nginx neotek-ob-sdk*.tgz ./
 
-# Install dependencies
+# Install dependencies as nginx user
+USER nginx
 RUN npm install
 
-# Copy bootstrap.sh first and set permissions
-COPY bootstrap.sh ./
-RUN chmod +x /app/bootstrap.sh && \
-    chown nginx:nginx /app/bootstrap.sh
+# Copy bootstrap script with proper permissions
+COPY --chown=nginx:nginx bootstrap.sh ./
+RUN chmod +x /app/bootstrap.sh
 
-# Copy app source code and Nginx configuration
-COPY . .
+# Copy the rest of the application
+COPY --chown=nginx:nginx . .
 
-RUN chown -R nginx:nginx /app && \
-    chmod -R 755 /app
-    
-RUN ls -la /app/bootstrap.sh
+# Copy Nginx configuration
+COPY --chown=nginx:nginx nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Switch back to root to ensure Nginx can start
+USER root
 
-# Expose the port for Nginx
+# Verify bootstrap.sh permissions (debugging)
+RUN ls -la /app/bootstrap.sh && \
+    [ -x /app/bootstrap.sh ] || (echo "Bootstrap script is not executable" && exit 1)
+
 EXPOSE 8087
 
-# Run the bootstrap script
+# Run as nginx user for security
+USER nginx
+
 CMD ["/app/bootstrap.sh"]
