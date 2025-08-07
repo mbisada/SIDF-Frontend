@@ -52,6 +52,7 @@ const Registration = () => {
         psuid: formik.values.crNumber,
         mobileNumber: formik.values.mobileNumber,
         password: formik.values.password,
+        referalCode: 'AK2M12dDvUtoJWMSnkhp5w=='
         //role:'user'
       };
 
@@ -261,7 +262,7 @@ const Registration = () => {
   );
 }; */
   return (
-    <GradientBackground>
+    <GradientBackground flexDirection='row'>
       <Box
         sx={{
           width: { xs: '100%', md: '50%' },

@@ -4,5 +4,9 @@
   "trailingComma": "es5",
   "bracketSameLine": false,
   "arrowParens": "avoid",
-  "singleAttributePerLine": false
+  "singleAttributePerLine": false,
+  "semi": true,
+
+  "tabWidth": 2,
+  "maxEmptyLines": 1
 }

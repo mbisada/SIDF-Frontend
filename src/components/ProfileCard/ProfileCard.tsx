@@ -14,8 +14,9 @@ interface ProfileCardProps {
   mobileNumber?: string;
   email?: string;
   companyName?: string;
+  banks?: string;
 }
-export default function ProfileCard({ crNumber, mobileNumber, email, companyName }: ProfileCardProps) {
+export default function ProfileCard({ crNumber, mobileNumber, email, companyName, banks }: ProfileCardProps) {
   // const {customer} = useCustomer()
 
   /*   const navigate = useNavigate()
@@ -24,41 +25,66 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
   } */
 
   return (
-    <Card sx={{ width: '100%', marginY: 1 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">
-            <AccountBalanceIcon fontSize="small" />
-          </Avatar>
-        }
-        title={companyName}
-      />
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+    <Card sx={{ width: '100%', marginY: 1, flexDirection: 'row', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'stretch', backgroundColor: 'white', border: '1px solid #DADADA' }}>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', }}>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+
+          <CardHeader
+            style={{ padding: 0, margin: 0 }}
+            avatar={
+              <Avatar sx={{ bgcolor: grey[500], width: 50, height: 50, borderRadius: 25, }} aria-label="recipe">
+                <AccountBalanceIcon fontSize="small" />
+              </Avatar>
+            }
+
+            title={companyName}
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold', color: '#272424' }}
+          />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', margin: 3, marginTop: '20px' }}>
+          <Typography variant="body2" sx={{ color: '#777777', fontWeight: '400' }}>
             Email
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.primary' }}>
+          <Typography variant="body1" fontWeight={'600'} sx={{ color: '#272424', }}>
             {email ?? ''}
           </Typography>
         </div>
+
+      </CardContent>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', }}>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Mobile Number
+          <Typography variant="body2" sx={{ color: '#777777', fontWeight: '400' }}>
+            banks
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.primary' }}>
+          <Typography variant="body1" fontWeight={'600'} sx={{ color: '#272424', }}>
+            {banks ?? ''}
+          </Typography>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', margin: 3, marginTop: '20px' }}>
+          <Typography variant="body2" sx={{ color: '#777777', fontWeight: '400' }}>
+            Mobile
+          </Typography>
+          <Typography variant="body1" fontWeight={'600'} sx={{ color: '#272424', }}>
             {mobileNumber ?? ''}
           </Typography>
         </div>
+
+      </CardContent>
+
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', }}>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', margin: 3, marginTop: '20px' }}>
+          <Typography variant="body2" sx={{ color: '#777777', fontWeight: '400' }}>
             CR Number
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.primary' }}>
+          <Typography variant="body1" fontWeight={'600'} sx={{ color: '#272424', }}>
             {crNumber ?? ''}
           </Typography>
-        </div>
-      </CardContent>
-    </Card>
+        </div >
+      </CardContent >
+    </Card >
   );
 }

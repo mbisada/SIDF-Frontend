@@ -50,9 +50,9 @@ import { LoginDTOMapper } from '../../services/registeration/registerationMapper
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { setCustomer } = useCustomer();
+  const { setCustomer, customer } = useCustomer();
   const location = useLocation();
-  const { createLoginRequest } = useRegisterationServices();
+  const { createLoginRequest, getProfile } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
@@ -73,21 +73,17 @@ const Login: React.FC = () => {
           email: values.email,
           password: values.password,
         });
-
         // Map the response using the LoginDTOMapper
-        const mappedData = LoginDTOMapper(response.data);
+        const mappedData = LoginDTOMapper(response.data, response.headers.checksum);
         // Check the role and navigate accordingly
         if (mappedData.role.toLowerCase().includes('user')) {
           //navigate('/ob-connect'); // Navigate to user route
           // Retrieve the `from` state or set a default path
           const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
-
           navigate(from, { replace: true });
         } else if (mappedData.role.toLowerCase().includes('admin')) {
           const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
           navigate(from, { replace: true });
-
-          //navigate('/companies'); // Navigate to admin route
         }
         // Create a global customer object
         const registeredCustomer = {
@@ -95,12 +91,25 @@ const Login: React.FC = () => {
           email: mappedData.email,
           crNumber: mappedData.crNumber,
           mobileNumber: mappedData.mobileNumber,
-          role: mappedData.role,
+          role: mappedData.role.toLowerCase().includes('admin') ? 'ROLE_ADMIN' : mappedData.role,
           checksum: mappedData.checksum, // Assuming the token is available in the response
         };
 
         // Set the customer globally (using a context or global state manager)
         setCustomer(registeredCustomer);
+
+        const profileResponse = await getProfile(mappedData.role.toLowerCase().includes('admin'));
+
+        if (mappedData.role.toLowerCase().includes('admin')) {
+          setCustomer({ ...registeredCustomer, referralCode: profileResponse.data.data.returnedObj[0].referralCode });
+
+        } else {
+
+          setCustomer({ ...registeredCustomer, crNumber: profileResponse.data.data.returnedObj[0].psuid });
+        }
+
+
+
       } catch (error: unknown) {
         // Narrow the error type to AxiosError
         if (error instanceof AxiosError) {
@@ -159,7 +168,7 @@ const Login: React.FC = () => {
 
   // if (isLoading) return <Spinner />;
   return (
-    <GradientBackground>
+    <GradientBackground flexDirection="row">
       <Box
         sx={{
           width: { xs: '100%', md: '50%' },

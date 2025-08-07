@@ -9,6 +9,7 @@ export interface CustomerInfo {
   password?: string;
   role?: string;
   checksum?: string;
+  referralCode?: string;
 }
 
 export interface CustomerContextType {

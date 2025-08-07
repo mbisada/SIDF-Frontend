@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from "@mui/material"
-import UnionText from "./UnionText"
 import ic_export from '../../assets/ic_export.svg';
 import ic_close from '../../assets/ic_close.svg';
 import ic_unselected from '../../assets/ic_orange_unselected.svg';
@@ -10,19 +9,30 @@ import ic_chart_mixed from '../../assets/ic_chart_mixed.svg';
 import ic_file_lines from '../../assets/ic_file_lines.svg';
 import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
-import { CheckBox } from "@mui/icons-material";
 import { useState } from "react";
 
 interface Props {
     close: Function
 }
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '1px solid #DADADA',
+
+
+};
 const ExportDialog: React.FC<Props> = ({ close }) => {
 
     const [banks, setBanks] = useState([{ name: "All", selected: false }, { name: "Alrajhi Bank", selected: false }, { name: "BSF", selected: false }, { name: "Alinma", selected: false },])
     function List() {
         return banks.map((bank, index) => {
             return (
-                <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', alignContent: 'center', marginLeft: 16, paddingLeft: 8, width: '150px', height: '40px', borderRadius: "6px" }}
+                <Box key={index} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', alignContent: 'center', marginLeft: 16, paddingLeft: 8, width: '150px', height: '40px', borderRadius: "6px" }}
                     display={'flex'}
                     onClick={() => {
                         setBanks(prevAccounts =>
@@ -55,7 +65,7 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
     function List2() {
         return reports.map((account, index) => {
             return (
-                <Box style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', marginLeft: '2.5%', backgroundColor: '#F7F8FA', width: '95%', height: '80px', marginTop: 10, borderRadius: "12px", borderWidth: 2, borderStyle: 'solid', borderColor: `${selectedReport === account.name ? '#F36D21' : '#F7F8FA'}` }}
+                <Box key={index} style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', marginLeft: '2.5%', backgroundColor: '#F7F8FA', width: '95%', height: '80px', marginTop: 10, borderRadius: "12px", borderColor: `${selectedReport === account.name ? '#F36D21' : '#F7F8FA'}` }}
                     display={'flex'}
                     onClick={() => {
                         setSelectedReport(account.name)
@@ -101,7 +111,7 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
     function List3() {
         return ouputs.map((account, index) => {
             return (
-                <Box style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', marginLeft: '2.5%', backgroundColor: '#F7F8FA', width: '95%', height: '80px', marginTop: 10, borderRadius: "12px", borderWidth: 2, borderStyle: 'solid', borderColor: `${selectedOutput === account.name ? '#F36D21' : '#F7F8FA'}` }}
+                <Box key={index} style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', marginLeft: '2.5%', backgroundColor: '#F7F8FA', width: '95%', height: '80px', marginTop: 10, borderRadius: "12px", borderColor: `${selectedOutput === account.name ? '#F36D21' : '#F7F8FA'}` }}
                     display={'flex'}
                     onClick={() => {
                         setSelectedOutput(account.name)
@@ -142,56 +152,14 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
         })
     }
 
-    // function List() {
-    //     return accounts.map((account, index) => {
-    //         return (
-    //             <Box style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', backgroundColor: '#F7F8FA', width: '400px', height: '80px', marginTop: 10, borderRadius: "26px" }}
-    //                 onClick={() => handleClick(index)}>
-    //                 <Box
-    //                     style={{ alignSelf: 'center' }}
-    //                     component="img"
-    //                     loading="lazy"
-    //                     sx={{
-    //                         height: "65px",
-    //                         width: "65px",
-    //                     }}
-    //                     alt="neotek logo"
-    //                     src={ic_account}
 
-    //                     paddingTop={1}
-    //                 />
-    //                 <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', width: '65%' }}>
-    //                     <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'14px'} style={{ marginTop: 10 }}>
-    //                         {account.name}
-    //                     </Typography>
-    //                     <Typography variant="body2" color="#72788E" fontWeight={'400'} fontSize={'14px'} style={{ marginTop: 5 }}>
-    //                         &#8226; {account.number}
-    //                     </Typography>
-    //                 </Box>
-    //                 <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
-    //                     <Box
-    //                         component="img"
-    //                         loading="lazy"
-    //                         sx={{
-    //                             height: "40px",
-    //                             width: "40px",
-    //                         }}
-    //                         alt="neotek logo"
-    //                         src={account.selected ? ic_selected : ic_unselected}
-    //                         paddingTop={1}
-    //                     />
-    //                 </Box>
-    //             </Box>
-    //         )
-    //     })
-    // }
 
     return (
-        <Box style={{ position: 'absolute', backgroundColor: 'rgba(0, 0, 0, 0.7)', width: '100%', height: '100%', zIndex: 100, alignItems: 'center', justifyContent: 'center' }}
-            display={'flex'}>
+        <Box sx={style}
+        >
             <Box style={{ flexDirection: 'column', alignItems: 'center', alignSelf: 'center', justifyContent: 'center', width: '640px', height: '800px', backgroundColor: 'white', borderRadius: '12px' }}>
                 <Box style={{
-                    flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignItems: 'flex-start', alignContent: 'flex-start', backgroundColor: 'white', width: '100%', height: '93px', flexShrink: 0, borderRadius: "27px", borderWidth: "1px", borderColor: "#E5E5E5", marginTop: 10
+                    flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignItems: 'flex-start', alignContent: 'flex-start', backgroundColor: 'white', width: '100%', height: '93px', flexShrink: 0, borderColor: "#E5E5E5"
                 }}
                 >
                     <Box

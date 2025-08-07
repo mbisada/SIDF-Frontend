@@ -6,7 +6,6 @@ import { AccountBalance, ListAlt, Logout } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Avatar,
   Box,
   CssBaseline,
   Divider,
@@ -23,7 +22,12 @@ import {
   useTheme,
 } from '@mui/material';
 
+import bookmark from '../../assets/bookmark.svg';
+import ic_down_arrow from '../../assets/ic_down_arrow.svg';
 import logo from '../../assets/Logo.png';
+import notification from '../../assets/notification.svg';
+import search from '../../assets/search.svg';
+import test_man from '../../assets/test_man.svg';
 import { ROLES } from '../../constants/roles';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useLogout } from '../../hooks/useLogout';
@@ -101,12 +105,14 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            background: 'linear-gradient(to bottom, #BF360C, #000000)',
+            background: 'linear-gradient(to bottom, #F26F22, #000000)',
             color: 'white',
+            borderTopRightRadius: '26px',
+            borderTopLeftRadius: '26px',
+            marginTop: '69px',
           },
         }}
       >
-        <Toolbar />
         {drawerContent}
       </Drawer>
 
@@ -117,9 +123,10 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
           zIndex: theme.zIndex.drawer + 1,
           backgroundColor: 'white',
           color: 'black',
+          '--Paper-shadow': 'none !important',
         }}
       >
-        <Toolbar>
+        <Toolbar style={{ backgroundColor: '#f9f8fb' }}>
           {isSmallScreen && (
             <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
               <MenuIcon />
@@ -131,7 +138,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               sx={{
                 height: 'auto',
                 width: 100,
-                display: { xs: 'none', md: 'flex' },
+                display: { md: 'flex' },
                 mr: 10,
                 cursor: 'pointer',
               }}
@@ -139,9 +146,89 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               src={logo}
             />
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="subtitle1">{customer ? `${customer.crNumber}` : 'Guest'}</Typography>
-            <Avatar sx={{ cursor: 'pointer', margin: 1 }}>{/* Optional Avatar */}</Avatar>
+          <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} display={'flex'}>
+            <Box
+              component="img"
+              loading="lazy"
+              sx={{
+                height: '40px',
+                width: '52px',
+              }}
+              alt="neotek logo"
+              src={bookmark}
+              onClick={() => { }}
+            />
+
+            <Box
+              component="img"
+              loading="lazy"
+              sx={{
+                height: '40px',
+                width: '52px',
+              }}
+              alt="neotek logo"
+              src={search}
+            />
+            <Box
+              component="img"
+              loading="lazy"
+              sx={{
+                height: '40px',
+                width: '52px',
+              }}
+              alt="neotek logo"
+              src={notification}
+            />
+
+            <Box
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                paddingLeft: '18px',
+                paddingRight: '16px',
+                justifyContent: 'space-between',
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#F7F8FA',
+                width: '240px',
+                height: '54px',
+                marginLeft: 6,
+                borderRadius: '16px',
+              }}
+              onClick={() => { }}
+            >
+              <Box
+                style={{ alignSelf: 'center' }}
+                component="img"
+                loading="lazy"
+                sx={{
+                  height: '40px',
+                  width: '40px',
+                }}
+                alt="neotek logo"
+                src={test_man}
+              />
+              <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', marginLeft: '2px' }}>
+                <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'15px'} style={{ marginTop: 2 }}>
+                  Fahad & Co
+                </Typography>
+                <Typography variant="body2" color="#72788E" fontWeight={'400'} fontSize={'12px'} style={{ marginTop: 2 }}>
+                  Email@gmail.com
+                </Typography>
+              </Box>
+              <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
+                <Box
+                  component="img"
+                  loading="lazy"
+                  sx={{
+                    height: '24px',
+                    width: '24px',
+                  }}
+                  alt="neotek logo"
+                  src={ic_down_arrow}
+                />
+              </Box>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
@@ -151,10 +238,11 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          padding: 3,
+          padding: 1,
           marginLeft: { sm: `${drawerWidth}px` },
           marginTop: '64px',
           minHeight: '100vh',
+          backgroundColor: '#f9f8fb',
         }}
       >
         {heading && (

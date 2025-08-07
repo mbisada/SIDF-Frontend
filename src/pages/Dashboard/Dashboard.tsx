@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import { Box, Button, Modal, Stack, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
+import { Box, Button, Modal, Stack, Typography } from '@mui/material';
 
 import CashFlowBarChartCard from '../../components/CashFlowBarChartCard';
 import CashFlowCard from '../../components/CashFlowCard/CashFlowCard';
@@ -13,7 +14,7 @@ import Spinner from '../../components/Spinner';
 import { useDashboardServices } from '../../services/dashboard/dashboard';
 import { DashboardDataReturnedObj } from '../../services/dashboard/dashboard.types';
 import Layout from '../../templates/Layout';
-import { useTranslation } from 'react-i18next';
+import ExportDialog from '../MainScreen/ExportDialog';
 
 const style = {
   position: 'absolute',
@@ -22,11 +23,63 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '1px solid #000',
+  border: '1px solid #DADADA',
   boxShadow: 24,
   p: 2,
 };
 
+const banks = ['All', 'Alrajhi bank', 'BSF', 'Alinma', 'Albilad bank'];
+
+
+const BankTabs = () => {
+  const [selected, setSelected] = useState('All');
+
+  return (
+    <Box
+      sx={{
+
+        backgroundColor: '#f9f1eb',
+        borderRadius: 2,
+        display: 'inline-block',
+      }}
+    >
+      <Stack direction="row" paddingInline={2} spacing={3} alignItems="center">
+        {banks.map((bank) =>
+          bank === selected ? (
+            <Button
+              key={bank}
+              onClick={() => setSelected(bank)}
+              variant="contained"
+              sx={{
+                backgroundColor: 'white',
+                color: 'black',
+                fontWeight: 'bold',
+                borderRadius: 3,
+                boxShadow: 3,
+                px: 3,
+                py: 1,
+                minWidth: 'auto',
+              }}
+            >
+              {bank}
+            </Button>
+          ) : (
+            <Typography
+              key={bank}
+              onClick={() => setSelected(bank)}
+              sx={{
+                cursor: 'pointer',
+                color: '#7a7a7a',
+              }}
+            >
+              {bank}
+            </Typography>
+          )
+        )}
+      </Stack>
+    </Box>
+  );
+};
 export default function Dashboard() {
   const [requestDetails, setRequestDetails] = useState<DashboardDataReturnedObj | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +92,7 @@ export default function Dashboard() {
 
   const userInfo = requestDetails?.userInfo;
   const financialData = requestDetails?.financialData;
-
+  console.log("requestDetails", requestDetails)
   const { psuid } = useParams<{ psuid: string }>();
   const { getDashboardData } = useDashboardServices();
 
@@ -69,10 +122,19 @@ export default function Dashboard() {
         ]}
         heading="Request Details"
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '100%', marginBottom: 2 }}>
-          <Button variant="contained" endIcon={<DownloadIcon />} onClick={() => setOpen(true)}>
-            {t('EXPORT_REPORT')}
-          </Button>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <BankTabs />
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', }}>
+            <Button variant="contained" endIcon={<DownloadIcon />} onClick={() => setOpen(true)}>
+              {t('EXPORT_REPORT')}
+            </Button>
+          </Box>
+
         </Box>
         <ProfileCard
           crNumber={userInfo?.psuid}
@@ -91,6 +153,7 @@ export default function Dashboard() {
             justifyContent: 'space-between',
             gap: 1,
             marginBottom: 1,
+
           }}
         >
           <CashFlowCard
@@ -125,8 +188,11 @@ export default function Dashboard() {
             cashOutTypes={financialData?.CashOutTypes ?? []}
           />
         </Box>
+
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-          <Box sx={style}>
+          <ExportDialog close={handleClose} />
+
+          {/* <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={'center'}>
               {t('COMING_SOON')}
             </Typography>
@@ -136,7 +202,7 @@ export default function Dashboard() {
             <Stack direction={'row'} justifyContent={'flex-end'} mt={3}>
               <Button onClick={handleClose}>{t('CLOSE')}</Button>
             </Stack>
-          </Box>
+          </Box> */}
         </Modal>
       </Layout>
     </div>

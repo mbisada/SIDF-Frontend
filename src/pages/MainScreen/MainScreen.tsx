@@ -1,19 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { Box, Button, Link, Typography } from '@mui/material';
+import { Box, } from '@mui/material';
 
 import BookMarkDialog from './BookmarkDialog';
-import ConsentDetails from './ConsentDetails';
-import Dashboard from './Dashbord';
-import ExportDialog from './ExportDialog';
 import SideBar from './SideBar';
 import TopBar from './TopBar';
-import SelectBankAccount from './SelectBankAccount';
 import ReviewBelowInformation from './ReviewBelowInformation';
 import PreferredWayDialog from './PreferredWayDialog';
+
 const MainScreen: React.FC = () => {
-  const navigate = useNavigate();
   const [selected, setSelected] = useState('Dashboard');
   const [showBookmark, setShowBookmark] = useState(false);
   const [showPreferredDialog, setShowPreferredDialog] = useState(false);
@@ -57,7 +52,7 @@ const MainScreen: React.FC = () => {
 
         {/* {selected === 'Dashboard' && <Dashboard />}
         {selected === 'Consent Details' && <ConsentDetails />} */}
-        <ReviewBelowInformation allowPressed={() => { setShowPreferredDialog(true) }} />
+
       </Box>
 
       {showBookmark && (

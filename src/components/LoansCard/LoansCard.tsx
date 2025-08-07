@@ -1,36 +1,103 @@
 import { useTranslation } from 'react-i18next';
 
-import { CardContent, Typography } from '@mui/material';
+import { Box, CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
 import { formatNumberWithCommas } from '../../utils/numberHelpers';
 
 import { LoansCardProps } from './LoansCard.types';
+import Riyal from '../../assets/Riyal.svg';
 
 export default function LoansCard({ liability }: LoansCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Card
-      sx={{
-        flex: 3, // Default ratio for desktop
-        '@media (max-width: 900px)': {
-          flex: '1 1 100%', // Full width for medium screens
-        },
-      }}
-    >
-      <CardHeader title={t('LOANS')} />
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>
-          <Typography variant="h3" sx={{ color: 'text.primary', marginBottom: 2 }}>
-            {formatNumberWithCommas(liability)} <span style={{ fontStyle: 'italic' }}>{t('SAR')}</span>
-          </Typography>
+    <>
+      <Card
+        sx={{
+          flex: 2, // Default ratio for desktop
+          '@media (max-width: 900px)': {
+            flex: '1 1 100%', // Full width for medium screens
+          },
+        }}
+      >
+
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', height: '100%', padding: '16px' }}>
+          <Box>
+            <Typography variant="h5" sx={{ color: 'text.primary', marginBottom: 2 }}>
+              <CardHeader title={t('Balance')} style={{ padding: 0 }} />
+              {formatNumberWithCommas(liability)}
+              <Box
+                style={{ alignSelf: 'center' }}
+                component="img"
+                loading="lazy"
+                sx={{
+                  height: '30px',
+                  width: '30px',
+                }}
+                alt="neotek logo"
+                src={Riyal}
+                paddingTop={1}
+              />
+            </Typography>
+          </Box>
           <Typography variant="body2" sx={{ color: 'text.primary' }}>
-            {t('LIABILITY')}
+            Average Balance
+            <Typography variant="body2" sx={{ color: 'text.primary' }}>
+              {formatNumberWithCommas(liability)}
+              <Box
+                style={{ alignSelf: 'center' }}
+                component="img"
+                loading="lazy"
+                sx={{
+                  height: '20px',
+                  width: '20px',
+                }}
+                alt="neotek logo"
+                src={Riyal}
+                paddingTop={1}
+              />
+            </Typography>
+
           </Typography>
         </div>
-      </CardContent>
-    </Card>
+
+      </Card >
+      <Card
+        sx={{
+          flex: 2, // Default ratio for desktop
+          '@media (max-width: 900px)': {
+            flex: '1 1 100%', // Full width for medium screens
+          },
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', height: '100%', padding: '16px' }}>
+          <Box>
+            <Typography variant="h5" sx={{ color: 'text.primary', marginBottom: 2 }}>
+              <CardHeader title={t('Obligations')} style={{ padding: 0 }} />
+              {formatNumberWithCommas(liability)}
+              <Box
+                style={{ alignSelf: 'center' }}
+                component="img"
+                loading="lazy"
+                sx={{
+                  height: '30px',
+                  width: '30px',
+                }}
+                alt="neotek logo"
+                src={Riyal}
+                paddingTop={1}
+              />
+              <Typography variant="body2" sx={{ color: 'text.primary' }}>
+                Liability
+              </Typography>
+            </Typography>
+          </Box>
+
+        </div>
+
+      </Card>
+    </>
   );
 }

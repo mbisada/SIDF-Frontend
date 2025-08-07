@@ -53,8 +53,8 @@ export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthl
     // If there are less than 12 records, inject missing months
     const missingRecordsCount = 12 - sortedData.length;
     const firstRecord = sortedData[0];
-    const firstMonthIndex = monthNames.indexOf(firstRecord.Month);
-    const firstYear = firstRecord.Year;
+    const firstMonthIndex = monthNames.indexOf(firstRecord?.Month);
+    const firstYear = firstRecord?.Year;
 
     let injectedData = [...sortedData];
 
