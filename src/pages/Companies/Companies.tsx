@@ -34,7 +34,7 @@ function Companies() {
 
   if (isLoading) return <Spinner />;
 
-  const textToCopy = `${import.meta.env.VITE_BACKEND_BASE_URL}/register?referalCode=${customer?.referralCode}`;
+  const textToCopy = `${import.meta.env.VITE_BACKEND_BASE_URL_NAVIGATION}/register?referalCode=${customer?.referralCode}`;
 
   const handleCopy = async () => {
     try {

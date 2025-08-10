@@ -231,12 +231,12 @@ const Login: React.FC = () => {
             >
               {formik.isSubmitting ? 'Logging in...' : 'Login'}
             </LoadingButton>
-            <Typography variant="body2" color="white">
+            {/* <Typography variant="body2" color="white">
               Don’t have an account?{' '}
               <Link href="/register" underline="none" color="white">
                 Sign up
               </Link>
-            </Typography>
+            </Typography> */}
           </Stack>
         </form>
 
