@@ -2,7 +2,6 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
 import Avatar from '@mui/material/Avatar';
-//import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import { Button, CardContent, Grid } from '@mui/material';
@@ -40,7 +39,7 @@ export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) 
           }
           title={identifier}
           titleTypographyProps={{ variant: 'body2', fontWeight: 'bold', color: '#272424' }}
-          //subheader="September 14, 2016"
+        //subheader="September 14, 2016"
         />
         <CardContent style={{ paddingBottom: '0px', paddingTop: '0px' }}>
           <Typography variant="body2" fontWeight={'light'} sx={{ color: '#777777' }}>

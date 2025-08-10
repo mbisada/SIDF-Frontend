@@ -52,8 +52,8 @@ function Companies() {
           { label: 'Dashboard', href: '/' },
           { label: 'Companies List Details', href: '/companies' },
         ]}
-        // heading="Companies List Details"
-        //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */
+      // heading="Companies List Details"
+      //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */
       >
         <Box
           sx={{

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { Box, CardContent, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
@@ -9,16 +9,16 @@ import { formatNumberWithCommas } from '../../utils/numberHelpers';
 import { LoansCardProps } from './LoansCard.types';
 import Riyal from '../../assets/Riyal.svg';
 
-export default function LoansCard({ liability }: LoansCardProps) {
+export default function LoansCard({ liability, averageBalance }: LoansCardProps) {
   const { t } = useTranslation();
 
   return (
     <>
       <Card
         sx={{
-          flex: 2, // Default ratio for desktop
+          flex: 2,
           '@media (max-width: 900px)': {
-            flex: '1 1 100%', // Full width for medium screens
+            flex: '1 1 100%',
           },
         }}
       >
@@ -53,7 +53,7 @@ export default function LoansCard({ liability }: LoansCardProps) {
           <Typography variant="body2" sx={{ color: 'text.primary' }}>
             Average Balance
             <Typography variant="body2" sx={{ color: 'text.primary' }}>
-              {formatNumberWithCommas(liability)}
+              {formatNumberWithCommas(Number(averageBalance))}
               <Box
                 style={{ alignSelf: 'center' }}
                 component="img"
@@ -72,9 +72,9 @@ export default function LoansCard({ liability }: LoansCardProps) {
       </Card>
       <Card
         sx={{
-          flex: 2, // Default ratio for desktop
+          flex: 2,
           '@media (max-width: 900px)': {
-            flex: '1 1 100%', // Full width for medium screens
+            flex: '1 1 100%',
           },
         }}
       >

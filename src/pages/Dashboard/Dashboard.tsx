@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import DownloadIcon from '@mui/icons-material/Download';
 import { Box, Button, Modal, Stack, Typography } from '@mui/material';
@@ -47,10 +47,12 @@ export default function Dashboard() {
   const handleClose = async () => {
     setOpen(false);
   };
+  const location = useLocation();
+  const financialInstitutionsBANKS = location.state?.financialInstitutions || [];
 
   const userInfo = requestDetails?.userInfo;
   const financialData = requestDetails?.financialData;
-
+  console.log('financialData', financialData);
   const { psuid } = useParams<{ psuid: string }>();
   const { getDashboardData } = useDashboardServices();
 
@@ -71,13 +73,16 @@ export default function Dashboard() {
   const { getFinacialInstitutions } = useUserProfileServices();
 
   useEffect(() => {
-    getFinacialInstitutions()
-      .then(res => {
-        setFinancialInstitutions(res.data.Data.FinancialInstitution);
-      })
-      .catch(error => {
-        console.error('Error fetching financial institutions:', error);
-      });
+    if (financialInstitutionsBANKS.length) { setFinancialInstitutions(financialInstitutionsBANKS); }
+    else {
+      getFinacialInstitutions()
+        .then(res => {
+          setFinancialInstitutions(res.data.Data.FinancialInstitution);
+        })
+        .catch(error => {
+          console.error('Error fetching financial institutions:', error);
+        });
+    }
   }, []);
 
   return (
@@ -130,7 +135,7 @@ export default function Dashboard() {
             totalCashIn={financialData?.TotalCashIn ?? 0}
             totalCashOut={financialData?.TotalCashOut ?? 0}
           />
-          <LoansCard liability={financialData?.Liabilities ?? 0} />
+          <LoansCard liability={financialData?.Liabilities ?? 0} averageBalance={financialData?.AverageBalance ?? 0} />
         </Box>
         <Box
           sx={{

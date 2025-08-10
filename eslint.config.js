@@ -48,6 +48,8 @@ export default tseslint.config(
         { blankLine: 'always', prev: '*', next: 'block-like' },
         { blankLine: 'always', prev: 'block-like', next: '*' },
       ],
+
+      'no-multiple-empty-lines': ['error', { max: 1 }],
     },
   }
 );

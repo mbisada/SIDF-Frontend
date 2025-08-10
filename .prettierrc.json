@@ -6,7 +6,5 @@
   "arrowParens": "avoid",
   "singleAttributePerLine": false,
   "semi": true,
-
-  "tabWidth": 2,
-  "maxEmptyLines": 1
+  "tabWidth": 2
 }
