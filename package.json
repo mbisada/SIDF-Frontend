@@ -23,6 +23,7 @@
     "env-cmd": "^10.1.0",
     "flatlist-react": "^1.5.14",
     "formik": "^2.4.6",
+    "html2canvas": "^1.4.1",
     "i18next": "^23.16.0",
     "moment": "^2.30.1",
     "neotek-ob-sdk": "file:neotek-ob-sdk-1.1.9.tgz",

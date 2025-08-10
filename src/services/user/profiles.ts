@@ -71,7 +71,7 @@ export const useUserProfileServices = () => {
   };
 
   const exportReport = async (PSUId: string, format: string) => {
-    return await backendAxiosInstance.get(`/admin/e-statements/export`, {
+    return await backendAxiosInstance.get(`/e-statements/export`, {
       params: { PSUId, format },
     });
   };

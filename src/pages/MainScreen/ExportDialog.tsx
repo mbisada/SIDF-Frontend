@@ -9,12 +9,15 @@ import ic_chart_mixed from '../../assets/ic_chart_mixed.svg';
 import ic_file_lines from '../../assets/ic_file_lines.svg';
 import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useUserProfileServices } from '../../services/user/profiles';
+import { useNavigate } from 'react-router-dom';
+import html2canvas from "html2canvas";
 
 interface Props {
   close: Function;
   PSUId: string;
+  componentRef: any
 }
 
 const style = {
@@ -26,7 +29,8 @@ const style = {
 
   borderRadius: '20px !important',
 };
-const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
+const ExportDialog: React.FC<Props> = ({ close, PSUId, componentRef }) => {
+  const navigate = useNavigate();
   const { exportReport } = useUserProfileServices();
 
   const [banks, setBanks] = useState([
@@ -77,8 +81,8 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
   }
 
   const reports = [
-    { icon: ic_chart_mixed, name: 'Summary Report' },
-    { icon: ic_file_lines, name: 'Detailed Report' },
+    { icon: ic_chart_mixed, name: 'Summary Report', },
+    { icon: ic_file_lines, name: 'Detailed Report', },
   ];
   const [selectedReport, setSelectedReport] = useState('');
   function List2() {
@@ -205,6 +209,20 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
     });
   }
 
+
+  const takeScreenshot = async () => {
+    if (!componentRef.current) return;
+
+    const canvas = await html2canvas(componentRef.current);
+    const dataURL = canvas.toDataURL("image/png");
+
+    // Download image
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "screenshot.png";
+    link.click();
+  };
+
   return (
     <Box sx={style}>
       <Box
@@ -305,25 +323,27 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
           <List2 />
         </Box>
 
-        <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
 
-        <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 16, marginLeft: 24 }}>
-          Choose the report format
-        </Typography>
+        {selectedReport === 'Detailed Report' &&
+          <>
+            <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
 
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(1, 1fr)', // 3 equal columns
-            gap: 0.1, // spacing between grid items, adjust as needed
-            width: '100%',
-            maxWidth: '640px', // or whatever width fits your design
-            margin: 'auto',
-          }}
-        >
-          <List3 />
-        </Box>
-
+            <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 16, marginLeft: 24 }}>
+              Choose the report format
+            </Typography>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(1, 1fr)', // 3 equal columns
+                gap: 0.1, // spacing between grid items, adjust as needed
+                width: '100%',
+                maxWidth: '640px', // or whatever width fits your design
+                margin: 'auto',
+              }}
+            >
+              <List3 />
+            </Box>
+          </>}
         <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
 
         <Box
@@ -382,30 +402,35 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
               textTransform: 'none',
             }}
             onClick={() => {
-              exportReport(PSUId, format).then(response => {
-                // Create a blob from the response
-                if (format == 'EXCEL') {
-                  const blob = new Blob([response.data], {
-                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                  });
+              if (selectedReport === 'Summary Report') {
+                takeScreenshot();
+              } else {
+                exportReport(PSUId, format).then(response => {
+                  // Create a blob from the response
+                  if (format == 'EXCEL') {
+                    const blob = new Blob([response.data], {
+                      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    });
 
-                  // Create a download link
-                  const url = window.URL.createObjectURL(blob);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.setAttribute('download', 'report.xlsx'); // filename
-                  document.body.appendChild(link);
-                  link.click();
+                    // Create a download link
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'report.xlsx'); // filename
+                    document.body.appendChild(link);
+                    link.click();
 
-                  // Cleanup
-                  document.body.removeChild(link);
-                  window.URL.revokeObjectURL(url);
-                } else {
-                  const params = new URLSearchParams({ url: response.data.url });
-
-                  window.open(`/viewReport?${params.toString()}`, '_blank');
-                }
-              });
+                    // Cleanup
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                  } else {
+                    const params = new URLSearchParams({ url: response.data.url });
+                    if (response.data.url) {
+                      window.open(`/viewReport?${params.toString()}`, '_blank');
+                    }
+                  }
+                });
+              }
             }}
             fullWidth
             sx={{

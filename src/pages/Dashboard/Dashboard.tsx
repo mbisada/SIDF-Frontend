@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
@@ -19,6 +19,18 @@ import { useUserProfileServices } from '../../services/user/profiles';
 import { BankTabs } from './BankTabs';
 
 
+// const style = {
+//   position: 'absolute',
+//   top: '50%',
+//   left: '50%',
+//   transform: 'translate(-50%, -50%)',
+//   width: 400,
+//   bgcolor: 'background.paper',
+//   border: '1px solid #DADADA',
+//   boxShadow: 24,
+//   p: 2,
+// };
+
 
 
 export default function Dashboard() {
@@ -33,10 +45,11 @@ export default function Dashboard() {
   };
   const location = useLocation();
   const financialInstitutionsBANKS = location.state?.financialInstitutions || [];
+  const componentRef = useRef<HTMLDivElement>(null);
 
   const userInfo = requestDetails?.userInfo;
   const financialData = requestDetails?.financialData;
-  console.log('financialData', financialData);
+
   const { psuid } = useParams<{ psuid: string }>();
   const { getDashboardData } = useDashboardServices();
 
@@ -69,18 +82,16 @@ export default function Dashboard() {
     }
   }, []);
 
+
   return (
     <div>
       {isLoading && <Spinner />}
       <Layout
-        breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
-          { label: 'Companies List Details', href: '/companies' },
-          { label: 'Request Details', href: '/' },
-        ]}
+
         heading="Request Details"
       >
         <Box
+
           sx={{
             display: 'flex',
             flexDirection: 'row',
@@ -95,60 +106,64 @@ export default function Dashboard() {
             </Button>
           </Box>
         </Box>
-        <ProfileCard
-          crNumber={userInfo?.psuid}
-          mobileNumber={userInfo?.mobileNumber}
-          email={userInfo?.email}
-          companyName={userInfo?.companyName}
-        />
-        <Box
-          sx={{
-            width: '100%',
-            height: 'fit-content',
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            alignItems: 'stretch',
-            justifyContent: 'space-between',
-            gap: 1,
-            marginBottom: 1,
-          }}
-        >
-          <CashFlowCard
-            totalCashFlow={financialData?.TotalCashFlow ?? 0}
-            totalCashIn={financialData?.TotalCashIn ?? 0}
-            totalCashOut={financialData?.TotalCashOut ?? 0}
+        <div ref={componentRef}>
+          <ProfileCard
+            crNumber={userInfo?.psuid}
+            mobileNumber={userInfo?.mobileNumber}
+            email={userInfo?.email}
+            companyName={userInfo?.companyName}
           />
-          <LoansCard liability={financialData?.Liabilities ?? 0} averageBalance={financialData?.AverageBalance ?? 0} />
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: 'fit-content',
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            alignItems: 'stretch',
-            justifyContent: 'space-between',
-            gap: 1,
-            marginBottom: 1,
-          }}
-        >
-          <CashFlowBarChartCard
-            inflowTotal={financialData?.TotalCashIn ?? 0}
-            outflowTotal={financialData?.TotalCashOut ?? 0}
-            monthlyCashFlow={financialData?.MonthlyCashFlow ?? []}
-          />
-          <CashFlowPieChartCard
-            inflowTotal={financialData?.TotalCashIn ?? 0}
-            outflowTotal={financialData?.TotalCashOut ?? 0}
-            cashInTypes={financialData?.CashInTypes ?? []}
-            cashOutTypes={financialData?.CashOutTypes ?? []}
-          />
-        </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: 'fit-content',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              alignItems: 'stretch',
+              justifyContent: 'space-between',
+              gap: 1,
+              marginBottom: 1,
+            }}
+          >
+            <CashFlowCard
+              totalCashFlow={financialData?.TotalCashFlow ?? 0}
+              totalCashIn={financialData?.TotalCashIn ?? 0}
+              totalCashOut={financialData?.TotalCashOut ?? 0}
+            />
+            <LoansCard liability={financialData?.Liabilities ?? 0} averageBalance={financialData?.AverageBalance ?? 0} />
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: 'fit-content',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              alignItems: 'stretch',
+              justifyContent: 'space-between',
+              gap: 1,
+              marginBottom: 1,
+            }}
+          >
+            <CashFlowBarChartCard
+              inflowTotal={financialData?.TotalCashIn ?? 0}
+              outflowTotal={financialData?.TotalCashOut ?? 0}
+              monthlyCashFlow={financialData?.MonthlyCashFlow ?? []}
+            />
+            <CashFlowPieChartCard
+              inflowTotal={financialData?.TotalCashIn ?? 0}
+              outflowTotal={financialData?.TotalCashOut ?? 0}
+              cashInTypes={financialData?.CashInTypes ?? []}
+              cashOutTypes={financialData?.CashOutTypes ?? []}
+            />
 
+
+          </Box>
+
+        </div>
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ''} />
+          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ''} componentRef={componentRef} />
 
           {/* <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={'center'}>

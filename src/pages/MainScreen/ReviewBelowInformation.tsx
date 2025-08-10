@@ -337,7 +337,6 @@ const ReviewBelowInformation: React.FC = () => {
                 color: '#221AFB',
               }}
               onClick={() => {
-                navigate('/raghi-bank-success-login');
               }}
               fullWidth
               sx={{
@@ -407,7 +406,7 @@ const ReviewBelowInformation: React.FC = () => {
                   textTransform: 'none',
                   color: '#F36D21',
                 }}
-                onClick={() => { }}
+                onClick={() => { navigate(-1) }}
                 fullWidth
                 sx={{
                   padding: 1,

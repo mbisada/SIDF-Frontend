@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../templates/Layout';
 import { useUserProfileServices } from '../../services/user/profiles';
-import moment from 'moment';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import Spinner from '../../components/Spinner';
 
@@ -92,12 +91,7 @@ const ConsentDetails: React.FC<{ calculated: boolean }> = ({ calculated }) => {
                             <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'24px'} style={{}}>
                                 {account.FinancialInstitution?.NameEn}
                             </Typography>
-                            <Typography variant="body2" color="#777777" fontWeight={'bold'} fontSize={'15px'} style={{}}>
-                                Consent Date
-                            </Typography>
-                            <Typography variant="body2" color="#272424" fontWeight={'bold'} fontSize={'21px'} style={{}}>
-                                {moment(new Date()).format('DD-MM-YYYY')}
-                            </Typography>
+
                         </Box>
                     </Box>
                     <Button
