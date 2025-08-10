@@ -1,1 +1,1 @@
-export { default } from './RaghiBankSuccessfullyLogin'
+export { default } from './RaghiBankSuccessfullyLogin';

@@ -1,1 +1,1 @@
-export {default} from './RaghiLogin'
+export { default } from './RaghiLogin';

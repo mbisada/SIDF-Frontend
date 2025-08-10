@@ -59,7 +59,6 @@ function App() {
           element={
             <ProtectedRoute requiredRole="ROLE_USER">
               <ReviewBelowInformation />
-
             </ProtectedRoute>
           }
         />
@@ -72,12 +71,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/companies/:psuid"
-          element={
-            <Dashboard />
-          }
-        />
+        <Route path="/companies/:psuid" element={<Dashboard />} />
 
         <Route
           path="/ob-connect/success"
@@ -87,12 +81,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/ViewReport"
-          element={
-            <ViewReport />
-          }
-        />
+        <Route path="/ViewReport" element={<ViewReport />} />
         <Route
           path="/ob-connect/fail"
           element={

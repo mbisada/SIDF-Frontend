@@ -102,14 +102,9 @@ const Login: React.FC = () => {
 
         if (mappedData.role.toLowerCase().includes('admin')) {
           setCustomer({ ...registeredCustomer, referralCode: profileResponse.data.data.returnedObj[0].referralCode });
-
         } else {
-
           setCustomer({ ...registeredCustomer, crNumber: profileResponse.data.data.returnedObj[0].psuid });
         }
-
-
-
       } catch (error: unknown) {
         // Narrow the error type to AxiosError
         if (error instanceof AxiosError) {

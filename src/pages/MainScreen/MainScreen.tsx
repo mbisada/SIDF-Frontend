@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, } from '@mui/material';
+import { Box } from '@mui/material';
 
 import BookMarkDialog from './BookmarkDialog';
 import SideBar from './SideBar';
@@ -52,7 +52,6 @@ const MainScreen: React.FC = () => {
 
         {/* {selected === 'Dashboard' && <Dashboard />}
         {selected === 'Consent Details' && <ConsentDetails />} */}
-
       </Box>
 
       {showBookmark && (
@@ -69,12 +68,13 @@ const MainScreen: React.FC = () => {
           }}
         />
       )} */}
-      {showPreferredDialog && <PreferredWayDialog
-        close={() => {
-          setShowPreferredDialog(false);
-        }}
-      />}
-
+      {showPreferredDialog && (
+        <PreferredWayDialog
+          close={() => {
+            setShowPreferredDialog(false);
+          }}
+        />
+      )}
     </Box>
   );
 };

@@ -59,7 +59,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
       <List>
         {customer?.role === ROLES.user && (
           <>
-
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate('/ob-connect')}>
                 <ListItemIcon sx={{ minWidth: 40 }}>
@@ -67,7 +66,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 </ListItemIcon>
                 <ListItemText primary={t('Dashboard')} />
               </ListItemButton>
-
             </ListItem>
 
             <ListItem disablePadding>
@@ -77,7 +75,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 </ListItemIcon>
                 <ListItemText primary={t('CONSENTS')} />
               </ListItemButton>
-
             </ListItem>
           </>
         )}
@@ -170,7 +167,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               }}
               alt="neotek logo"
               src={bookmark}
-              onClick={() => { }}
+              onClick={() => {}}
             />
 
             <Box
@@ -209,7 +206,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 marginLeft: 6,
                 borderRadius: '16px',
               }}
-              onClick={() => { }}
+              onClick={() => {}}
             >
               <Box
                 style={{ alignSelf: 'center' }}

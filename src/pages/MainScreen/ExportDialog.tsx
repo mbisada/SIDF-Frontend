@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button, Typography } from '@mui/material';
 import ic_export from '../../assets/ic_export.svg';
 import ic_close from '../../assets/ic_close.svg';
 import ic_unselected from '../../assets/ic_orange_unselected.svg';
@@ -9,335 +9,419 @@ import ic_chart_mixed from '../../assets/ic_chart_mixed.svg';
 import ic_file_lines from '../../assets/ic_file_lines.svg';
 import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
-import { useState } from "react";
-import { useUserProfileServices } from "../../services/user/profiles";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useUserProfileServices } from '../../services/user/profiles';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
-    close: Function;
-    PSUId: string;
+  close: Function;
+  PSUId: string;
 }
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
 
-    borderRadius: '20px !important'
+  borderRadius: '20px !important',
 };
 const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
-    const navigate = useNavigate();
-    const { exportReport } = useUserProfileServices();
+  const navigate = useNavigate();
+  const { exportReport } = useUserProfileServices();
 
-    const [banks, setBanks] = useState([{ name: "All", selected: false }, { name: "Alrajhi Bank", selected: false }, { name: "BSF", selected: false }, { name: "Alinma", selected: false },])
-    function List() {
-        return banks.map((bank, index) => {
-            return (
-                <Box key={index} style={{ flexDirection: 'row', borderRadius: '20px', alignItems: 'center', justifyContent: 'flex-start', alignContent: 'center', marginLeft: 16, paddingLeft: 8, width: '150px', height: '40px', }}
-                    display={'flex'}
-                    onClick={() => {
-                        setBanks(prevAccounts =>
-                            prevAccounts.map((account, i) =>
-                                i === index ? { ...account, selected: !account.selected } : account
-                            )
-                        );
-                    }}>
-                    <Box
-                        component="img"
-                        loading="lazy"
-                        sx={{
-                            height: "24px",
-                            width: "24px",
-                        }}
-                        alt="neotek logo"
-                        src={bank.selected ? ic_selected : ic_unselected}
-                    />
-                    <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => { }}>
-                        {bank.name}
-
-                    </Typography>
-                </Box>
-            )
-        })
-    }
-
-    const reports = [{ icon: ic_chart_mixed, name: "Summary Report" }, { icon: ic_file_lines, name: "Detailed Report" }]
-    const [selectedReport, setSelectedReport] = useState("")
-    function List2() {
-        return reports.map((account, index) => {
-            return (
-                <Box key={index} style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', marginLeft: '2.5%', backgroundColor: '#F7F8FA', width: '95%', height: '80px', marginTop: 10, borderRadius: "12px", borderColor: `${selectedReport === account.name ? '#F36D21' : '#F7F8FA'}` }}
-                    display={'flex'}
-                    onClick={() => {
-                        setSelectedReport(account.name)
-                    }}>
-                    <Box
-                        style={{ alignSelf: 'center' }}
-                        component="img"
-                        loading="lazy"
-                        sx={{
-                            height: "65px",
-                            width: "65px",
-                        }}
-                        alt="neotek logo"
-                        src={account.icon}
-
-
-                    />
-                    <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', width: '80%' }}>
-                        <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'14px'} style={{ marginTop: 10 }}>
-                            {account.name}
-                        </Typography>
-                    </Box>
-                    <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
-                        <Box
-                            component="img"
-                            loading="lazy"
-                            sx={{
-                                height: "20px",
-                                width: "20px",
-                            }}
-                            alt="neotek logo"
-                            src={account.name === selectedReport ? ic_orange_radio_selected : ic_orange_radio_unselected}
-
-                        />
-                    </Box>
-                </Box>
-            )
-        })
-    }
-
-    const ouputs = [{ icon: ic_pdf, name: "Pdf", format: 'PDF' }, { icon: ic_excel, name: "Excel", format: 'EXCEL' }]
-    const [selectedOutput, setSelectedOutput] = useState("")
-    const [format, setFormat] = useState("")
-
-    function List3() {
-        return ouputs.map((account, index) => {
-            return (
-                <Box key={index} style={{ flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignContent: 'center', marginLeft: '2.5%', backgroundColor: '#F7F8FA', width: '95%', height: '80px', marginTop: 10, borderRadius: "12px", borderColor: `${selectedOutput === account.name ? '#F36D21' : '#F7F8FA'}` }}
-                    display={'flex'}
-                    onClick={() => {
-                        setSelectedOutput(account.name)
-                        setFormat(account.format)
-                    }}>
-                    <Box
-                        style={{ alignSelf: 'center' }}
-                        component="img"
-                        loading="lazy"
-                        sx={{
-                            height: "65px",
-                            width: "65px",
-                        }}
-                        alt="neotek logo"
-                        src={account.icon}
-
-
-                    />
-                    <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', width: '80%' }}>
-                        <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'14px'} style={{ marginTop: 10 }}>
-                            {account.name}
-                        </Typography>
-                    </Box>
-                    <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
-                        <Box
-                            component="img"
-                            loading="lazy"
-                            sx={{
-                                height: "20px",
-                                width: "20px",
-                            }}
-                            alt="neotek logo"
-                            src={account.name === selectedOutput ? ic_orange_radio_selected : ic_orange_radio_unselected}
-
-                        />
-                    </Box>
-                </Box>
-            )
-        })
-    }
-
-
-
-    return (
-        <Box sx={style}
+  const [banks, setBanks] = useState([
+    { name: 'All', selected: false },
+    { name: 'Alrajhi Bank', selected: false },
+    { name: 'BSF', selected: false },
+    { name: 'Alinma', selected: false },
+  ]);
+  function List() {
+    return banks.map((bank, index) => {
+      return (
+        <Box
+          key={index}
+          style={{
+            flexDirection: 'row',
+            borderRadius: '20px',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            alignContent: 'center',
+            marginLeft: 16,
+            paddingLeft: 8,
+            width: '150px',
+            height: '40px',
+          }}
+          display={'flex'}
+          onClick={() => {
+            setBanks(prevAccounts =>
+              prevAccounts.map((account, i) => (i === index ? { ...account, selected: !account.selected } : account))
+            );
+          }}
         >
-            <Box sx={{ flexDirection: 'column', alignItems: 'center', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: '20px !important', padding: '20px 0' }}>
-                <Box style={{
-                    flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignItems: 'center',
-                    columnGap: '10px'
-                }}
-                >
-                    <Box
-                        style={{}}
-                        component="img"
-                        loading="lazy"
-                        sx={{
-                            height: "48px",
-                            width: "48px",
-                        }}
-                        alt="neotek logo"
-                        src={ic_export}
-
-
-                    />
-                    <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'flex-start', width: '100%', margin: '16px 0', }}>
-                        <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'18px'} style={{}}>
-                            Export as
-                        </Typography>
-                        <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 0 }}>
-                            Choose your report details
-                        </Typography>
-
-                    </Box>
-                    <Box
-                        style={{}}
-                        component="img"
-                        loading="lazy"
-                        sx={{
-                            height: "24px",
-                            width: "24px",
-                        }}
-                        alt="neotek logo"
-                        src={ic_close}
-                        onClick={() => { close() }}
-                        paddingTop={1}
-                    />
-                </Box>
-
-                <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px' }} />
-
-                <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center', marginTop: 12 }} />
-
-                <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 0, marginLeft: 24 }}>
-                    Choose which bank
-                </Typography>
-
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)', // 3 equal columns
-                        gap: 0.1,  // spacing between grid items, adjust as needed
-                        width: '100%',
-                        maxWidth: "640px", // or whatever width fits your design
-                        margin: 'auto',
-                    }}
-                >
-                    <List />
-                </Box>
-
-                <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
-
-                <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 16, marginLeft: 24 }}>
-                    What kind of report you want to export
-                </Typography>
-
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(1, 1fr)', // 3 equal columns
-                        gap: 0.1,  // spacing between grid items, adjust as needed
-                        width: '100%',
-                        maxWidth: "640px", // or whatever width fits your design
-                        margin: 'auto',
-                    }}
-                >
-                    <List2 />
-                </Box>
-
-                <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
-
-                <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 16, marginLeft: 24 }}>
-                    Choose the report format
-                </Typography>
-
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(1, 1fr)', // 3 equal columns
-                        gap: 0.1,  // spacing between grid items, adjust as needed
-                        width: '100%',
-                        maxWidth: "640px", // or whatever width fits your design
-                        margin: 'auto',
-                    }}
-                >
-                    <List3 />
-                </Box>
-
-                <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
-
-                <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', alignContent: 'flex-end', marginTop: 12, marginRight: 24 }}
-                    display={'flex'}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        autoCapitalize="off"
-                        disableElevation
-                        style={{ backgroundColor: 'white', border: '1px solid #F36D21', alignSelf: 'flex-end', width: "80px", height: "48px", borderRadius: "10px", fontSize: '13px', textTransform: 'none', marginRight: 12, color: '#F36D21' }}
-                        onClick={() => { close() }}
-                        fullWidth
-
-                        sx={{
-                            padding: 1,
-                            borderRadius: 2,
-                            fontWeight: 700,
-                        }}
-
-                    >
-                        {'Cancel'}
-
-                    </Button>
-
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        autoCapitalize="off"
-                        disableElevation
-                        style={{ backgroundColor: '#F36D21', alignSelf: 'flex-end', width: "80px", height: "48px", borderRadius: "10px", fontSize: '13px', textTransform: 'none', }}
-
-                        onClick={() => {
-                            exportReport(PSUId, format).then(response => {
-                                // Create a blob from the response
-                                if (format == "EXCEL") {
-                                    const blob = new Blob([response.data], {
-                                        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                    });
-
-                                    // Create a download link
-                                    const url = window.URL.createObjectURL(blob);
-                                    const link = document.createElement("a");
-                                    link.href = url;
-                                    link.setAttribute("download", "report.xlsx"); // filename
-                                    document.body.appendChild(link);
-                                    link.click();
-
-                                    // Cleanup
-                                    document.body.removeChild(link);
-                                    window.URL.revokeObjectURL(url);
-                                } else {
-                                    const params = new URLSearchParams({ url: response.data.url });
-
-                                    window.open(`/viewReport?${params.toString()}`, "_blank");
-                                }
-                            })
-                        }}
-                        fullWidth
-
-                        sx={{
-                            padding: 1,
-                            borderRadius: 2,
-                            fontWeight: 700,
-                        }}
-
-                    >
-                        {'Got it'}
-
-                    </Button>
-                </Box>
-            </Box>
+          <Box
+            component="img"
+            loading="lazy"
+            sx={{
+              height: '24px',
+              width: '24px',
+            }}
+            alt="neotek logo"
+            src={bank.selected ? ic_selected : ic_unselected}
+          />
+          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => {}}>
+            {bank.name}
+          </Typography>
         </Box>
-    )
-}
+      );
+    });
+  }
 
-export default ExportDialog
+  const reports = [
+    { icon: ic_chart_mixed, name: 'Summary Report' },
+    { icon: ic_file_lines, name: 'Detailed Report' },
+  ];
+  const [selectedReport, setSelectedReport] = useState('');
+  function List2() {
+    return reports.map((account, index) => {
+      return (
+        <Box
+          key={index}
+          style={{
+            flexDirection: 'row',
+            display: 'flex',
+            paddingLeft: '26.3px',
+            paddingRight: '26.3px',
+            justifyContent: 'space-between',
+            alignContent: 'center',
+            marginLeft: '2.5%',
+            backgroundColor: '#F7F8FA',
+            width: '95%',
+            height: '80px',
+            marginTop: 10,
+            borderRadius: '12px',
+            borderColor: `${selectedReport === account.name ? '#F36D21' : '#F7F8FA'}`,
+          }}
+          display={'flex'}
+          onClick={() => {
+            setSelectedReport(account.name);
+          }}
+        >
+          <Box
+            style={{ alignSelf: 'center' }}
+            component="img"
+            loading="lazy"
+            sx={{
+              height: '65px',
+              width: '65px',
+            }}
+            alt="neotek logo"
+            src={account.icon}
+          />
+          <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', width: '80%' }}>
+            <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'14px'} style={{ marginTop: 10 }}>
+              {account.name}
+            </Typography>
+          </Box>
+          <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
+            <Box
+              component="img"
+              loading="lazy"
+              sx={{
+                height: '20px',
+                width: '20px',
+              }}
+              alt="neotek logo"
+              src={account.name === selectedReport ? ic_orange_radio_selected : ic_orange_radio_unselected}
+            />
+          </Box>
+        </Box>
+      );
+    });
+  }
+
+  const ouputs = [
+    { icon: ic_pdf, name: 'Pdf', format: 'PDF' },
+    { icon: ic_excel, name: 'Excel', format: 'EXCEL' },
+  ];
+  const [selectedOutput, setSelectedOutput] = useState('');
+  const [format, setFormat] = useState('');
+
+  function List3() {
+    return ouputs.map((account, index) => {
+      return (
+        <Box
+          key={index}
+          style={{
+            flexDirection: 'row',
+            display: 'flex',
+            paddingLeft: '26.3px',
+            paddingRight: '26.3px',
+            justifyContent: 'space-between',
+            alignContent: 'center',
+            marginLeft: '2.5%',
+            backgroundColor: '#F7F8FA',
+            width: '95%',
+            height: '80px',
+            marginTop: 10,
+            borderRadius: '12px',
+            borderColor: `${selectedOutput === account.name ? '#F36D21' : '#F7F8FA'}`,
+          }}
+          display={'flex'}
+          onClick={() => {
+            setSelectedOutput(account.name);
+            setFormat(account.format);
+          }}
+        >
+          <Box
+            style={{ alignSelf: 'center' }}
+            component="img"
+            loading="lazy"
+            sx={{
+              height: '65px',
+              width: '65px',
+            }}
+            alt="neotek logo"
+            src={account.icon}
+          />
+          <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', width: '80%' }}>
+            <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'14px'} style={{ marginTop: 10 }}>
+              {account.name}
+            </Typography>
+          </Box>
+          <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
+            <Box
+              component="img"
+              loading="lazy"
+              sx={{
+                height: '20px',
+                width: '20px',
+              }}
+              alt="neotek logo"
+              src={account.name === selectedOutput ? ic_orange_radio_selected : ic_orange_radio_unselected}
+            />
+          </Box>
+        </Box>
+      );
+    });
+  }
+
+  return (
+    <Box sx={style}>
+      <Box
+        sx={{
+          flexDirection: 'column',
+          alignItems: 'center',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white',
+          borderRadius: '20px !important',
+          padding: '20px 0',
+        }}
+      >
+        <Box
+          style={{
+            flexDirection: 'row',
+            display: 'flex',
+            paddingLeft: '26.3px',
+            paddingRight: '26.3px',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            columnGap: '10px',
+          }}
+        >
+          <Box
+            style={{}}
+            component="img"
+            loading="lazy"
+            sx={{
+              height: '48px',
+              width: '48px',
+            }}
+            alt="neotek logo"
+            src={ic_export}
+          />
+          <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'flex-start', width: '100%', margin: '16px 0' }}>
+            <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'18px'} style={{}}>
+              Export as
+            </Typography>
+            <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 0 }}>
+              Choose your report details
+            </Typography>
+          </Box>
+          <Box
+            style={{}}
+            component="img"
+            loading="lazy"
+            sx={{
+              height: '24px',
+              width: '24px',
+            }}
+            alt="neotek logo"
+            src={ic_close}
+            onClick={() => {
+              close();
+            }}
+            paddingTop={1}
+          />
+        </Box>
+
+        <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px' }} />
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center', marginTop: 12 }} />
+
+        <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 0, marginLeft: 24 }}>
+          Choose which bank
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)', // 3 equal columns
+            gap: 0.1, // spacing between grid items, adjust as needed
+            width: '100%',
+            maxWidth: '640px', // or whatever width fits your design
+            margin: 'auto',
+          }}
+        >
+          <List />
+        </Box>
+
+        <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
+
+        <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 16, marginLeft: 24 }}>
+          What kind of report you want to export
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(1, 1fr)', // 3 equal columns
+            gap: 0.1, // spacing between grid items, adjust as needed
+            width: '100%',
+            maxWidth: '640px', // or whatever width fits your design
+            margin: 'auto',
+          }}
+        >
+          <List2 />
+        </Box>
+
+        <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
+
+        <Typography variant="body2" color="#475467" fontWeight={'400'} fontSize={'10px'} style={{ marginTop: 16, marginLeft: 24 }}>
+          Choose the report format
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(1, 1fr)', // 3 equal columns
+            gap: 0.1, // spacing between grid items, adjust as needed
+            width: '100%',
+            maxWidth: '640px', // or whatever width fits your design
+            margin: 'auto',
+          }}
+        >
+          <List3 />
+        </Box>
+
+        <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
+
+        <Box
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
+            alignContent: 'flex-end',
+            marginTop: 12,
+            marginRight: 24,
+          }}
+          display={'flex'}
+        >
+          <Button
+            type="submit"
+            variant="contained"
+            autoCapitalize="off"
+            disableElevation
+            style={{
+              backgroundColor: 'white',
+              border: '1px solid #F36D21',
+              alignSelf: 'flex-end',
+              width: '80px',
+              height: '48px',
+              borderRadius: '10px',
+              fontSize: '13px',
+              textTransform: 'none',
+              marginRight: 12,
+              color: '#F36D21',
+            }}
+            onClick={() => {
+              close();
+            }}
+            fullWidth
+            sx={{
+              padding: 1,
+              borderRadius: 2,
+              fontWeight: 700,
+            }}
+          >
+            {'Cancel'}
+          </Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            autoCapitalize="off"
+            disableElevation
+            style={{
+              backgroundColor: '#F36D21',
+              alignSelf: 'flex-end',
+              width: '80px',
+              height: '48px',
+              borderRadius: '10px',
+              fontSize: '13px',
+              textTransform: 'none',
+            }}
+            onClick={() => {
+              exportReport(PSUId, format).then(response => {
+                // Create a blob from the response
+                if (format == 'EXCEL') {
+                  const blob = new Blob([response.data], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                  });
+
+                  // Create a download link
+                  const url = window.URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.setAttribute('download', 'report.xlsx'); // filename
+                  document.body.appendChild(link);
+                  link.click();
+
+                  // Cleanup
+                  document.body.removeChild(link);
+                  window.URL.revokeObjectURL(url);
+                } else {
+                  const params = new URLSearchParams({ url: response.data.url });
+
+                  window.open(`/viewReport?${params.toString()}`, '_blank');
+                }
+              });
+            }}
+            fullWidth
+            sx={{
+              padding: 1,
+              borderRadius: 2,
+              fontWeight: 700,
+            }}
+          >
+            {'Got it'}
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default ExportDialog;

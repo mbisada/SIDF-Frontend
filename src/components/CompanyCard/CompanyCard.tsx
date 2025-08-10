@@ -18,18 +18,14 @@ export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) 
   const navigate = useNavigate();
   const handleNavigateClick = () => {
     navigate(`/companies/${crNumber}`, {
-      state: {
-
-      }
+      state: {},
     });
   };
 
   return (
     <Grid item xs={6} xxs={12}>
-
       <Card sx={{ margin: 1, padding: 1, height: '100%', backgroundColor: 'white', border: '1px solid #DADADA', paddingBottom: '0px' }}>
         <CardHeader
-
           avatar={
             <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">
               <AccountBalanceIcon fontSize="small" />
@@ -44,7 +40,7 @@ export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) 
           }
           title={identifier}
           titleTypographyProps={{ variant: 'body2', fontWeight: 'bold', color: '#272424' }}
-        //subheader="September 14, 2016"
+          //subheader="September 14, 2016"
         />
         <CardContent style={{ paddingBottom: '0px', paddingTop: '0px' }}>
           <Typography variant="body2" fontWeight={'light'} sx={{ color: '#777777' }}>

@@ -1,1 +1,1 @@
-export {default} from './NeotekSDK'
+export { default } from './NeotekSDK';

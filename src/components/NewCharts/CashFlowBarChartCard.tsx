@@ -59,8 +59,6 @@ export default function NewCashFlowBarChartCard({ inflowTotal, outflowTotal, mon
 
     let injectedData = [...sortedData];
 
-
-
     return injectedData;
   }, [monthNames, monthlyCashFlow]);
   const formatValue = (value: number) => {
@@ -94,13 +92,16 @@ export default function NewCashFlowBarChartCard({ inflowTotal, outflowTotal, mon
         </Typography>
         <div style={{ width: '100%', height: chartHeight }}>
           <BarChart
-            xAxis={[{
-              dataKey: 'Month', scaleType: 'band', colorMap: {
-                type: 'piecewise',
-                thresholds: [new Date(2021, 1, 1), new Date(2023, 1, 1)],
-              }
-            }]}
-
+            xAxis={[
+              {
+                dataKey: 'Month',
+                scaleType: 'band',
+                colorMap: {
+                  type: 'piecewise',
+                  thresholds: [new Date(2021, 1, 1), new Date(2023, 1, 1)],
+                },
+              },
+            ]}
             yAxis={undefined}
             dataset={transformedMonthlyCashFlow}
             series={[

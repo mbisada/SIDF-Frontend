@@ -22,8 +22,16 @@ export default function LoansCard({ liability }: LoansCardProps) {
           },
         }}
       >
-
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', height: '100%', padding: '16px' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            height: '100%',
+            padding: '16px',
+          }}
+        >
           <Box>
             <Typography variant="h5" sx={{ color: 'text.primary', marginBottom: 2 }}>
               <CardHeader title={t('Balance')} style={{ padding: 0 }} />
@@ -59,11 +67,9 @@ export default function LoansCard({ liability }: LoansCardProps) {
                 paddingTop={1}
               />
             </Typography>
-
           </Typography>
         </div>
-
-      </Card >
+      </Card>
       <Card
         sx={{
           flex: 2, // Default ratio for desktop
@@ -72,7 +78,16 @@ export default function LoansCard({ liability }: LoansCardProps) {
           },
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', height: '100%', padding: '16px' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            height: '100%',
+            padding: '16px',
+          }}
+        >
           <Box>
             <Typography variant="h5" sx={{ color: 'text.primary', marginBottom: 2 }}>
               <CardHeader title={t('Obligations')} style={{ padding: 0 }} />
@@ -94,9 +109,7 @@ export default function LoansCard({ liability }: LoansCardProps) {
               </Typography>
             </Typography>
           </Box>
-
         </div>
-
       </Card>
     </>
   );

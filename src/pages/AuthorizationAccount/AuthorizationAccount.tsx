@@ -18,24 +18,20 @@ import ExportDialog from '../MainScreen/ExportDialog';
 import { useUserProfileServices } from '../../services/user/profiles';
 import { useSearchParams } from 'react-router-dom';
 
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 export default function AuthorizationAccount() {
-    const [requestDetails, setRequestDetails] = useState<DashboardDataReturnedObj | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const { t } = useTranslation();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
+  const [requestDetails, setRequestDetails] = useState<DashboardDataReturnedObj | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
 
-    useEffect(() => {
-        setIsLoading(false)
-    }, [queryParams]);
+  useEffect(() => {
+    setIsLoading(false);
+  }, [queryParams]);
 
-    if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
-    return (
-        <div>
-            GG
-        </div>
-    );
+  return <div>GG</div>;
 }

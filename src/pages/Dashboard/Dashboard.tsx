@@ -31,7 +31,6 @@ const style = {
   p: 2,
 };
 
-
 const data = [
   { day: 1, inflow: 48000000, outflow: -25000000, profit: 10000000 },
   { day: 2, inflow: 20000000, outflow: -15000000, profit: 5000000 },
@@ -71,15 +70,15 @@ export default function Dashboard() {
 
   const { getFinacialInstitutions } = useUserProfileServices();
 
-
   useEffect(() => {
-    getFinacialInstitutions().then((res) => {
-      setFinancialInstitutions(res.data.Data.FinancialInstitution);
-    }).catch((error) => {
-      console.error('Error fetching financial institutions:', error);
-    });
+    getFinacialInstitutions()
+      .then(res => {
+        setFinancialInstitutions(res.data.Data.FinancialInstitution);
+      })
+      .catch(error => {
+        console.error('Error fetching financial institutions:', error);
+      });
   }, []);
-
 
   return (
     <div>
@@ -92,19 +91,20 @@ export default function Dashboard() {
         ]}
         heading="Request Details"
       >
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <BankTabs financialInstitutions={financialInstitutions} setCurrentFinancialInstitution={setCurrentFinancialInstitution} />
-          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button variant="contained" endIcon={<DownloadIcon />} onClick={() => setOpen(true)}>
               {t('EXPORT_REPORT')}
             </Button>
           </Box>
-
         </Box>
         <ProfileCard
           crNumber={userInfo?.psuid}
@@ -123,7 +123,6 @@ export default function Dashboard() {
             justifyContent: 'space-between',
             gap: 1,
             marginBottom: 1,
-
           }}
         >
           <CashFlowCard
@@ -160,7 +159,7 @@ export default function Dashboard() {
         </Box>
 
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ""} />
+          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ''} />
 
           {/* <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={'center'}>
@@ -174,8 +173,6 @@ export default function Dashboard() {
             </Stack>
           </Box> */}
         </Modal>
-
-
       </Layout>
     </div>
   );

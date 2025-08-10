@@ -263,7 +263,7 @@ const Registration = () => {
   );
 }; */
   return (
-    <GradientBackground flexDirection='row'>
+    <GradientBackground flexDirection="row">
       <Box
         sx={{
           width: { xs: '100%', md: '50%' },

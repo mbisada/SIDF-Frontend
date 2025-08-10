@@ -1,23 +1,22 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button, Typography } from '@mui/material';
 
-import { useLocation, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useLocation, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
 
-    borderRadius: '20px !important'
+  borderRadius: '20px !important',
 };
-
 
 const IframeWrapper = styled.div`
   position: relative;
   padding-bottom: 100%;
-  margin-top:  20px;
+  margin-top: 20px;
   height: 100vh;
   flex-shrink: 0;
   width: 100%;
@@ -41,16 +40,15 @@ const HiddenIframe = styled.iframe`
   visibility: hidden;
 `;
 
-const ViewReport: React.FC = ({ }) => {
+const ViewReport: React.FC = ({}) => {
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
 
-    const { search } = useLocation();
-    const query = new URLSearchParams(search);
+  return (
+    <IframeWrapper>
+      <FullSizeIframe src={query.get('url') || ''} title="Report Preview" allowFullScreen />
+    </IframeWrapper>
+  );
+};
 
-    return (
-        <IframeWrapper>
-            <FullSizeIframe src={query.get("url") || ""} title="Report Preview" allowFullScreen />
-        </IframeWrapper>
-    )
-}
-
-export default ViewReport
+export default ViewReport;
