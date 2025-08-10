@@ -1,15 +1,16 @@
 import { Box, Button, Link, Modal, Typography } from "@mui/material"
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import ic_export from '../../assets/ic_export.svg';
-import React from 'react';
 
 import Layout from "../../templates/Layout";
-import { useLocation } from 'react-router-dom';
 import { useUserProfileServices } from "../../services/user/profiles";
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import moment from 'moment';
 import RedirectDialog from "./RedirectDialog";
+import QrCodeDialog from "./QrCodeDialog";
+import QRCode from "qrcode";
+
 interface NeotekDataGroup {
     DataGroupId: string;
     DescriptionEn: string;
@@ -23,36 +24,44 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const ReviewBelowInformation: React.FC = () => {
     let maxCalls = 10;
     let delayTime = 0;
+    const location = useLocation();
+    const { inistituation } = location.state;
+    const { customer } = useCustomer();
+    const navigate = useNavigate();
+    const expiryDate = moment().add(1, 'year');
+
     const [interruptAuthentication, setInterruptAuth] = useState(false);
     const [open, setOpen] = useState(false);
-    const [accountLinkStatus, setAccountLinkStatus] = useState('');
-    const [AccountsLinkId, setAccountsLinkId] = useState<string>('');
     const [EventId, setEventId] = useState<string>('');
     const [redirectionUrl, setRedirectionUrl] = useState<string>('');
-    const location = useLocation();
-    console.log("Location state:", location.state);
-    const { inistituation } = location.state;
-    console.log("inistituation", inistituation);
-    const { customer } = useCustomer();
     const { getDataGroups, getAccountLink, linkAccountEvent, linkProfile } = useUserProfileServices();
     const [dataGroups, setDataGroups] = useState<any[]>([]);
+    const [QrCodeOpen, setQrCodeOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [qrCode, setQrCode] = useState<string>("");
+
     const handleClose = async () => {
         setOpen(false);
     };
-    let profileId = "";
-    console.log("redirectionUl Review", redirectionUrl)
+
+    const handleCloseQrCode = async () => {
+        setQrCodeOpen(false);
+    };
+
     const listenToAccountLinkStatus = async (EventId: string) => {
+        setLoading(true);
         const getEventInfoResponse = await linkAccountEvent(EventId) as any;
-        console.log("getEventInfoResponse", getEventInfoResponse);
         if (
-            getEventInfoResponse?.data?.code === 400 ||
-            getEventInfoResponse?.data?.code > 500
+            getEventInfoResponse?.data?.data?.code === 400 ||
+            getEventInfoResponse?.data?.data?.code > 500
         ) {
-            setAccountLinkStatus('Failed');
+            navigate('/ob-connect/fail')
+            setLoading(false);
+
             return;
         }
         if (
-            !getEventInfoResponse?.data?.data ||
+
             getEventInfoResponse?.data?.data?.returnedObj[0]?.status !== 'READY'
         ) {
             maxCalls = maxCalls - 1;
@@ -65,17 +74,17 @@ const ReviewBelowInformation: React.FC = () => {
 
             maxCalls = 5;
             setInterruptAuth(true);
-            // goToCompleteState();
-            //return alertHandler('danger', t('LBL_NO_RESPONSE'));
         }
 
         linkProfile(getEventInfoResponse?.data?.data?.returnedObj[0]?.response.AccountsLinkId);
 
         maxCalls = 5;
-        // getEventInfoResponse?.data?.returnedObj[0]?.response.AccountsLinkId
-        setAccountLinkStatus(
-            getEventInfoResponse?.data?.returnedObj[0]?.response.AccountsLinkStatus
-        );
+        // setAccountLinkStatus(
+        //     getEventInfoResponse?.data?.data?.returnedObj[0]?.response.AccountsLinkStatus
+        // );
+        setLoading(false);
+        navigate('/ob-connect/success')
+
     };
 
 
@@ -114,16 +123,9 @@ const ReviewBelowInformation: React.FC = () => {
     }, [inistituation]);
 
 
-    useEffect(() => {
-        if (accountLinkStatus == "ACTIVE") {
-            alert("Account link is active");
-        }
-    }, [accountLinkStatus]);
 
-    const expiryDate = moment().add(1, 'year');
 
-    const navigate = useNavigate();
-    const [selected, setSelected] = useState(-1);
+
     const createAccountLinkPayload = () => {
         const payload = {
             Data: {
@@ -150,16 +152,13 @@ const ReviewBelowInformation: React.FC = () => {
     const createAccountLink = async () => {
         if (inistituation) {
             const response = await getAccountLink(createAccountLinkPayload());
-            console.log("Account link response:", response);
+
             if (response && response.data) {
-                setAccountsLinkId(response.data.Data.AccountsLinkId);
+
                 setEventId(response.data.Data.EventId);
                 setRedirectionUrl(response.data.Data.RedirectionURL);
                 setOpen(true)
-                console.log("EventId", response.data.Data.EventId);
-                setTimeout(() => {
-                    listenToAccountLinkStatus(response.data.Data.EventId);
-                }, 10000);
+
             } else {
                 console.error("No redirect URL found in response");
             }
@@ -213,7 +212,26 @@ const ReviewBelowInformation: React.FC = () => {
         });
     }
 
-
+    const generateQRCode = async () => {
+        if (redirectionUrl) {
+            QRCode.toDataURL(redirectionUrl, { width: 200, margin: 2 }, (err: any, dataUrl: string) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                setQrCode(dataUrl);
+            });
+            handleClose();
+            setQrCodeOpen(true);
+            listenToAccountLinkStatus(EventId);
+        }
+    }
+    const handleReirection = () => {
+        if (redirectionUrl) {
+            window.open(redirectionUrl, "_blank")
+            listenToAccountLinkStatus(EventId);
+        }
+    }
     return (
         <Layout>
             <Box style={{ flexDirection: 'column', alignItems: 'flex-start', alignSelf: 'center', justifyContent: 'center', height: '100vh', marginLeft: 10 }}
@@ -374,7 +392,12 @@ const ReviewBelowInformation: React.FC = () => {
             </Box>
             {open && (
                 <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                    <RedirectDialog close={handleClose} RedirectUrl={redirectionUrl} />
+                    <RedirectDialog close={handleClose} handleReirection={handleReirection} generateQRCode={generateQRCode} loading={loading} />
+                </Modal>
+            )}
+            {QrCodeOpen && (
+                <Modal open={QrCodeOpen} onClose={handleCloseQrCode} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                    <QrCodeDialog close={handleCloseQrCode} QrCode={qrCode} loading={loading} />
                 </Modal>
             )}
         </Layout>

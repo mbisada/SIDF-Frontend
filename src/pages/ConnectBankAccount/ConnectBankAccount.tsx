@@ -65,9 +65,7 @@ const ConnectBankAccount: React.FC = () => {
     useEffect(() => {
         getFinancial.then((res) => {
             setFinancialInstitutions(res.data.Data.FinancialInstitution);
-            console.log('Financial Request Initiated:', res);
 
-            console.log('Financial Institutions:', res.data.Data.FinancialInstitution);
         }).catch((error) => {
             console.error('Error initiating profile request:', error);
         });
@@ -122,9 +120,9 @@ const ConnectBankAccount: React.FC = () => {
                         disableElevation
                         style={{ backgroundColor: '#F36D21', width: "140px", height: "48px", borderRadius: "10px", fontSize: '13px', textTransform: 'none' }}
                         onClick={() => {
-                            console.log("Selected Financial Institution:", financialInstitutions[selected]);
-
-                            navigate('/ob-connect/review', { state: { inistituation: financialInstitutions[selected] } } as any)
+                            if (selected != -1) {
+                                navigate('/ob-connect/review', { state: { inistituation: financialInstitutions[selected] } } as any)
+                            }
                         }}
                         fullWidth
 

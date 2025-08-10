@@ -28,7 +28,6 @@ export default function AuthorizationAccount() {
     const queryParams = new URLSearchParams(location.search);
 
     useEffect(() => {
-        console.log("queryParams", queryParams.get('response'));
         setIsLoading(false)
     }, [queryParams]);
 

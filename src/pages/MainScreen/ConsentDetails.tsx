@@ -1,33 +1,36 @@
 import { Box, Button, Link, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../templates/Layout";
 import { useUserProfileServices } from "../../services/user/profiles";
 import moment from "moment";
 import { useCustomer } from "../../contexts/CustomerContext/useContext";
+import Spinner from "../../components/Spinner";
 
-const ConsentDetails: React.FC = () => {
+const ConsentDetails: React.FC<{ calculated: boolean }> = ({ calculated }) => {
     const navigate = useNavigate();
-
+    console.log('calculated cc', calculated);
     const [accounts, setAccounts] = useState([]);
     const { ListUserAccounts, calculateAccount } = useUserProfileServices();
     const { customer } = useCustomer();
+    const [loading, setLoading] = useState(false);
 
     const fetchAccounts = () => {
-        ListUserAccounts().then((res) => {
+        setLoading(true);
+        ListUserAccounts(calculated).then((res) => {
             setAccounts(res.data.data?.returnedObj[0]?.Data?.AccountsLinks);
-            console.log("ListUserAccounts", res.data);
         }).catch((error) => {
             console.error('Error fetching user accounts:', error);
+        }).finally(() => {
+            setLoading(false);
         });
-
     };
 
     useEffect(() => {
         if (customer?.crNumber) {
             fetchAccounts();
         }
-    }, [customer?.crNumber]);
+    }, [customer?.crNumber, calculated]);
 
     const calculateAndSubmit = ({ AccountsLinkId, FinancialInstitutionId }: { AccountsLinkId: string; FinancialInstitutionId: string; }) => {
         calculateAccount({ AccountsLinkId, FinancialInstitutionId }).then((res) => {
@@ -146,10 +149,11 @@ const ConsentDetails: React.FC = () => {
 
                     >
                         {'Connect New Bank Account'}
-
                     </Button>
                 </Box>
-                <List />
+                {loading ? (<Spinner />) : (
+                    <List />
+                )}
             </Box>
         </Layout>
     )

@@ -1,12 +1,11 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Typography, } from "@mui/material"
 import ic_close from '../../assets/ic_close.svg';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 interface Props {
     close: Function;
-    generateQRCode: () => void;
-    handleReirection: () => void;
-    loading: boolean;
+    QrCode: string;
+    loading?: boolean;
 }
 
 const style = {
@@ -18,10 +17,7 @@ const style = {
 
     borderRadius: '20px !important',
 };
-const RedirectDialog: React.FC<Props> = ({ close, handleReirection, generateQRCode, loading }) => {
-
-
-
+const QrCodeDialog: React.FC<Props> = ({ QrCode, close, loading }) => {
     return (
         <Box sx={style}
         >
@@ -34,11 +30,11 @@ const RedirectDialog: React.FC<Props> = ({ close, handleReirection, generateQRCo
 
                     <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'flex-start', width: '100%', }}>
                         <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'18px'} style={{ maxWidth: '70%' }}>
-                            Choose your preferred
-                            way to complete the process
+                            Scan QR code
                         </Typography>
 
                     </Box>
+
                     <Box
                         style={{}}
                         component="img"
@@ -54,10 +50,6 @@ const RedirectDialog: React.FC<Props> = ({ close, handleReirection, generateQRCo
                     />
                 </Box>
 
-                <Typography color="#475467" fontWeight={'400'} fontSize={'12px'} style={{ maxWidth: '70%', marginTop: '10px' }}>
-                    We can generate a QR code for you to continue your journey from your mobile
-                </Typography>
-
                 {loading && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', margin: '20px 0px' }}>
                         <ClipLoader
@@ -70,20 +62,12 @@ const RedirectDialog: React.FC<Props> = ({ close, handleReirection, generateQRCo
                         />
                     </Box>
                 )}
+                {QrCode && <div style={{ padding: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <img src={QrCode} alt="QR Code" /></div>}
 
-                <Button onClick={generateQRCode} style={{ marginTop: '20px', backgroundColor: '#EF6701', color: '#000000', width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Button style={{ alignSelf: 'flex-start', backgroundColor: '#FAFAFA', color: 'black', fontSize: '10px', padding: ' 10px' }}>
-                        Recommended
-                    </Button>
-                    <Typography variant="body2" fontWeight={'bold'} style={{ alignSelf: 'center', color: 'white', }}>Generate a QR code for me</Typography>
-                    <Typography variant="body2" style={{ alignSelf: 'center', color: '#6B7280' }}></Typography>
-                </Button>
-                <Button onClick={handleReirection} style={{ marginTop: '15px', padding: '10px 0px', backgroundColor: '#FAFAFA', color: '#344054', width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', border: '1px solid #D0D5DD', fontWeight: 'bold' }}>
-                    Automatically redirect me
-                </Button>
             </Box>
         </Box>
     )
 }
 
-export default RedirectDialog;
+export default QrCodeDialog;

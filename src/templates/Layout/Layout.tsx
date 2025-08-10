@@ -58,14 +58,28 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
     <Box sx={{ overflow: 'auto', paddingTop: 2 }}>
       <List>
         {customer?.role === ROLES.user && (
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/ob-connect')}>
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                <AccountBalance sx={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary={t('CONSENTS')} />
-            </ListItemButton>
-          </ListItem>
+          <>
+
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate('/ob-connect')}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <AccountBalance sx={{ color: 'white' }} />
+                </ListItemIcon>
+                <ListItemText primary={t('Dashboard')} />
+              </ListItemButton>
+
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate('/consent-details')}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <AccountBalance sx={{ color: 'white' }} />
+                </ListItemIcon>
+                <ListItemText primary={t('CONSENTS')} />
+              </ListItemButton>
+
+            </ListItem>
+          </>
         )}
         {customer?.role === ROLES.admin && (
           <ListItem disablePadding>

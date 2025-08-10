@@ -7,7 +7,6 @@ import { useCustomer } from '../../contexts/CustomerContext/useContext';
 
 export const useDashboardServices = () => {
   const { customer } = useCustomer();
-  console.log('customer', customer);
   const getDashboardData = async (psuid: string, FinancialInstitutionID: string): Promise<DashboardDataReturnedObj | null> => {
     try {
       const res: AxiosResponse<DashboardDataResponse> = await backendAxiosInstance.get(

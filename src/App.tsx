@@ -34,7 +34,15 @@ function App() {
           path="/ob-connect/*"
           element={
             <ProtectedRoute requiredRole="ROLE_USER">
-              <ConsentDetails />
+              <ConsentDetails calculated={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/consent-details"
+          element={
+            <ProtectedRoute requiredRole="ROLE_USER">
+              <ConsentDetails calculated={true} />
             </ProtectedRoute>
           }
         />

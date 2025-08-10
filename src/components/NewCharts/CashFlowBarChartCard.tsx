@@ -35,7 +35,6 @@ export default function NewCashFlowBarChartCard({ inflowTotal, outflowTotal, mon
       }
     }
   }, [width]);
-  console.log("monthlyCashFlow", monthlyCashFlow);
   const transformedMonthlyCashFlow = useMemo(() => {
     const allMonths = monthlyCashFlow.map(entry => ({
       ...entry,
@@ -64,7 +63,6 @@ export default function NewCashFlowBarChartCard({ inflowTotal, outflowTotal, mon
 
     return injectedData;
   }, [monthNames, monthlyCashFlow]);
-  console.log("transformedMonthlyCashFlow", transformedMonthlyCashFlow);
   const formatValue = (value: number) => {
     const absValue = Math.abs(value);
     let formatted = value.toString();

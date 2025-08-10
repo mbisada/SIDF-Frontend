@@ -20,7 +20,6 @@ function Companies() {
   const [showDialouge, setShowDialouge] = useState<boolean>();
   const { customer } = useCustomer();
 
-  console.log('customer', customer);
   useEffect(() => {
     setIsLoading(true);
     void getCompaniesList('COMPLETED') //NOW WE GET NEW REQUESTS ONLY

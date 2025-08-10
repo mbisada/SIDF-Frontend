@@ -1,9 +1,9 @@
+import { isCancel } from 'axios';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { backendAxiosInstance } from '../axiosInstance';
 
 export const useUserProfileServices = () => {
   const { customer } = useCustomer();
-  console.log('customer', customer);
 
   const initiateProfileRequest = async () => {
     return await backendAxiosInstance.get(`/ob/single-api-aggregator/v1/profiles?PSUId=${customer?.crNumber}&Page=1&Order=DESC`);
@@ -49,10 +49,11 @@ export const useUserProfileServices = () => {
       },
     });
   };
-  const ListUserAccounts = async () => {
+  const ListUserAccounts = async (calculated: boolean) => {
+    console.log('calculated', calculated);
     return await backendAxiosInstance.post(`/user/list-accounts`, {
       PSUId: customer?.crNumber,
-      isCalclated: false,
+      IsCalculated: calculated ?? false,
     });
   };
 
