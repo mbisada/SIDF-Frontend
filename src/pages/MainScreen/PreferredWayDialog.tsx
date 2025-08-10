@@ -1,6 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import UnionText from './UnionText';
-import bookmark from '../../assets/bookmark.svg';
+
 import ic_close from '../../assets/ic_close.svg';
 
 interface Props {

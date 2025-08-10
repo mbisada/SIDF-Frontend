@@ -50,7 +50,7 @@ import { LoginDTOMapper } from '../../services/registeration/registerationMapper
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { setCustomer, customer } = useCustomer();
+  const { setCustomer, } = useCustomer();
   const location = useLocation();
   const { createLoginRequest, getProfile } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);

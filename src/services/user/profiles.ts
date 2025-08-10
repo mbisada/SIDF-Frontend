@@ -1,4 +1,3 @@
-import { isCancel } from 'axios';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { backendAxiosInstance } from '../axiosInstance';
 

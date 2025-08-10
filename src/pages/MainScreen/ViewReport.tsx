@@ -1,17 +1,8 @@
-import { Box, Button, Typography } from '@mui/material';
 
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, } from 'react-router-dom';
 import styled from 'styled-components';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
 
-  borderRadius: '20px !important',
-};
 
 const IframeWrapper = styled.div`
   position: relative;
@@ -33,14 +24,9 @@ const FullSizeIframe = styled.iframe`
   height: 100%;
 `;
 
-const HiddenIframe = styled.iframe`
-  width: 100%;
-  height: 0;
-  border: none;
-  visibility: hidden;
-`;
 
-const ViewReport: React.FC = ({}) => {
+
+const ViewReport: React.FC = () => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 

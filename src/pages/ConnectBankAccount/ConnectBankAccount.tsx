@@ -56,9 +56,7 @@ const ConnectBankAccount: React.FC = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(-1);
 
-  const { initiateProfileRequest, getAccountLinks, getFinacialInstitutions, ListUserAccounts } = useUserProfileServices();
-  const response = initiateProfileRequest();
-  const gatAccountsresponse = getAccountLinks();
+  const { getFinacialInstitutions } = useUserProfileServices();
 
   const getFinancial = getFinacialInstitutions();
   const [financialInstitutions, setFinancialInstitutions] = useState<any[]>([]);

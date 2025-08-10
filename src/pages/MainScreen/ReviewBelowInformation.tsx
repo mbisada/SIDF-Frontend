@@ -407,7 +407,7 @@ const ReviewBelowInformation: React.FC = () => {
                   textTransform: 'none',
                   color: '#F36D21',
                 }}
-                onClick={() => {}}
+                onClick={() => { }}
                 fullWidth
                 sx={{
                   padding: 1,

@@ -37,7 +37,7 @@ const ConsentDetails: React.FC<{ calculated: boolean }> = ({ calculated }) => {
     const calculateAndSubmit = ({ AccountsLinkId, FinancialInstitutionId }: { AccountsLinkId: string; FinancialInstitutionId: string }) => {
         setLoading(true);
         calculateAccount({ AccountsLinkId, FinancialInstitutionId })
-            .then(res => {
+            .then(() => {
                 fetchAccounts();
             })
             .catch(error => {

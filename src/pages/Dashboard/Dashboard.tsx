@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
 import DownloadIcon from '@mui/icons-material/Download';
-import { Box, Button, Modal, Stack, Typography } from '@mui/material';
+import { Box, Button, Modal, } from '@mui/material';
 
 import CashFlowBarChartCard from '../../components/CashFlowBarChartCard';
 import CashFlowCard from '../../components/CashFlowCard/CashFlowCard';
@@ -16,26 +16,10 @@ import { DashboardDataReturnedObj } from '../../services/dashboard/dashboard.typ
 import Layout from '../../templates/Layout';
 import ExportDialog from '../MainScreen/ExportDialog';
 import { useUserProfileServices } from '../../services/user/profiles';
-import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { BankTabs } from './BankTabs';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '1px solid #DADADA',
-  boxShadow: 24,
-  p: 2,
-};
 
-const data = [
-  { day: 1, inflow: 48000000, outflow: -25000000, profit: 10000000 },
-  { day: 2, inflow: 20000000, outflow: -15000000, profit: 5000000 },
-  // ... your data
-];
+
 
 export default function Dashboard() {
   const [requestDetails, setRequestDetails] = useState<DashboardDataReturnedObj | null>(null);

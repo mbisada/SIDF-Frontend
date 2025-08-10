@@ -11,7 +11,6 @@ import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
 import { useState } from 'react';
 import { useUserProfileServices } from '../../services/user/profiles';
-import { useNavigate } from 'react-router-dom';
 
 interface Props {
   close: Function;
@@ -28,7 +27,6 @@ const style = {
   borderRadius: '20px !important',
 };
 const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
-  const navigate = useNavigate();
   const { exportReport } = useUserProfileServices();
 
   const [banks, setBanks] = useState([
@@ -70,7 +68,7 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
             alt="neotek logo"
             src={bank.selected ? ic_selected : ic_unselected}
           />
-          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => {}}>
+          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => { }}>
             {bank.name}
           </Typography>
         </Box>

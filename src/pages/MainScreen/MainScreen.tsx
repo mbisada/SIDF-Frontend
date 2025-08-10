@@ -5,7 +5,6 @@ import { Box } from '@mui/material';
 import BookMarkDialog from './BookmarkDialog';
 import SideBar from './SideBar';
 import TopBar from './TopBar';
-import ReviewBelowInformation from './ReviewBelowInformation';
 import PreferredWayDialog from './PreferredWayDialog';
 
 const MainScreen: React.FC = () => {

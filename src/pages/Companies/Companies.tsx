@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 import CompanyCard from '../../components/CompanyCard';
 import Spinner from '../../components/Spinner';
@@ -82,13 +82,13 @@ function Companies() {
             </Button>
           </Box>
 
-          <Grid container spacing={2}>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: '16px' }}>
             {companiesList &&
               companiesList.length > 0 &&
               companiesList?.map(company => {
                 return <CompanyCard identifier={company.companyName} key={company.psuid} crNumber={company.psuid ?? ''} />;
               })}
-          </Grid>
+          </div>
         </Box>
       </Layout>
 

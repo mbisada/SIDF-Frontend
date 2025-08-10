@@ -4,7 +4,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
-import { Button, CardContent, Grid } from '@mui/material';
+import { Button, CardContent, } from '@mui/material';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) 
   };
 
   return (
-    <Grid item xs={6} xxs={12}>
+    <div style={{ width: '50%' }}  >
       <Card sx={{ margin: 1, padding: 1, height: '100%', backgroundColor: 'white', border: '1px solid #DADADA', paddingBottom: '0px' }}>
         <CardHeader
           avatar={
@@ -50,6 +50,6 @@ export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) 
           </Typography>
         </CardContent>
       </Card>
-    </Grid>
+    </div>
   );
 }
