@@ -2,7 +2,7 @@
 //import Spinner from '../../components/Spinner';
 import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 //import { useTranslation } from 'react-i18next';
@@ -33,7 +33,8 @@ const Registration = () => {
   const { setCustomer } = useCustomer();
   const { createRegisterationRequest } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
-  //const { t } = useTranslation();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +53,7 @@ const Registration = () => {
         psuid: formik.values.crNumber,
         mobileNumber: formik.values.mobileNumber,
         password: formik.values.password,
-        referalCode: 'AK2M12dDvUtoJWMSnkhp5w=='
+        referalCode: queryParams.get('referalCode') || '',
         //role:'user'
       };
 

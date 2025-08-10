@@ -17,7 +17,11 @@ interface CompanyCardProps {
 export default function CompanyCard({ crNumber, identifier }: CompanyCardProps) {
   const navigate = useNavigate();
   const handleNavigateClick = () => {
-    navigate(`/companies/${crNumber}`);
+    navigate(`/companies/${crNumber}`, {
+      state: {
+
+      }
+    });
   };
 
   return (

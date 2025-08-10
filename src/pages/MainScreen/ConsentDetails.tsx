@@ -1,30 +1,45 @@
 import { Box, Button, Link, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import alrajhiBankLogo from '../../assets/alrajhiBankLogo.svg';
-import alinmaBankLogo from '../../assets/alinmaBankLogo.svg';
 import Layout from "../../templates/Layout";
+import { useUserProfileServices } from "../../services/user/profiles";
+import moment from "moment";
+import { useCustomer } from "../../contexts/CustomerContext/useContext";
+
 const ConsentDetails: React.FC = () => {
     const navigate = useNavigate();
 
     const [accounts, setAccounts] = useState([]);
+    const { ListUserAccounts, calculateAccount } = useUserProfileServices();
+    const { customer } = useCustomer();
 
     const fetchAccounts = () => {
-        // Simulate fetching accounts from an API
-        setAccounts([
-            { name: 'Al Rajhi Bank', image: alrajhiBankLogo },
-            { name: 'Alinma Bank', image: alinmaBankLogo },
-            // Add more accounts as needed
-        ]);
+        ListUserAccounts().then((res) => {
+            setAccounts(res.data.data?.returnedObj[0]?.Data?.AccountsLinks);
+            console.log("ListUserAccounts", res.data);
+        }).catch((error) => {
+            console.error('Error fetching user accounts:', error);
+        });
+
     };
 
     useEffect(() => {
-        fetchAccounts();
-    }, []);
-    const calculateAndSubmit = (account: { name: string, image: string }) => {
+        if (customer?.crNumber) {
+            fetchAccounts();
+        }
+    }, [customer?.crNumber]);
+
+    const calculateAndSubmit = ({ AccountsLinkId, FinancialInstitutionId }: { AccountsLinkId: string; FinancialInstitutionId: string; }) => {
+        calculateAccount({ AccountsLinkId, FinancialInstitutionId }).then((res) => {
+            fetchAccounts()
+        }).catch((error) => {
+            console.error('Error calculating account:', error);
+            alert('Error calculating account');
+        });
     }
+
     function List() {
-        return accounts.map((account, index) => {
+        return accounts.map((account: any, index: number) => {
             return (
                 <Box key={index} style={{
                     flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignItems: 'center', alignContent: 'flex-start', backgroundColor: 'white', width: '100%', height: '160px', flexShrink: 0, borderRadius: "27px", borderWidth: "1px", borderColor: "#E5E5E5", marginTop: 10
@@ -44,19 +59,19 @@ const ConsentDetails: React.FC = () => {
                                 width: "68px",
                             }}
                             alt="neotek logo"
-                            src={account.image}
+                            src={account.FinancialInstitution?.Logo}
 
                             paddingTop={1}
                         />
                         <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'flex-start', width: '75%', marginTop: 36 }}>
                             <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'24px'} style={{}}>
-                                {account.name}
+                                {account.FinancialInstitution?.NameEn}
                             </Typography>
                             <Typography variant="body2" color="#777777" fontWeight={'bold'} fontSize={'15px'} style={{}}>
                                 Consent Date
                             </Typography>
                             <Typography variant="body2" color="#272424" fontWeight={'bold'} fontSize={'21px'} style={{}}>
-                                2024-9-23
+                                {moment(new Date()).format('DD-MM-YYYY')}
                             </Typography>
                         </Box>
                     </Box>
@@ -65,17 +80,29 @@ const ConsentDetails: React.FC = () => {
                         variant="contained"
                         autoCapitalize="off"
                         disableElevation
-                        onClick={() => { calculateAndSubmit(account) }}
+
+                        onClick={() => {
+                            if (account.IsCalculated) {
+                                navigate(`/companies/${customer?.crNumber}`)
+                            } else {
+                                calculateAndSubmit({
+                                    FinancialInstitutionId: account.FinancialInstitution?.FinancialInstitutionId,
+                                    AccountsLinkId: account.AccountsLinkId,
+                                })
+                            }
+                        }}
 
 
                         sx={{
                             padding: 1,
                             borderRadius: 2,
                             fontWeight: 700,
+                            backgroundColor: account.IsCalculated ? 'gray' : '#FFE9D8',
+                            color: account.IsCalculated ? 'white' : '#F36D21'
                         }}
 
                     >
-                        {'Calculate & Submit'}
+                        {account.IsCalculated ? 'done ' : 'Calculate & Submit'}
 
                     </Button>
                 </Box>
@@ -99,7 +126,7 @@ const ConsentDetails: React.FC = () => {
                     sx={{ flexGrow: 1 }}
                     display={'flex'}>
                     <Typography variant="body2" color="black" fontWeight={'600'} fontSize={'24px'} style={{ marginLeft: 8 }}>
-                        {'Consents Details'}
+                        {'Connect Bank Account'}
                     </Typography>
 
                     <Button

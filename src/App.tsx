@@ -17,6 +17,8 @@ import Unauthorized from './pages/Unauthorized';
 import './i18n/i18n';
 import ReviewBelowInformation from './pages/MainScreen/ReviewBelowInformation';
 import ConsentDetails from './pages/MainScreen/ConsentDetails';
+import AuthorizationAccount from './pages/AuthorizationAccount';
+import ViewReport from './pages/MainScreen/ViewReport';
 
 function App() {
   initializeI18n();
@@ -32,8 +34,6 @@ function App() {
           path="/ob-connect/*"
           element={
             <ProtectedRoute requiredRole="ROLE_USER">
-              {/* <NeotekSDK /> */}
-
               <ConsentDetails />
             </ProtectedRoute>
           }
@@ -42,8 +42,6 @@ function App() {
           path="/ob-connect/connect"
           element={
             <ProtectedRoute requiredRole="ROLE_USER">
-              {/* <NeotekSDK /> */}
-
               <ConnectBankAccount />
             </ProtectedRoute>
           }
@@ -69,9 +67,7 @@ function App() {
         <Route
           path="/companies/:psuid"
           element={
-            <ProtectedRoute requiredRole={'ROLE_ADMIN'}>
-              <Dashboard />
-            </ProtectedRoute>
+            <Dashboard />
           }
         />
 
@@ -83,12 +79,25 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/ViewReport"
+          element={
+            <ViewReport />
+          }
+        />
         <Route
           path="/ob-connect/fail"
           element={
             <ProtectedRoute requiredRole="ROLE_USER">
               <FailSubmission />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/neotek/sidf/account-link/authorization"
+          element={
+            <ProtectedRoute requiredRole="ROLE_USER">
+              <AuthorizationAccount />
             </ProtectedRoute>
           }
         />

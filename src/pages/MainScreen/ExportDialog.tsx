@@ -10,9 +10,12 @@ import ic_file_lines from '../../assets/ic_file_lines.svg';
 import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
 import { useState } from "react";
+import { useUserProfileServices } from "../../services/user/profiles";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-    close: Function
+    close: Function;
+    PSUId: string;
 }
 
 const style = {
@@ -20,19 +23,19 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
-    border: '1px solid #DADADA',
 
-
+    borderRadius: '20px !important'
 };
-const ExportDialog: React.FC<Props> = ({ close }) => {
+const ExportDialog: React.FC<Props> = ({ close, PSUId }) => {
+    const navigate = useNavigate();
+    const { exportReport } = useUserProfileServices();
 
     const [banks, setBanks] = useState([{ name: "All", selected: false }, { name: "Alrajhi Bank", selected: false }, { name: "BSF", selected: false }, { name: "Alinma", selected: false },])
     function List() {
         return banks.map((bank, index) => {
             return (
-                <Box key={index} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', alignContent: 'center', marginLeft: 16, paddingLeft: 8, width: '150px', height: '40px', borderRadius: "6px" }}
+                <Box key={index} style={{ flexDirection: 'row', borderRadius: '20px', alignItems: 'center', justifyContent: 'flex-start', alignContent: 'center', marginLeft: 16, paddingLeft: 8, width: '150px', height: '40px', }}
                     display={'flex'}
                     onClick={() => {
                         setBanks(prevAccounts =>
@@ -106,8 +109,10 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
         })
     }
 
-    const ouputs = [{ icon: ic_pdf, name: "Pdf" }, { icon: ic_excel, name: "Excel" }]
+    const ouputs = [{ icon: ic_pdf, name: "Pdf", format: 'PDF' }, { icon: ic_excel, name: "Excel", format: 'EXCEL' }]
     const [selectedOutput, setSelectedOutput] = useState("")
+    const [format, setFormat] = useState("")
+
     function List3() {
         return ouputs.map((account, index) => {
             return (
@@ -115,6 +120,7 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
                     display={'flex'}
                     onClick={() => {
                         setSelectedOutput(account.name)
+                        setFormat(account.format)
                     }}>
                     <Box
                         style={{ alignSelf: 'center' }}
@@ -157,13 +163,14 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
     return (
         <Box sx={style}
         >
-            <Box style={{ flexDirection: 'column', alignItems: 'center', alignSelf: 'center', justifyContent: 'center', width: '640px', height: '800px', backgroundColor: 'white', borderRadius: '12px' }}>
+            <Box sx={{ flexDirection: 'column', alignItems: 'center', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: '20px !important', padding: '20px 0' }}>
                 <Box style={{
-                    flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignItems: 'flex-start', alignContent: 'flex-start', backgroundColor: 'white', width: '100%', height: '93px', flexShrink: 0, borderColor: "#E5E5E5"
+                    flexDirection: 'row', display: 'flex', paddingLeft: "26.3px", paddingRight: "26.3px", justifyContent: 'space-between', alignItems: 'center',
+                    columnGap: '10px'
                 }}
                 >
                     <Box
-                        style={{ marginTop: 27 }}
+                        style={{}}
                         component="img"
                         loading="lazy"
                         sx={{
@@ -173,9 +180,9 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
                         alt="neotek logo"
                         src={ic_export}
 
-                        paddingTop={1}
+
                     />
-                    <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'flex-start', width: '80%', marginTop: 36 }}>
+                    <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'flex-start', width: '100%', margin: '16px 0', }}>
                         <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'18px'} style={{}}>
                             Export as
                         </Typography>
@@ -185,7 +192,7 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
 
                     </Box>
                     <Box
-                        style={{ marginTop: 27 }}
+                        style={{}}
                         component="img"
                         loading="lazy"
                         sx={{
@@ -288,7 +295,33 @@ const ExportDialog: React.FC<Props> = ({ close }) => {
                         autoCapitalize="off"
                         disableElevation
                         style={{ backgroundColor: '#F36D21', alignSelf: 'flex-end', width: "80px", height: "48px", borderRadius: "10px", fontSize: '13px', textTransform: 'none', }}
-                        onClick={() => { close() }}
+
+                        onClick={() => {
+                            exportReport(PSUId, format).then(response => {
+                                // Create a blob from the response
+                                if (format == "EXCEL") {
+                                    const blob = new Blob([response.data], {
+                                        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                    });
+
+                                    // Create a download link
+                                    const url = window.URL.createObjectURL(blob);
+                                    const link = document.createElement("a");
+                                    link.href = url;
+                                    link.setAttribute("download", "report.xlsx"); // filename
+                                    document.body.appendChild(link);
+                                    link.click();
+
+                                    // Cleanup
+                                    document.body.removeChild(link);
+                                    window.URL.revokeObjectURL(url);
+                                } else {
+                                    const params = new URLSearchParams({ url: response.data.url });
+
+                                    window.open(`/viewReport?${params.toString()}`, "_blank");
+                                }
+                            })
+                        }}
                         fullWidth
 
                         sx={{

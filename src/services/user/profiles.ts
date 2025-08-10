@@ -28,7 +28,63 @@ export const useUserProfileServices = () => {
     );
   };
   const getAccountLink = async (createAccountLinkPayload: any) => {
-    return await backendAxiosInstance.post(`/ob/accounts-information/v1/accounts-links`, createAccountLinkPayload);
+    return await backendAxiosInstance.post(`/account-link`, createAccountLinkPayload, {
+      headers: {
+        apikey: customer?.checksum,
+      },
+    });
   };
-  return { initiateProfileRequest, getAccountLinks, getFinacialInstitutions, getDataGroups, getAccountLink };
+
+  const linkAccountEvent = async (EventId: string) => {
+    return await backendAxiosInstance.get(`/event/${EventId}/info`);
+  };
+
+  const linkProfile = async (AccountsLinkId: string) => {
+    return await backendAxiosInstance.post(`/ob/single-api-aggregator/v1/profiles/profile-accounts-link`, {
+      AccountsLinkId: AccountsLinkId,
+      PSUId: customer?.crNumber,
+      AccountsLinkInfo: {
+        AccountsLinkId,
+        FetchingType: 'SINGLE',
+      },
+    });
+  };
+  const ListUserAccounts = async () => {
+    return await backendAxiosInstance.post(`/user/list-accounts`, {
+      PSUId: customer?.crNumber,
+      isCalclated: false,
+    });
+  };
+
+  const calculateAccount = async ({
+    AccountsLinkId,
+    FinancialInstitutionId,
+  }: {
+    AccountsLinkId: string;
+    FinancialInstitutionId: string;
+  }) => {
+    return await backendAxiosInstance.post(`/user/calculate`, {
+      PSUId: customer?.crNumber,
+      AccountsLinkId,
+      FinancialInstitutionId,
+    });
+  };
+
+  const exportReport = async (PSUId: string, format: string) => {
+    return await backendAxiosInstance.get(`/admin/e-statements/export`, {
+      params: { PSUId, format },
+    });
+  };
+  return {
+    initiateProfileRequest,
+    getAccountLinks,
+    getFinacialInstitutions,
+    getDataGroups,
+    getAccountLink,
+    linkAccountEvent,
+    linkProfile,
+    ListUserAccounts,
+    calculateAccount,
+    exportReport,
+  };
 };

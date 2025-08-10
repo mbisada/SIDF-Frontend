@@ -1,15 +1,15 @@
-import { Box, Button, Link, Typography } from "@mui/material"
+import { Box, Button, Link, Modal, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ic_export from '../../assets/ic_export.svg';
 import React from 'react';
-import PreferredWayDialog from "./PreferredWayDialog";
-import BookMarkDialog from "./BookmarkDialog";
+
 import Layout from "../../templates/Layout";
 import { useLocation } from 'react-router-dom';
 import { useUserProfileServices } from "../../services/user/profiles";
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import moment from 'moment';
+import RedirectDialog from "./RedirectDialog";
 interface NeotekDataGroup {
     DataGroupId: string;
     DescriptionEn: string;
@@ -17,15 +17,67 @@ interface NeotekDataGroup {
     Permissions: Array<any>;
 }
 
-const ReviewBelowInformation: React.FC = () => {
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const ReviewBelowInformation: React.FC = () => {
+    let maxCalls = 10;
+    let delayTime = 0;
+    const [interruptAuthentication, setInterruptAuth] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [accountLinkStatus, setAccountLinkStatus] = useState('');
+    const [AccountsLinkId, setAccountsLinkId] = useState<string>('');
+    const [EventId, setEventId] = useState<string>('');
+    const [redirectionUrl, setRedirectionUrl] = useState<string>('');
     const location = useLocation();
     console.log("Location state:", location.state);
     const { inistituation } = location.state;
     console.log("inistituation", inistituation);
     const { customer } = useCustomer();
-    const { getDataGroups, getAccountLink } = useUserProfileServices();
+    const { getDataGroups, getAccountLink, linkAccountEvent, linkProfile } = useUserProfileServices();
     const [dataGroups, setDataGroups] = useState<any[]>([]);
+    const handleClose = async () => {
+        setOpen(false);
+    };
+    let profileId = "";
+    console.log("redirectionUl Review", redirectionUrl)
+    const listenToAccountLinkStatus = async (EventId: string) => {
+        const getEventInfoResponse = await linkAccountEvent(EventId) as any;
+        console.log("getEventInfoResponse", getEventInfoResponse);
+        if (
+            getEventInfoResponse?.data?.code === 400 ||
+            getEventInfoResponse?.data?.code > 500
+        ) {
+            setAccountLinkStatus('Failed');
+            return;
+        }
+        if (
+            !getEventInfoResponse?.data?.data ||
+            getEventInfoResponse?.data?.data?.returnedObj[0]?.status !== 'READY'
+        ) {
+            maxCalls = maxCalls - 1;
+
+            if (maxCalls > 0 && !interruptAuthentication) {
+                delayTime = delayTime + 10000;
+                await delay(delayTime);
+                await listenToAccountLinkStatus(EventId);
+            }
+
+            maxCalls = 5;
+            setInterruptAuth(true);
+            // goToCompleteState();
+            //return alertHandler('danger', t('LBL_NO_RESPONSE'));
+        }
+
+        linkProfile(getEventInfoResponse?.data?.data?.returnedObj[0]?.response.AccountsLinkId);
+
+        maxCalls = 5;
+        // getEventInfoResponse?.data?.returnedObj[0]?.response.AccountsLinkId
+        setAccountLinkStatus(
+            getEventInfoResponse?.data?.returnedObj[0]?.response.AccountsLinkStatus
+        );
+    };
+
 
     useEffect(() => {
         if (inistituation && inistituation.FinancialInstitutionId) {
@@ -61,6 +113,13 @@ const ReviewBelowInformation: React.FC = () => {
         }
     }, [inistituation]);
 
+
+    useEffect(() => {
+        if (accountLinkStatus == "ACTIVE") {
+            alert("Account link is active");
+        }
+    }, [accountLinkStatus]);
+
     const expiryDate = moment().add(1, 'year');
 
     const navigate = useNavigate();
@@ -87,13 +146,20 @@ const ReviewBelowInformation: React.FC = () => {
         };
         return payload;
     };
+
     const createAccountLink = async () => {
         if (inistituation) {
             const response = await getAccountLink(createAccountLinkPayload());
             console.log("Account link response:", response);
             if (response && response.data) {
-                console.log("Redirect URL:", response.data, response.data.RedirectUrl);
-                // window.location.href = response.data.RedirectUrl;
+                setAccountsLinkId(response.data.Data.AccountsLinkId);
+                setEventId(response.data.Data.EventId);
+                setRedirectionUrl(response.data.Data.RedirectionURL);
+                setOpen(true)
+                console.log("EventId", response.data.Data.EventId);
+                setTimeout(() => {
+                    listenToAccountLinkStatus(response.data.Data.EventId);
+                }, 10000);
             } else {
                 console.error("No redirect URL found in response");
             }
@@ -306,6 +372,11 @@ const ReviewBelowInformation: React.FC = () => {
                 </Box>
 
             </Box>
+            {open && (
+                <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                    <RedirectDialog close={handleClose} RedirectUrl={redirectionUrl} />
+                </Modal>
+            )}
         </Layout>
     )
 }

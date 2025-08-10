@@ -55,9 +55,11 @@ const ConnectBankAccount: React.FC = () => {
     const navigate = useNavigate();
     const [selected, setSelected] = useState(-1);
 
-    const { initiateProfileRequest, getAccountLinks, getFinacialInstitutions } = useUserProfileServices();
+    const { initiateProfileRequest, getAccountLinks, getFinacialInstitutions, ListUserAccounts } = useUserProfileServices();
     const response = initiateProfileRequest();
     const gatAccountsresponse = getAccountLinks();
+
+
     const getFinancial = getFinacialInstitutions();
     const [financialInstitutions, setFinancialInstitutions] = useState<any[]>([]);
     useEffect(() => {
@@ -69,6 +71,7 @@ const ConnectBankAccount: React.FC = () => {
         }).catch((error) => {
             console.error('Error initiating profile request:', error);
         });
+
     }, []);
 
 

@@ -35,7 +35,7 @@ function Companies() {
 
   if (isLoading) return <Spinner />;
 
-  const textToCopy = "https://neotek.com/referral/123456789";
+  const textToCopy = `${import.meta.env.VITE_BACKEND_BASE_URL}/register?referalCode=${customer?.referralCode}`;
 
   const handleCopy = async () => {
     try {
@@ -69,7 +69,7 @@ function Companies() {
           }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: '16px' }}>
-            <Typography color='#151538' onClick={() => { setShowDialouge(true) }} variant={'h5'} fontWeight={'semibold'}>Companies List Details</Typography>
+            <Typography color='#151538' variant={'h5'} fontWeight={'semibold'}>Companies List Details</Typography>
             <Button onClick={() => { setShowDialouge(true) }} variant={'contained'}>
               <Typography color='white' variant={'body2'} fontWeight={'bold'}>Generate referral code</Typography>
             </Button>
@@ -148,7 +148,7 @@ function Companies() {
           </Typography>
           <Box style={{ padding: '10px', borderRadius: '7px', margin: '20px 0', backgroundColor: '#1018280D', width: '100%', height: 'auto' }} >
             <Typography variant={'body2'} color="#101828" fontWeight={'400'} fontSize={'15px'} style={{ marginTop: 0 }}>
-              https://neotek.com/referral/123456789
+              {textToCopy}
             </Typography>
           </Box>
           <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', columnGap: '10px', width: '100%', height: 'auto' }} >

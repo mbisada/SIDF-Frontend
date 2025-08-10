@@ -15,6 +15,9 @@ import { useDashboardServices } from '../../services/dashboard/dashboard';
 import { DashboardDataReturnedObj } from '../../services/dashboard/dashboard.types';
 import Layout from '../../templates/Layout';
 import ExportDialog from '../MainScreen/ExportDialog';
+import { useUserProfileServices } from '../../services/user/profiles';
+import { useCustomer } from '../../contexts/CustomerContext/useContext';
+import { BankTabs } from './BankTabs';
 
 const style = {
   position: 'absolute',
@@ -28,71 +31,27 @@ const style = {
   p: 2,
 };
 
-const banks = ['All', 'Alrajhi bank', 'BSF', 'Alinma', 'Albilad bank'];
 
+const data = [
+  { day: 1, inflow: 48000000, outflow: -25000000, profit: 10000000 },
+  { day: 2, inflow: 20000000, outflow: -15000000, profit: 5000000 },
+  // ... your data
+];
 
-const BankTabs = () => {
-  const [selected, setSelected] = useState('All');
-
-  return (
-    <Box
-      sx={{
-
-        backgroundColor: '#f9f1eb',
-        borderRadius: 2,
-        display: 'inline-block',
-      }}
-    >
-      <Stack direction="row" paddingInline={2} spacing={3} alignItems="center">
-        {banks.map((bank) =>
-          bank === selected ? (
-            <Button
-              key={bank}
-              onClick={() => setSelected(bank)}
-              variant="contained"
-              sx={{
-                backgroundColor: 'white',
-                color: 'black',
-                fontWeight: 'bold',
-                borderRadius: 3,
-                boxShadow: 3,
-                px: 3,
-                py: 1,
-                minWidth: 'auto',
-              }}
-            >
-              {bank}
-            </Button>
-          ) : (
-            <Typography
-              key={bank}
-              onClick={() => setSelected(bank)}
-              sx={{
-                cursor: 'pointer',
-                color: '#7a7a7a',
-              }}
-            >
-              {bank}
-            </Typography>
-          )
-        )}
-      </Stack>
-    </Box>
-  );
-};
 export default function Dashboard() {
   const [requestDetails, setRequestDetails] = useState<DashboardDataReturnedObj | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-
+  const [financialInstitutions, setFinancialInstitutions] = useState<any[]>([]);
+  const [currentFinancialInstitution, setCurrentFinancialInstitution] = useState<string>('All');
   const handleClose = async () => {
     setOpen(false);
   };
 
   const userInfo = requestDetails?.userInfo;
   const financialData = requestDetails?.financialData;
-  console.log("requestDetails", requestDetails)
+
   const { psuid } = useParams<{ psuid: string }>();
   const { getDashboardData } = useDashboardServices();
 
@@ -100,7 +59,7 @@ export default function Dashboard() {
     if (!psuid) return setIsLoading(false);
 
     setIsLoading(true);
-    const res = await getDashboardData(psuid);
+    const res = await getDashboardData(psuid, currentFinancialInstitution);
     if (res) setRequestDetails(res);
     setIsLoading(false);
   };
@@ -108,12 +67,23 @@ export default function Dashboard() {
   useEffect(() => {
     getDashboardDataHandler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentFinancialInstitution]);
+
+  const { getFinacialInstitutions } = useUserProfileServices();
+
+
+  useEffect(() => {
+    getFinacialInstitutions().then((res) => {
+      setFinancialInstitutions(res.data.Data.FinancialInstitution);
+    }).catch((error) => {
+      console.error('Error fetching financial institutions:', error);
+    });
   }, []);
 
-  if (isLoading) return <Spinner />;
 
   return (
     <div>
+      {isLoading && <Spinner />}
       <Layout
         breadcrumbs={[
           { label: 'Dashboard', href: '/' },
@@ -128,7 +98,7 @@ export default function Dashboard() {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          <BankTabs />
+          <BankTabs financialInstitutions={financialInstitutions} setCurrentFinancialInstitution={setCurrentFinancialInstitution} />
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', }}>
             <Button variant="contained" endIcon={<DownloadIcon />} onClick={() => setOpen(true)}>
               {t('EXPORT_REPORT')}
@@ -190,7 +160,7 @@ export default function Dashboard() {
         </Box>
 
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-          <ExportDialog close={handleClose} />
+          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ""} />
 
           {/* <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={'center'}>
@@ -204,6 +174,8 @@ export default function Dashboard() {
             </Stack>
           </Box> */}
         </Modal>
+
+
       </Layout>
     </div>
   );

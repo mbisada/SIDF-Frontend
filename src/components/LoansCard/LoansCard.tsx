@@ -89,7 +89,7 @@ export default function LoansCard({ liability }: LoansCardProps) {
                 src={Riyal}
                 paddingTop={1}
               />
-              <Typography variant="body2" sx={{ color: 'text.primary' }}>
+              <Typography variant="body2" sx={{ color: 'text.primary', marginTop: '10px' }}>
                 Liability
               </Typography>
             </Typography>
