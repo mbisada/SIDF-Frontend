@@ -9,9 +9,8 @@ import ic_chart_mixed from '../../assets/ic_chart_mixed.svg';
 import ic_file_lines from '../../assets/ic_file_lines.svg';
 import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useUserProfileServices } from '../../services/user/profiles';
-import { useNavigate } from 'react-router-dom';
 import html2canvas from "html2canvas";
 
 interface Props {
@@ -30,7 +29,6 @@ const style = {
   borderRadius: '20px !important',
 };
 const ExportDialog: React.FC<Props> = ({ close, PSUId, componentRef }) => {
-  const navigate = useNavigate();
   const { exportReport } = useUserProfileServices();
 
   const [banks, setBanks] = useState([

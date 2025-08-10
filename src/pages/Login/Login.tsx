@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { LoadingButton } from '@mui/lab';
-import { Box, /* Button, */ Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, /* Button, */   Stack, TextField, Typography } from '@mui/material';
 
 import chart from '../../assets/favorite-chart.svg';
 import logo from '../../assets/logoWhite.svg';
