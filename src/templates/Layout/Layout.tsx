@@ -31,6 +31,7 @@ import test_man from '../../assets/test_man.svg';
 import { ROLES } from '../../constants/roles';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useLogout } from '../../hooks/useLogout';
+import BookMarkDialog from '../../pages/MainScreen/BookmarkDialog';
 
 interface LayoutProps {
   breadcrumbs?: { label: string; href?: string }[];
@@ -43,7 +44,7 @@ const drawerWidth = 240;
 
 const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const [show, setShow] = React.useState(false);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { customer } = useCustomer();
@@ -167,7 +168,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               }}
               alt="neotek logo"
               src={bookmark}
-              onClick={() => {}}
+              onClick={() => { setShow(true) }}
             />
 
             <Box
@@ -206,7 +207,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 marginLeft: 6,
                 borderRadius: '16px',
               }}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <Box
                 style={{ alignSelf: 'center' }}
@@ -268,6 +269,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         )}
         <Box>{children}</Box>
       </Box>
+      {show && <BookMarkDialog close={() => setShow(false)} />}
     </Box>
   );
 };

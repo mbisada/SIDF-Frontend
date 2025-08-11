@@ -3,7 +3,7 @@ import { CompaniesListDTO } from './admin.types';
 
 export const useAdminServices = () => {
   const getCompaniesList = async (status: string /* page?: string, size?: string */): Promise<CompaniesListDTO> => {
-    return await backendAxiosInstance.get(`/admin/listcandidates?status=${status}`);
+    return await backendAxiosInstance.get(`/admin/listcandidates?status=${status}&size=50`);
   };
 
   return { getCompaniesList };

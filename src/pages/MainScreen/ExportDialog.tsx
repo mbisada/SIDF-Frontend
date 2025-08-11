@@ -10,8 +10,8 @@ import ic_file_lines from '../../assets/ic_file_lines.svg';
 import ic_pdf from '../../assets/ic_pdf.svg';
 import ic_excel from '../../assets/ic_excel.svg';
 import { useState } from 'react';
-import { useUserProfileServices } from '../../services/user/profiles';
 import html2canvas from "html2canvas";
+import { useCustomer } from '../../contexts/CustomerContext/useContext';
 
 interface Props {
   close: Function;
@@ -29,7 +29,9 @@ const style = {
   borderRadius: '20px !important',
 };
 const ExportDialog: React.FC<Props> = ({ close, PSUId, componentRef }) => {
-  const { exportReport } = useUserProfileServices();
+  const { customer } = useCustomer();
+  const token = import.meta.env.VITE_BACKEND_API_KEY as string;
+
 
   const [banks, setBanks] = useState([
     { name: 'All', selected: false },
@@ -221,6 +223,7 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId, componentRef }) => {
     link.click();
   };
 
+
   return (
     <Box sx={style}>
       <Box
@@ -400,34 +403,38 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId, componentRef }) => {
               textTransform: 'none',
             }}
             onClick={() => {
+
               if (selectedReport === 'Summary Report') {
                 takeScreenshot();
               } else {
-                exportReport(PSUId, format).then(response => {
-                  // Create a blob from the response
-                  if (format == 'EXCEL') {
-                    const blob = new Blob([response.data], {
-                      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    });
+                fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/e-statements/export?PSUId=${PSUId}&format=${format}`, {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'checksum': customer?.checksum || '',
+                    'apikey': token || '',
+                  },
+                })
+                  .then(r => r.blob())
+                  .then(b => {
 
-                    // Create a download link
-                    const url = window.URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', 'report.xlsx'); // filename
-                    document.body.appendChild(link);
-                    link.click();
-
-                    // Cleanup
-                    document.body.removeChild(link);
-                    window.URL.revokeObjectURL(url);
-                  } else {
-                    const params = new URLSearchParams({ url: response.data.url });
-                    if (response.data.url) {
-                      window.open(`/viewReport?${params.toString()}`, '_blank');
+                    if (format == 'EXCEL') {
+                      const url = window.URL.createObjectURL(b)
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.setAttribute('download', 'report.xlsx'); // filename
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      window.URL.revokeObjectURL(url);
+                    } else {
+                      window.open(`/viewReport?url=${URL.createObjectURL(b)}`);
                     }
-                  }
-                });
+
+
+
+                  });
+
               }
             }}
             fullWidth

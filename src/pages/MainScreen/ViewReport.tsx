@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const IframeWrapper = styled.div`
   position: relative;
   padding-bottom: 100%;
-  margin-top: 20px;
+  
   height: 100vh;
   flex-shrink: 0;
   width: 100%;
