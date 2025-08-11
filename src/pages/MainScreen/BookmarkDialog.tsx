@@ -10,8 +10,7 @@ const BookMarkDialog: React.FC<Props> = ({ close }) => {
   return (
     <Box
       style={{
-        position: 'absolute',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+
         width: '100%',
         height: '100%',
         zIndex: 100,

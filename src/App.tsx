@@ -89,9 +89,7 @@ function App() {
           }
         />
 
-        {/* <Route path="/raghi-login" element={<RaghiLogin />} />
-        <Route path="/raghi-bank-success-login" element={<RaghiBankSuccessfullyLogin />} />
-        <Route path="/raghi-home" element={<MainScreen />} /> */}
+
         <Route path="*" element={<Login />} />
       </Routes>
     </BrowserRouter>

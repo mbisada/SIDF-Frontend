@@ -16,6 +16,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Modal,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -269,7 +270,11 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         )}
         <Box>{children}</Box>
       </Box>
-      {show && <BookMarkDialog close={() => setShow(false)} />}
+
+      <Modal open={show} onClose={() => setShow(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <BookMarkDialog close={() => setShow(false)} />
+      </Modal>
+
     </Box>
   );
 };

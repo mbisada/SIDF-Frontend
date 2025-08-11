@@ -85,9 +85,8 @@ export default function Dashboard() {
 
   return (
     <div>
-      {isLoading && <Spinner />}
-      <Layout
 
+      <Layout
         heading="Request Details"
       >
         <Box
@@ -100,13 +99,15 @@ export default function Dashboard() {
           }}
         >
           <BankTabs financialInstitutions={financialInstitutions} setCurrentFinancialInstitution={setCurrentFinancialInstitution} />
+
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button variant="contained" endIcon={<DownloadIcon />} onClick={() => setOpen(true)}>
               {t('EXPORT_REPORT')}
             </Button>
           </Box>
         </Box>
-        <div ref={componentRef}>
+        {isLoading && <Spinner />}
+        {!isLoading && <div ref={componentRef}>
           <ProfileCard
             crNumber={userInfo?.psuid}
             mobileNumber={userInfo?.mobileNumber}
@@ -161,21 +162,11 @@ export default function Dashboard() {
 
           </Box>
 
-        </div>
+        </div>}
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ''} componentRef={componentRef} />
 
-          {/* <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={'center'}>
-              {t('COMING_SOON')}
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="body2" textAlign={'center'}>
-              {t('UNDER_DEVELOPMENT')}
-            </Typography>
-            <Stack direction={'row'} justifyContent={'flex-end'} mt={3}>
-              <Button onClick={handleClose}>{t('CLOSE')}</Button>
-            </Stack>
-          </Box> */}
+
         </Modal>
       </Layout>
     </div>
