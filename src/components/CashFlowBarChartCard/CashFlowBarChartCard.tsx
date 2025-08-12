@@ -3,36 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import {
-  ComposedChart,
-  Bar,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import useWindowSize from '../../hooks/useWindowSize';
 import { formatNumberWithCommas } from '../../utils/numberHelpers';
 import { CashFlowBarChartCardProps } from './CashFlowBarChartCard.types';
 
-export default function CashFlowBarChartCard({
-  inflowTotal,
-  outflowTotal,
-  monthlyCashFlow,
-}: CashFlowBarChartCardProps) {
+export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthlyCashFlow }: CashFlowBarChartCardProps) {
   const { t } = useTranslation();
   const { width } = useWindowSize();
 
   const totalFlow = +inflowTotal + Math.abs(+outflowTotal || 0);
 
-  const monthNames = useMemo(
-    () => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    []
-  );
+  const monthNames = useMemo(() => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], []);
 
   const [chartHeight, setChartHeight] = useState(400);
 
@@ -45,7 +28,7 @@ export default function CashFlowBarChartCard({
   }, [width]);
 
   const transformedMonthlyCashFlow = useMemo(() => {
-    const allMonths = monthlyCashFlow.map((entry) => ({
+    const allMonths = monthlyCashFlow.map(entry => ({
       ...entry,
       CashIn: Math.abs(entry.CashIn),
       CashOut: -Math.abs(entry.CashOut),
@@ -67,8 +50,7 @@ export default function CashFlowBarChartCard({
     let injectedData = [...sortedData];
     for (let i = 0; i < missingRecordsCount; i++) {
       const previousMonthIndex = (firstMonthIndex - 1 - i + 12) % 12;
-      const previousYear =
-        previousMonthIndex === 11 ? (parseInt(firstYear, 10) - 1).toString() : firstYear;
+      const previousYear = previousMonthIndex === 11 ? (parseInt(firstYear, 10) - 1).toString() : firstYear;
 
       injectedData = [
         {
@@ -97,7 +79,6 @@ export default function CashFlowBarChartCard({
     <Card
       sx={{
         flex: 1,
-
       }}
     >
       <CardHeader title={t('CASHFLOW_PERFORMANCE_THIS_PERIOD')} />
@@ -106,7 +87,7 @@ export default function CashFlowBarChartCard({
           {formatNumberWithCommas(totalFlow)} <span style={{ fontStyle: 'italic' }}>{t('SAR')}</span>
         </Typography>
 
-        <ResponsiveContainer width="100%" style={{ marginLeft: '-50px', }} height={chartHeight}>
+        <ResponsiveContainer width="100%" style={{ marginLeft: '-50px' }} height={chartHeight}>
           <ComposedChart data={transformedMonthlyCashFlow} margin={{ top: 20, bottom: 30, left: 40, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -117,21 +98,9 @@ export default function CashFlowBarChartCard({
             />
             <YAxis tickFormatter={formatValue} />
             <Tooltip />
-            <Legend verticalAlign="top"
-              align="center"
-              layout="horizontal" />
-            <Bar
-              dataKey="CashIn"
-              name={t('INFLOW')}
-              fill="#27AE65"
-              radius={[7, 7, 0, 0]}
-            />
-            <Bar
-              dataKey="CashOut"
-              name={t('OUTFLOW')}
-              fill="#FC5555"
-              radius={[7, 7, 0, 0]}
-            />
+            <Legend verticalAlign="top" align="center" layout="horizontal" />
+            <Bar dataKey="CashIn" name={t('INFLOW')} fill="#27AE65" radius={[7, 7, 0, 0]} />
+            <Bar dataKey="CashOut" name={t('OUTFLOW')} fill="#FC5555" radius={[7, 7, 0, 0]} />
             <Line
               type="monotone"
               dataKey="Profit"

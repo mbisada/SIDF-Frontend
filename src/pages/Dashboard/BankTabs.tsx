@@ -3,7 +3,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 export const BankTabs = ({
   financialInstitutions,
   setCurrentFinancialInstitution,
-  currentFinancialInstitution
+  currentFinancialInstitution,
 }: {
   financialInstitutions: any[];
   setCurrentFinancialInstitution: (institution: any) => void;
@@ -14,13 +14,12 @@ export const BankTabs = ({
 
   return (
     <Box sx={{ backgroundColor: '#f9f1eb', borderRadius: 2, display: 'inline-block' }}>
-      <Stack direction="row" spacing={3} alignItems="center" paddingInline={1.3} paddingBlock={.5}>
+      <Stack direction="row" spacing={3} alignItems="center" paddingInline={1.3} paddingBlock={0.5}>
         {banks.map(bank =>
           bank.FinancialInstitutionId === currentFinancialInstitution ? (
             <Button
               key={bank.FinancialInstitutionId}
               onClick={() => {
-
                 setCurrentFinancialInstitution(bank.FinancialInstitutionId);
               }}
               variant="contained"
@@ -41,7 +40,6 @@ export const BankTabs = ({
             <Typography
               key={bank.FinancialInstitutionId}
               onClick={() => {
-
                 setCurrentFinancialInstitution(bank.FinancialInstitutionId);
               }}
               sx={{

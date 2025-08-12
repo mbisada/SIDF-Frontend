@@ -70,7 +70,8 @@ const ConnectBankAccount: React.FC = () => {
       })
       .catch(error => {
         console.error('Error initiating profile request:', error);
-      }).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -84,7 +85,10 @@ const ConnectBankAccount: React.FC = () => {
       ]}
       heading=""
     >
-      <Box style={{ flexDirection: 'column', alignItems: 'flex-start', alignSelf: 'center', justifyContent: 'center', paddingLeft: '20px' }} sx={{}}>
+      <Box
+        style={{ flexDirection: 'column', alignItems: 'flex-start', alignSelf: 'center', justifyContent: 'center', paddingLeft: '20px' }}
+        sx={{}}
+      >
         <Typography variant="body2" color="white" fontWeight={'500'} fontSize={'14px'} style={{}}>
           <Link href="/register" underline="none" color="#9D9D9D" fontWeight={'400'} fontSize={'10px'}>
             {'Dashboard > Dashboard'}
@@ -96,7 +100,9 @@ const ConnectBankAccount: React.FC = () => {
             {'Select one of the supported banks to request your financial data'}
           </Typography>
         </Typography>
-        {loading ? <Spinner /> :
+        {loading ? (
+          <Spinner />
+        ) : (
           <>
             <Box
               sx={{
@@ -147,14 +153,14 @@ const ConnectBankAccount: React.FC = () => {
                   padding: 1,
                   borderRadius: 2,
                   fontWeight: 700,
-                  fontSize: '18px'
+                  fontSize: '18px',
                 }}
               >
                 {'Next'}
               </Button>
             </Box>
           </>
-        }
+        )}
       </Box>
     </Layout>
   );

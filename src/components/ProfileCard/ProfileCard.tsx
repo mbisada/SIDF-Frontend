@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { grey } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
-import dashboardIcon from "../../assets/dashboardIcon.svg"
+import dashboardIcon from '../../assets/dashboardIcon.svg';
 interface ProfileCardProps {
   crNumber?: string;
   mobileNumber?: string;
@@ -44,7 +44,6 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
                   }}
                   alt="empty accounts list"
                   src={dashboardIcon}
-
                 />
               </Avatar>
             }
@@ -67,7 +66,7 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
             Banks
           </Typography>
           <Typography variant="body1" fontWeight={'600'} sx={{ color: '#272424' }}>
-            {currentFinancialInstitution == 'All' ? banks : currentFinancialInstitution ?? ''}
+            {currentFinancialInstitution == 'All' ? banks : (currentFinancialInstitution ?? '')}
           </Typography>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3, marginTop: '20px' }}>

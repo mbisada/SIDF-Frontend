@@ -3,8 +3,8 @@ import { t } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { ListAlt, Logout } from '@mui/icons-material';
-import Dasboard from "../../assets/Dasboard.svg";
-import Consents from "../../assets/Consents.svg";
+import Dasboard from '../../assets/Dasboard.svg';
+import Consents from '../../assets/Consents.svg';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -78,7 +78,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                     }}
                     alt="neotek logo"
                     src={Dasboard}
-
                   />
                 </ListItemIcon>
                 <ListItemText primary={t('Dashboard')} />
@@ -97,7 +96,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                     }}
                     alt="neotek logo"
                     src={Consents}
-
                   />
                 </ListItemIcon>
                 <ListItemText primary={t('Consents Details')} />
@@ -194,10 +192,10 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               }}
               alt="neotek logo"
               src={bookmark}
-              onClick={() => { setShow(true) }}
+              onClick={() => {
+                setShow(true);
+              }}
             />
-
-
 
             <Box
               style={{
@@ -213,12 +211,13 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 height: '54px',
                 marginLeft: 6,
                 borderRadius: '16px',
-                border: '1px solid #E9E9E9'
+                border: '1px solid #E9E9E9',
               }}
-              onClick={() => { }}
+              onClick={() => {}}
             >
-              <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', columnGap: '10px' }}>
-
+              <Box
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', columnGap: '10px' }}
+              >
                 <Box
                   style={{ alignSelf: 'center' }}
                   component="img"
@@ -249,7 +248,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 alt="neotek logo"
                 src={ic_down_arrow}
               />
-
             </Box>
           </Box>
         </Toolbar>
@@ -268,7 +266,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         }}
       >
         {heading && (
-          <Typography variant="h5" gutterBottom color='#151538'>
+          <Typography variant="h5" gutterBottom color="#151538">
             {heading}
           </Typography>
         )}
@@ -281,9 +279,8 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
       </Box>
 
       <Modal open={show} onClose={() => setShow(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        {customer?.role == "ROLE_USER" ? <BookMarkDialog close={() => setShow(false)} /> : <AdminDialog close={() => setShow(false)} />}
+        {customer?.role == 'ROLE_USER' ? <BookMarkDialog close={() => setShow(false)} /> : <AdminDialog close={() => setShow(false)} />}
       </Modal>
-
     </Box>
   );
 };

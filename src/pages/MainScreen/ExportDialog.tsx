@@ -15,9 +15,8 @@ import { useCustomer } from '../../contexts/CustomerContext/useContext';
 interface Props {
   close: Function;
   PSUId: string;
-  componentRef: any
+  componentRef: any;
   financialInstitutions: any[];
-
 }
 
 const style = {
@@ -29,21 +28,25 @@ const style = {
 
   borderRadius: '20px !important',
 };
-const ExportDialog: React.FC<Props> = ({ close, PSUId,
+const ExportDialog: React.FC<Props> = ({
+  close,
+  PSUId,
   // componentRef,
-  financialInstitutions, }) => {
+  financialInstitutions,
+}) => {
   const { customer } = useCustomer();
   const token = import.meta.env.VITE_BACKEND_API_KEY as string;
   const [exportBanks, setExportBanks] = useState<any>([]);
 
-  const [banks, setBanks] = useState([{
-    "FinancialInstitutionId": "All",
-    "FinancialInstitutionName": {
-      "NameEn": "All",
-
+  const [banks, setBanks] = useState([
+    {
+      FinancialInstitutionId: 'All',
+      FinancialInstitutionName: {
+        NameEn: 'All',
+      },
     },
-
-  }, ...financialInstitutions]);
+    ...financialInstitutions,
+  ]);
 
   function List() {
     return banks.map((bank, index) => {
@@ -68,18 +71,16 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
 
               let updated: typeof prev = [];
 
-              if (clickedBank.FinancialInstitutionId === "All") {
+              if (clickedBank.FinancialInstitutionId === 'All') {
                 // Toggle all banks
                 const allSelected = clickedBank.selected;
                 updated = prev.map(bank => ({ ...bank, selected: !allSelected }));
               } else {
                 // Toggle one bank
-                updated = prev.map((bank, i) =>
-                  i === index ? { ...bank, selected: !bank.selected } : bank
-                );
+                updated = prev.map((bank, i) => (i === index ? { ...bank, selected: !bank.selected } : bank));
 
-                const allIndex = updated.findIndex(b => b.FinancialInstitutionId === "All");
-                const nonAllBanks = updated.filter(b => b.FinancialInstitutionId !== "All");
+                const allIndex = updated.findIndex(b => b.FinancialInstitutionId === 'All');
+                const nonAllBanks = updated.filter(b => b.FinancialInstitutionId !== 'All');
 
                 if (updated[allIndex].selected) {
                   // If All was selected, turn it off when a single is toggled
@@ -93,15 +94,13 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
               }
 
               // --- UPDATE exportBanks ---
-              const allBank = updated.find(b => b.FinancialInstitutionId === "All");
-              const selectedBanks = updated.filter(
-                b => b.selected && b.FinancialInstitutionId !== "All"
-              );
+              const allBank = updated.find(b => b.FinancialInstitutionId === 'All');
+              const selectedBanks = updated.filter(b => b.selected && b.FinancialInstitutionId !== 'All');
 
               if (allBank?.selected) {
-                setExportBanks(""); // All selected → empty string
+                setExportBanks(''); // All selected → empty string
               } else {
-                setExportBanks(selectedBanks.map(b => b.FinancialInstitutionId).join(","));
+                setExportBanks(selectedBanks.map(b => b.FinancialInstitutionId).join(','));
               }
 
               return updated;
@@ -118,15 +117,13 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
             alt="neotek logo"
             src={bank.selected ? ic_selected : ic_unselected}
           />
-          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => { }}>
-            {bank?.FinancialInstitutionName?.NameEn ?? ""}
+          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => {}}>
+            {bank?.FinancialInstitutionName?.NameEn ?? ''}
           </Typography>
         </Box>
       );
     });
   }
-
-
 
   const ouputs = [
     { icon: ic_pdf, name: 'Pdf', format: 'PDF' },
@@ -195,7 +192,6 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
     });
   }
 
-
   // const takeScreenshot = async () => {
   //   if (!componentRef.current) return;
 
@@ -208,7 +204,6 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
   //   link.download = "screenshot.png";
   //   link.click();
   // };
-
 
   return (
     <Box sx={style}>
@@ -286,7 +281,7 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
             flexDirection: 'row',
             flexWrap: 'wrap',
             maxWidth: '80%',
-            marginTop: '10px'
+            marginTop: '10px',
           }}
         >
           <List />
@@ -368,7 +363,6 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
               textTransform: 'none',
             }}
             onClick={() => {
-
               const paramsObj: Record<string, string> = {
                 PSUId,
                 format,
@@ -382,15 +376,14 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
-                  'checksum': customer?.checksum || '',
-                  'apikey': token || '',
+                  checksum: customer?.checksum || '',
+                  apikey: token || '',
                 },
               })
                 .then(r => r.blob())
                 .then(b => {
-
                   if (format == 'EXCEL') {
-                    const url = window.URL.createObjectURL(b)
+                    const url = window.URL.createObjectURL(b);
                     const link = document.createElement('a');
                     link.href = url;
                     link.setAttribute('download', 'report.xlsx'); // filename
@@ -401,13 +394,8 @@ const ExportDialog: React.FC<Props> = ({ close, PSUId,
                   } else {
                     window.open(`/viewReport?url=${URL.createObjectURL(b)}`);
                   }
-
-
-
                 });
-
-            }
-            }
+            }}
             fullWidth
             sx={{
               padding: 1,

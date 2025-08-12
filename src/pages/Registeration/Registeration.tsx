@@ -61,13 +61,12 @@ const Registration = () => {
           showSnackbar('Registration successful!', 'success');
           navigate('/registrationSuccess');
         })
-        .catch((error) => {
+        .catch(error => {
           showSnackbar('Registration failed: ' + error?.response?.data?.fault?.statusDescription, 'error');
         })
-        .finally(() => setIsLoading(false))
+        .finally(() => setIsLoading(false));
     },
   });
-
 
   return (
     <GradientBackground flexDirection="row">

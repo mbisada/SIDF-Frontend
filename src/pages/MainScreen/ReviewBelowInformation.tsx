@@ -9,9 +9,9 @@ import moment from 'moment';
 import RedirectDialog from './RedirectDialog';
 import QrCodeDialog from './QrCodeDialog';
 import QRCode from 'qrcode';
-import styled from "styled-components";
-import logo from "../../assets/noTextLogo.svg"
-import Lock from "../../assets/Lock.svg"
+import styled from 'styled-components';
+import logo from '../../assets/noTextLogo.svg';
+import Lock from '../../assets/Lock.svg';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 const Container = styled.div`
@@ -20,7 +20,7 @@ const Container = styled.div`
   justify-content: center;
   gap: 30px;
   padding: 10px;
- 
+
   border-radius: 8px;
   width: 350px;
   height: 107.35px;
@@ -50,7 +50,7 @@ const LockWrapper = styled.div`
 
   &::before,
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     height: 2px;
     width: 35px;
@@ -88,7 +88,6 @@ function ConnectionCard({ inistituation }: { inistituation: any }) {
           }}
           alt="neotek logo"
           src={logo}
-
         />
       </IconBox>
       <LockWrapper>
@@ -101,12 +100,10 @@ function ConnectionCard({ inistituation }: { inistituation: any }) {
           }}
           alt="neotek logo"
           src={Lock}
-
         />
       </LockWrapper>
       <IconBox>
         <Box
-
           component="img"
           loading="lazy"
           sx={{
@@ -115,9 +112,7 @@ function ConnectionCard({ inistituation }: { inistituation: any }) {
           }}
           alt="neotek logo"
           src={inistituation.Logo}
-
         />
-
       </IconBox>
     </Container>
   );
@@ -258,7 +253,6 @@ const ReviewBelowInformation: React.FC = () => {
         setRedirectionUrl(response.data.Data.RedirectionURL);
         setOpen(true);
         setIsLoading(false);
-
       } else {
         console.error('No redirect URL found in response');
       }
@@ -267,7 +261,6 @@ const ReviewBelowInformation: React.FC = () => {
       console.error('inistituation is undefined or null');
     }
   };
-
 
   function List({ accounts }: { accounts: any[] }) {
     return accounts.map((account, index) => {
@@ -286,7 +279,7 @@ const ReviewBelowInformation: React.FC = () => {
             height: '90px',
             marginTop: 10,
             borderRadius: '26px',
-            paddingLeft: 24
+            paddingLeft: 24,
           }}
           display={'flex'}
         >
@@ -352,11 +345,9 @@ const ReviewBelowInformation: React.FC = () => {
           </Typography>
         </Typography>
 
-
         <Box sx={{ width: '100%', justifyContent: 'center', display: 'flex', marginBottom: '30px' }}>
           <ConnectionCard inistituation={inistituation} />
         </Box>
-
 
         <Box>
           <Typography variant="body2" color="#7D7D7D" fontWeight={'bold'} fontSize={'12px'} style={{ marginLeft: 13, marginTop: 13 }}>
@@ -374,11 +365,12 @@ const ReviewBelowInformation: React.FC = () => {
             alignSelf: 'center',
           }}
         >
-
-          <List accounts={[{ title: 'Account Number', name: 'Turki Construction Co' },
-          { title: 'Bank Name', name: inistituation?.FinancialInstitutionName.NameEn }]
-          } />
-
+          <List
+            accounts={[
+              { title: 'Account Number', name: 'Turki Construction Co' },
+              { title: 'Bank Name', name: inistituation?.FinancialInstitutionName.NameEn },
+            ]}
+          />
         </Box>
 
         <Box>
@@ -397,11 +389,12 @@ const ReviewBelowInformation: React.FC = () => {
             alignSelf: 'center',
           }}
         >
-
-          <List accounts={[
-            { title: 'Service Name', name: 'E-Statement' },
-            { title: 'Data Group', name: 'Transactions and Balance ' }
-          ]} />
+          <List
+            accounts={[
+              { title: 'Service Name', name: 'E-Statement' },
+              { title: 'Data Group', name: 'Transactions and Balance ' },
+            ]}
+          />
         </Box>
 
         <Box>
@@ -421,7 +414,7 @@ const ReviewBelowInformation: React.FC = () => {
             backgroundColor: '#ffffff',
             borderRadius: '26px',
             marginTop: '12px',
-            padding: '20px 25px'
+            padding: '20px 25px',
           }}
           sx={{ width: '98%' }}
           display={'flex'}
@@ -430,11 +423,12 @@ const ReviewBelowInformation: React.FC = () => {
             Purpose
           </Typography>
           <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'16px'} style={{}}>
-            With your permission, SIDF will use open banking through neotek to securely view important parts of your financial information—such as income, spending, and account history. This helps SIDF understand your financial situation better, to make quicker lending decisions, offer solutions that fit your needs, and provide a smoother experience, while always protecting your privacy and following all data protection rules.
+            With your permission, SIDF will use open banking through neotek to securely view important parts of your financial
+            information—such as income, spending, and account history. This helps SIDF understand your financial situation better, to make
+            quicker lending decisions, offer solutions that fit your needs, and provide a smoother experience, while always protecting your
+            privacy and following all data protection rules.
           </Typography>
         </Box>
-
-
 
         <Box
           style={{
@@ -454,18 +448,18 @@ const ReviewBelowInformation: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
             marginTop: 2,
-            width: '98%'
+            width: '98%',
           }}
         >
           <Typography variant="body2" color="black" fontWeight="bold" fontSize="16px" sx={{ maxWidth: '50%' }}>
-            By proceeding, you agree to securely share your selected bank account and transaction data via regulated Open Banking channels for the stated service purpose.            </Typography>
+            By proceeding, you agree to securely share your selected bank account and transaction data via regulated Open Banking channels
+            for the stated service purpose.{' '}
+          </Typography>
           <Box
             sx={{
               width: '30%',
-
             }}
           >
-
             <Box
               style={{
                 flexDirection: 'row',
@@ -492,7 +486,9 @@ const ReviewBelowInformation: React.FC = () => {
                   textTransform: 'none',
                   color: '#F36D21',
                 }}
-                onClick={() => { navigate(-1) }}
+                onClick={() => {
+                  navigate(-1);
+                }}
                 fullWidth
                 sx={{
                   padding: 1,
@@ -504,7 +500,6 @@ const ReviewBelowInformation: React.FC = () => {
               </Button>
 
               <Button
-
                 type="submit"
                 variant="contained"
                 autoCapitalize="off"
@@ -527,33 +522,27 @@ const ReviewBelowInformation: React.FC = () => {
                   fontWeight: 700,
                 }}
               >
-                {isLoading ? <ClipLoader
-                  color={'white'}
-                  loading={isLoading}
-                  size={20}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-                /> : 'Proceed'}
+                {isLoading ? (
+                  <ClipLoader color={'white'} loading={isLoading} size={20} aria-label="Loading Spinner" data-testid="loader" />
+                ) : (
+                  'Proceed'
+                )}
               </Button>
             </Box>
           </Box>
         </Box>
       </Box>
-      {
-        open && (
-          <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-            <RedirectDialog close={handleClose} handleReirection={handleReirection} generateQRCode={generateQRCode} loading={loading} />
-          </Modal>
-        )
-      }
-      {
-        QrCodeOpen && (
-          <Modal open={QrCodeOpen} onClose={handleCloseQrCode} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-            <QrCodeDialog close={handleCloseQrCode} QrCode={qrCode} loading={loading} />
-          </Modal>
-        )
-      }
-    </Layout >
+      {open && (
+        <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+          <RedirectDialog close={handleClose} handleReirection={handleReirection} generateQRCode={generateQRCode} loading={loading} />
+        </Modal>
+      )}
+      {QrCodeOpen && (
+        <Modal open={QrCodeOpen} onClose={handleCloseQrCode} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+          <QrCodeDialog close={handleCloseQrCode} QrCode={qrCode} loading={loading} />
+        </Modal>
+      )}
+    </Layout>
   );
 };
 

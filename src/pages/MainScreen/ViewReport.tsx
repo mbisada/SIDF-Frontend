@@ -1,13 +1,10 @@
-
-import { useLocation, } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-
-
 
 const IframeWrapper = styled.div`
   position: relative;
   padding-bottom: 100%;
-  
+
   height: 100vh;
   flex-shrink: 0;
   width: 100%;
@@ -23,8 +20,6 @@ const FullSizeIframe = styled.iframe`
   width: 100%;
   height: 100%;
 `;
-
-
 
 const ViewReport: React.FC = () => {
   const { search } = useLocation();

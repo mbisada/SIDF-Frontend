@@ -108,11 +108,9 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
           </Box>
           <Typography variant="body2" sx={{ color: '#72788E' }}>
             Obligations covers loans and credits as received from the bank.
-
           </Typography>
         </div>
       </Card>
-
     </>
   );
 }

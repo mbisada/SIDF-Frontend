@@ -82,7 +82,7 @@ const TopBar: React.FC<IBookmark> = ({ show }) => {
             marginLeft: 6,
             borderRadius: '16px',
           }}
-          onClick={() => { }}
+          onClick={() => {}}
         >
           <Box
             style={{ alignSelf: 'center' }}

@@ -1,28 +1,19 @@
-
 import Card from '@mui/material/Card';
 
 import { CashFlowPieChartCardProps } from './CashFlowPieChartCard.types';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
-  Tooltip
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import './styles.css';
 import styled from 'styled-components';
-
 
 const LegendContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: row;
   align-items: center;
- column-gap: 20px;
- overflow: visible;
- flex-wrap: wrap;
-   @media (max-width: 400px) {
+  column-gap: 20px;
+  overflow: visible;
+  flex-wrap: wrap;
+  @media (max-width: 400px) {
     flex-direction: row;
     align-items: center;
   }
@@ -30,8 +21,8 @@ const LegendContainer = styled.div`
 
 const LegendItemContainer = styled.div`
   display: flex;
-   justify-content: center;
- gap: 8px;
+  justify-content: center;
+  gap: 8px;
 `;
 
 const Dot = styled.span`
@@ -61,7 +52,6 @@ const Value = styled.span`
   align-self: center;
 `;
 const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCardProps) => {
-
   let cashInChart = cashInTypes.map((type: any) => ({
     name: type.Category,
     value: type.Amount,
@@ -70,7 +60,6 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
     name: type.Category,
     value: type.Amount,
   }));
-
 
   function generateShades(baseColor: string, count: number): string[] {
     const shades: string[] = [];
@@ -84,21 +73,18 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
 
   // Lighten function
   function lightenColor(hex: string, percent: number) {
-    hex = hex.replace("#", "");
+    hex = hex.replace('#', '');
     const num = parseInt(hex, 16);
     const r = Math.min(255, (num >> 16) + (255 - (num >> 16)) * (percent / 100));
     const g = Math.min(255, ((num >> 8) & 0x00ff) + (255 - ((num >> 8) & 0x00ff)) * (percent / 100));
     const b = Math.min(255, (num & 0x0000ff) + (255 - (num & 0x0000ff)) * (percent / 100));
-    return `#${(Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b)).toString(16).padStart(6, "0")}`;
+    return `#${((Math.round(r) << 16) | (Math.round(g) << 8) | Math.round(b)).toString(16).padStart(6, '0')}`;
   }
 
   // Generate shades dynamically
-  const COLORS = generateShades("#27AE60", 5); // 5 shades of green
-  const COLORS2 = generateShades("#C0392B", 5); // 5 shades of red
-  const formatCompact = (n: any) =>
-    Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
-
-
+  const COLORS = generateShades('#27AE60', 5); // 5 shades of green
+  const COLORS2 = generateShades('#C0392B', 5); // 5 shades of red
+  const formatCompact = (n: any) => Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
 
   interface LegendItemProps {
     color: string;
@@ -134,13 +120,8 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
         {payload
           .slice()
           .reverse()
-          .map((entry) => (
-            <LegendItem
-              key={entry.value}
-              color={entry.color}
-              name={entry.value}
-              value={entry?.payload?.value ?? 0}
-            />
+          .map(entry => (
+            <LegendItem key={entry.value} color={entry.color} name={entry.value} value={entry?.payload?.value ?? 0} />
           ))}
       </LegendContainer>
     );
@@ -159,13 +140,10 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
           alignItems: 'flex-start',
 
           minHeight: '600px',
-        }
+        },
       }}
-
     >
-
-
-      <ResponsiveContainer >
+      <ResponsiveContainer>
         <PieChart>
           <Pie
             data={cashInChart}
@@ -183,27 +161,14 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
               <Cell key={index} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Legend
-            verticalAlign="bottom"
-            align="center"
-            layout="horizontal"
-            content={<CustomLegend />}
-          />
+          <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
 
-          <Tooltip
-            formatter={(val, _name, entry) => [
-              formatCompact(val),
-              entry?.payload?.name || '',
-            ]}
-          />
+          <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
         </PieChart>
       </ResponsiveContainer>
 
-
-      {cashOutChart?.[0]?.value != 0 && cashOutChart?.[1]?.value != 0 &&
-
-
-        <ResponsiveContainer  >
+      {cashOutChart?.[0]?.value != 0 && cashOutChart?.[1]?.value != 0 && (
+        <ResponsiveContainer>
           <PieChart>
             <Pie
               data={cashOutChart}
@@ -221,25 +186,15 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
                 <Cell key={index} fill={COLORS2[index % COLORS2.length]} />
               ))}
             </Pie>
-            <Legend
-              verticalAlign="bottom"
-              align="center"
-              layout="horizontal"
-              content={<CustomLegend />}
-            />
+            <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
 
-            <Tooltip
-              formatter={(val, _name, entry) => [
-                formatCompact(val),
-                entry?.payload?.name || '',
-              ]}
-            />
+            <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
           </PieChart>
         </ResponsiveContainer>
-      }
+      )}
     </Card>
   );
-}
+};
 // Inline styles (you can move to CSS module / styled-components)
 
 export default CashFlowPieChartCard;

@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { LoadingButton } from '@mui/lab';
-import { Box, /* Button, */   Stack, TextField, Typography } from '@mui/material';
+import { Box, /* Button, */ Stack, TextField, Typography } from '@mui/material';
 
 import chart from '../../assets/favorite-chart.svg';
 import logo from '../../assets/logoWhite.svg';
@@ -51,7 +51,7 @@ import { useSnackbar } from '../../utils/SnackBarProvider';
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { setCustomer, } = useCustomer();
+  const { setCustomer } = useCustomer();
   const location = useLocation();
   const { createLoginRequest, getProfile } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +94,7 @@ const Login: React.FC = () => {
           mobileNumber: mappedData.mobileNumber,
           role: mappedData.role.toLowerCase().includes('admin') ? 'ROLE_ADMIN' : mappedData.role,
           checksum: mappedData.checksum, // Assuming the token is available in the response
-          name: mappedData.name
+          name: mappedData.name,
         };
 
         // Set the customer globally (using a context or global state manager)
@@ -126,7 +126,6 @@ const Login: React.FC = () => {
         setIsLoading(false);
       }
     },
-
   });
 
   // if (isLoading) return <Spinner />;

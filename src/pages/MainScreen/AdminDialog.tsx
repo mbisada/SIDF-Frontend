@@ -10,7 +10,6 @@ const AdminDialog: React.FC<Props> = ({ close }) => {
   return (
     <Box
       style={{
-
         width: '100%',
         height: '100%',
         zIndex: 100,
@@ -93,7 +92,6 @@ const AdminDialog: React.FC<Props> = ({ close }) => {
         <UnionText text={'Select the customer'} />
         <UnionText text={'View dashboard of the customer details'} />
         <UnionText text={'Export Reports of Summary and detailed report'} />
-
 
         <Box style={{ width: '100%', alignSelf: 'center', backgroundColor: '#E5E5E5', height: '1px', marginTop: 32 }} />
 

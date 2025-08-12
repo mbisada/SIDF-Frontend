@@ -52,8 +52,8 @@ function Companies() {
           { label: 'Dashboard', href: '/' },
           { label: 'Companies List Details', href: '/companies' },
         ]}
-      // heading="Companies List Details"
-      //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */
+        // heading="Companies List Details"
+        //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */
       >
         <Box
           sx={{
@@ -82,7 +82,16 @@ function Companies() {
             </Button>
           </Box>
 
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: '16px' }}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              rowGap: '16px',
+            }}
+          >
             {companiesList &&
               companiesList.length > 0 &&
               companiesList?.map(company => {
