@@ -48,10 +48,9 @@ export const useUserProfileServices = () => {
       },
     });
   };
-  const ListUserAccounts = async (calculated: boolean) => {
-    console.log('calculated', calculated);
-    return await backendAxiosInstance.post(`/user/list-accounts`, {
-      PSUId: customer?.crNumber,
+  const ListUserAccounts = async (calculated: boolean, pusid: string) => {
+    return await backendAxiosInstance.post(`/account-link/list-accounts`, {
+      PSUId: pusid ?? customer?.crNumber,
       IsCalculated: calculated ?? false,
     });
   };

@@ -17,6 +17,7 @@ import './i18n/i18n';
 import ReviewBelowInformation from './pages/MainScreen/ReviewBelowInformation';
 import ConsentDetails from './pages/MainScreen/ConsentDetails';
 import ViewReport from './pages/MainScreen/ViewReport';
+import RegisterationSuccess from './pages/Registeration/RegisterationSuccess';
 
 function App() {
   initializeI18n();
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Registration />} />
+        <Route path="/registrationSuccess" element={<RegisterationSuccess />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         <Route

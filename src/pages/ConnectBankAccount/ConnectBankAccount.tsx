@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Link, Typography } from '@mui/material';
 import Layout from '../../templates/Layout';
 import { useUserProfileServices } from '../../services/user/profiles';
+import Spinner from '../../components/Spinner';
 
 type ListProps = {
   accounts: Array<{ FinancialInstitutionName: { NameEn: string }; Logo: string }>;
@@ -22,7 +23,6 @@ const List = ({ accounts, selected, setSelected }: ListProps) => {
         justifyContent: 'flex-start',
         alignContent: 'center',
         backgroundColor: selected === index ? '#FFEEE4' : '#FFF',
-
         height: '110px',
         marginTop: 10,
         borderRadius: '26px',
@@ -52,21 +52,26 @@ const List = ({ accounts, selected, setSelected }: ListProps) => {
     </Box>
   ));
 };
+
 const ConnectBankAccount: React.FC = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(-1);
-
+  const [loading, setLoading] = useState(false);
   const { getFinacialInstitutions } = useUserProfileServices();
 
   const getFinancial = getFinacialInstitutions();
   const [financialInstitutions, setFinancialInstitutions] = useState<any[]>([]);
+
   useEffect(() => {
+    setLoading(true);
     getFinancial
       .then(res => {
         setFinancialInstitutions(res.data.Data.FinancialInstitution);
       })
       .catch(error => {
         console.error('Error initiating profile request:', error);
+      }).finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -79,7 +84,7 @@ const ConnectBankAccount: React.FC = () => {
       ]}
       heading=""
     >
-      <Box style={{ flexDirection: 'column', alignItems: 'flex-start', alignSelf: 'center', justifyContent: 'center' }} sx={{}}>
+      <Box style={{ flexDirection: 'column', alignItems: 'flex-start', alignSelf: 'center', justifyContent: 'center', paddingLeft: '20px' }} sx={{}}>
         <Typography variant="body2" color="white" fontWeight={'500'} fontSize={'14px'} style={{}}>
           <Link href="/register" underline="none" color="#9D9D9D" fontWeight={'400'} fontSize={'10px'}>
             {'Dashboard > Dashboard'}
@@ -91,62 +96,65 @@ const ConnectBankAccount: React.FC = () => {
             {'Select one of the supported banks to request your financial data'}
           </Typography>
         </Typography>
+        {loading ? <Spinner /> :
+          <>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: 2,
+                width: '70%',
+                margin: 'auto',
+                alignSelf: 'center',
+                marginTop: '20px',
+              }}
+            >
+              <List accounts={financialInstitutions} selected={selected} setSelected={setSelected} />
+            </Box>
 
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)', // 3 equal columns
-            gap: 2, // spacing between grid items, adjust as needed
-            width: '70%',
-            margin: 'auto',
-            alignSelf: 'center',
-            marginTop: '20px',
-          }}
-        >
-          <List accounts={financialInstitutions} selected={selected} setSelected={setSelected} />
-        </Box>
-
-        <Box
-          style={{
-            flexDirection: 'column',
-            width: '84%',
-            alignItems: 'flex-end',
-            alignSelf: 'flex-end',
-            justifyContent: 'flex-end',
-            marginTop: 50,
-            height: '48px',
-            marginLeft: 10,
-          }}
-          display={'flex'}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            autoCapitalize="off"
-            disableElevation
-            style={{
-              backgroundColor: '#F36D21',
-              width: '140px',
-              height: '48px',
-              borderRadius: '10px',
-              fontSize: '13px',
-              textTransform: 'none',
-            }}
-            onClick={() => {
-              if (selected != -1) {
-                navigate('/ob-connect/review', { state: { inistituation: financialInstitutions[selected] } } as any);
-              }
-            }}
-            fullWidth
-            sx={{
-              padding: 1,
-              borderRadius: 2,
-              fontWeight: 700,
-            }}
-          >
-            {'Next'}
-          </Button>
-        </Box>
+            <Box
+              style={{
+                flexDirection: 'column',
+                width: '84%',
+                alignItems: 'flex-end',
+                alignSelf: 'flex-end',
+                justifyContent: 'flex-end',
+                marginTop: 50,
+                height: '48px',
+                marginLeft: 10,
+              }}
+              display={'flex'}
+            >
+              <Button
+                type="submit"
+                variant="contained"
+                autoCapitalize="off"
+                disableElevation
+                style={{
+                  backgroundColor: '#F36D21',
+                  width: '140px',
+                  height: '48px',
+                  borderRadius: '10px',
+                  textTransform: 'none',
+                }}
+                onClick={() => {
+                  if (selected != -1) {
+                    navigate('/ob-connect/review', { state: { inistituation: financialInstitutions[selected] } } as any);
+                  }
+                }}
+                fullWidth
+                sx={{
+                  padding: 1,
+                  borderRadius: 2,
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+                {'Next'}
+              </Button>
+            </Box>
+          </>
+        }
       </Box>
     </Layout>
   );

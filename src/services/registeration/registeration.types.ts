@@ -11,7 +11,7 @@ export interface LoginDTO {
         mobileNumber: string;
         crNumber: string;
         roles: string[];
-      },
+      }
     ];
   };
 }
@@ -23,6 +23,7 @@ export interface LoginType {
   mobileNumber: string;
   crNumber: string;
   role: string;
+  name: string;
 }
 
 export interface RegisterationDTO {
@@ -39,7 +40,8 @@ export interface RegisterationDTO {
         status: string | null;
         psuid: string;
         role: string;
-      },
+        name: string;
+      }
     ];
   };
 }
@@ -53,6 +55,7 @@ export interface RegisterationType {
   status: string | null;
   psuid: string;
   role: string;
+  name: string;
 }
 
 export interface RegisterPayload {

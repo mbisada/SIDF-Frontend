@@ -12,7 +12,7 @@ export const useDashboardServices = () => {
       const res: AxiosResponse<DashboardDataResponse> = await backendAxiosInstance.get(
         customer?.role == 'ROLE_USER' ? `/user/candidate` : `/admin/candidate/${psuid}`,
         {
-          params: { financialInstitutionId: FinancialInstitutionID === 'All' ? undefined : FinancialInstitutionID },
+          params: { financialInstitutionId: FinancialInstitutionID == 'All' ? undefined : FinancialInstitutionID },
         }
       );
       const data = res?.data?.data?.returnedObj?.[0];

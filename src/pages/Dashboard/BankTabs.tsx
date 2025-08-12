@@ -1,31 +1,27 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
 
 export const BankTabs = ({
   financialInstitutions,
   setCurrentFinancialInstitution,
+  currentFinancialInstitution
 }: {
   financialInstitutions: any[];
   setCurrentFinancialInstitution: (institution: any) => void;
+  currentFinancialInstitution: any;
 }) => {
-  const [selected, setSelected] = useState<any>('All');
-  const banks = [{ FinancialInstitutionName: { NameEn: 'All' } }, ...financialInstitutions];
+  const allBank = { FinancialInstitutionId: 'All', FinancialInstitutionName: { NameEn: 'All' } };
+  const banks = [allBank, ...financialInstitutions];
 
   return (
-    <Box
-      sx={{
-        backgroundColor: '#f9f1eb',
-        borderRadius: 2,
-        display: 'inline-block',
-      }}
-    >
-      <Stack direction="row" paddingInline={2} spacing={3} alignItems="center">
+    <Box sx={{ backgroundColor: '#f9f1eb', borderRadius: 2, display: 'inline-block' }}>
+      <Stack direction="row" spacing={3} alignItems="center" paddingInline={1.3} paddingBlock={.5}>
         {banks.map(bank =>
-          bank.FinancialInstitutionId === selected.FinancialInstitutionId ? (
+          bank.FinancialInstitutionId === currentFinancialInstitution ? (
             <Button
-              key={bank}
+              key={bank.FinancialInstitutionId}
               onClick={() => {
-                (setSelected(bank), setCurrentFinancialInstitution(bank.FinancialInstitutionId));
+
+                setCurrentFinancialInstitution(bank.FinancialInstitutionId);
               }}
               variant="contained"
               sx={{
@@ -43,9 +39,10 @@ export const BankTabs = ({
             </Button>
           ) : (
             <Typography
-              key={bank}
+              key={bank.FinancialInstitutionId}
               onClick={() => {
-                (setSelected(bank), setCurrentFinancialInstitution(bank.FinancialInstitutionId));
+
+                setCurrentFinancialInstitution(bank.FinancialInstitutionId);
               }}
               sx={{
                 cursor: 'pointer',

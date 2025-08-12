@@ -16,7 +16,7 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
     <>
       <Card
         sx={{
-          flex: 2,
+          flex: 1.97,
           '@media (max-width: 900px)': {
             flex: '1 1 100%',
           },
@@ -50,7 +50,7 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
               />
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ color: 'text.primary' }}>
+          <Typography variant="body2" sx={{ color: '#72788E' }}>
             Average Balance
             <Typography variant="body2" sx={{ color: 'text.primary' }}>
               {formatNumberWithCommas(Number(averageBalance))}
@@ -72,7 +72,7 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
       </Card>
       <Card
         sx={{
-          flex: 2,
+          flex: 1.99,
           '@media (max-width: 900px)': {
             flex: '1 1 100%',
           },
@@ -90,7 +90,7 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
         >
           <Box>
             <Typography variant="h5" sx={{ color: 'text.primary', marginBottom: 2 }}>
-              <CardHeader title={t('Obligations')} style={{ padding: 0 }} />
+              <CardHeader title={t('Balance')} style={{ padding: 0 }} />
               {formatNumberWithCommas(liability)}
               <Box
                 style={{ alignSelf: 'center' }}
@@ -104,13 +104,15 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
                 src={Riyal}
                 paddingTop={1}
               />
-              <Typography variant="body2" sx={{ color: 'text.primary', marginTop: '10px' }}>
-                Liability
-              </Typography>
             </Typography>
           </Box>
+          <Typography variant="body2" sx={{ color: '#72788E' }}>
+            Obligations covers loans and credits as received from the bank.
+
+          </Typography>
         </div>
       </Card>
+
     </>
   );
 }

@@ -2,7 +2,10 @@ import React, { ReactNode } from 'react';
 import { t } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { AccountBalance, ListAlt, Logout } from '@mui/icons-material';
+import { ListAlt, Logout } from '@mui/icons-material';
+import Dasboard from "../../assets/Dasboard.svg";
+import Consents from "../../assets/Consents.svg";
+
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -33,6 +36,7 @@ import { ROLES } from '../../constants/roles';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useLogout } from '../../hooks/useLogout';
 import BookMarkDialog from '../../pages/MainScreen/BookmarkDialog';
+import AdminDialog from '../../pages/MainScreen/AdminDialog';
 
 interface LayoutProps {
   breadcrumbs?: { label: string; href?: string }[];
@@ -49,6 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { customer } = useCustomer();
+  console.log('customer', customer);
   const navigate = useNavigate();
   const logout = useLogout();
 
@@ -64,7 +69,17 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate('/ob-connect')}>
                 <ListItemIcon sx={{ minWidth: 40 }}>
-                  <AccountBalance sx={{ color: 'white' }} />
+                  <Box
+                    component="img"
+                    loading="lazy"
+                    sx={{
+                      height: '25px',
+                      width: '25px',
+                    }}
+                    alt="neotek logo"
+                    src={Dasboard}
+
+                  />
                 </ListItemIcon>
                 <ListItemText primary={t('Dashboard')} />
               </ListItemButton>
@@ -73,9 +88,19 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate('/consent-details')}>
                 <ListItemIcon sx={{ minWidth: 40 }}>
-                  <AccountBalance sx={{ color: 'white' }} />
+                  <Box
+                    component="img"
+                    loading="lazy"
+                    sx={{
+                      height: '25px',
+                      width: '25px',
+                    }}
+                    alt="neotek logo"
+                    src={Consents}
+
+                  />
                 </ListItemIcon>
-                <ListItemText primary={t('CONSENTS')} />
+                <ListItemText primary={t('Consents Details')} />
               </ListItemButton>
             </ListItem>
           </>
@@ -172,26 +197,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               onClick={() => { setShow(true) }}
             />
 
-            <Box
-              component="img"
-              loading="lazy"
-              sx={{
-                height: '40px',
-                width: '52px',
-              }}
-              alt="neotek logo"
-              src={search}
-            />
-            <Box
-              component="img"
-              loading="lazy"
-              sx={{
-                height: '40px',
-                width: '52px',
-              }}
-              alt="neotek logo"
-              src={notification}
-            />
+
 
             <Box
               style={{
@@ -207,40 +213,43 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 height: '54px',
                 marginLeft: 6,
                 borderRadius: '16px',
+                border: '1px solid #E9E9E9'
               }}
               onClick={() => { }}
             >
-              <Box
-                style={{ alignSelf: 'center' }}
-                component="img"
-                loading="lazy"
-                sx={{
-                  height: '40px',
-                  width: '40px',
-                }}
-                alt="neotek logo"
-                src={test_man}
-              />
-              <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center', marginLeft: '2px' }}>
-                <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'15px'} style={{ marginTop: 2 }}>
-                  Fahad & Co
-                </Typography>
-                <Typography variant="body2" color="#72788E" fontWeight={'400'} fontSize={'12px'} style={{ marginTop: 2 }}>
-                  Email@gmail.com
-                </Typography>
-              </Box>
-              <Box style={{ flexDirection: 'column', justifyContent: 'space-between', alignSelf: 'center' }}>
+              <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', columnGap: '10px' }}>
+
                 <Box
+                  style={{ alignSelf: 'center' }}
                   component="img"
                   loading="lazy"
                   sx={{
-                    height: '24px',
-                    width: '24px',
+                    height: '40px',
+                    width: '40px',
                   }}
                   alt="neotek logo"
-                  src={ic_down_arrow}
+                  src={test_man}
                 />
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'15px'} style={{ marginTop: 2 }}>
+                    {customer?.name}
+                  </Typography>
+                  <Typography variant="body2" color="#72788E" fontWeight={'400'} fontSize={'12px'} style={{ marginTop: 2 }}>
+                    {customer?.email}
+                  </Typography>
+                </Box>
               </Box>
+              <Box
+                component="img"
+                loading="lazy"
+                sx={{
+                  height: '24px',
+                  width: '24px',
+                }}
+                alt="neotek logo"
+                src={ic_down_arrow}
+              />
+
             </Box>
           </Box>
         </Toolbar>
@@ -259,7 +268,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         }}
       >
         {heading && (
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" gutterBottom color='#151538'>
             {heading}
           </Typography>
         )}
@@ -272,7 +281,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
       </Box>
 
       <Modal open={show} onClose={() => setShow(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <BookMarkDialog close={() => setShow(false)} />
+        {customer?.role == "ROLE_USER" ? <BookMarkDialog close={() => setShow(false)} /> : <AdminDialog close={() => setShow(false)} />}
       </Modal>
 
     </Box>

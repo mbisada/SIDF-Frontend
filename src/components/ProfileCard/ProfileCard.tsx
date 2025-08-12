@@ -1,29 +1,20 @@
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { /* Button, */ CardContent } from '@mui/material';
+import { /* Button, */ Box, CardContent } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { grey } from '@mui/material/colors';
-//import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-//import { useCustomer } from '../../contexts/CustomerContext/useContext';
-//import { useNavigate } from 'react-router-dom';
-
+import dashboardIcon from "../../assets/dashboardIcon.svg"
 interface ProfileCardProps {
   crNumber?: string;
   mobileNumber?: string;
   email?: string;
   companyName?: string;
   banks?: string;
+  currentFinancialInstitution?: string;
 }
-export default function ProfileCard({ crNumber, mobileNumber, email, companyName, banks }: ProfileCardProps) {
-  // const {customer} = useCustomer()
-
-  /*   const navigate = useNavigate()
-  const handleNavigateClick = () =>{
-    navigate('/companies/1235678')
-  } */
-
+export default function ProfileCard({ crNumber, mobileNumber, email, companyName, banks, currentFinancialInstitution }: ProfileCardProps) {
   return (
     <Card
       sx={{
@@ -43,8 +34,18 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
           <CardHeader
             style={{ padding: 0, margin: 0 }}
             avatar={
-              <Avatar sx={{ bgcolor: grey[500], width: 50, height: 50, borderRadius: 25 }} aria-label="recipe">
-                <AccountBalanceIcon fontSize="small" />
+              <Avatar sx={{ border: '1px solid #DADADA', bgcolor: '#F9F9F9', width: 50, height: 50, borderRadius: 25 }} aria-label="recipe">
+                <Box
+                  component="img"
+                  loading="lazy"
+                  sx={{
+                    width: '20px',
+                    height: '20px',
+                  }}
+                  alt="empty accounts list"
+                  src={dashboardIcon}
+
+                />
               </Avatar>
             }
             title={companyName}
@@ -63,10 +64,10 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
       <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3 }}>
           <Typography variant="body2" sx={{ color: '#777777', fontWeight: '400' }}>
-            banks
+            Banks
           </Typography>
           <Typography variant="body1" fontWeight={'600'} sx={{ color: '#272424' }}>
-            {banks ?? ''}
+            {currentFinancialInstitution == 'All' ? banks : currentFinancialInstitution ?? ''}
           </Typography>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', margin: 3, marginTop: '20px' }}>

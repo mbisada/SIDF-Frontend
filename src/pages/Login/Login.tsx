@@ -15,6 +15,7 @@ import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useRegisterationServices } from '../../services/registeration/registeration';
 import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
+import { useSnackbar } from '../../utils/SnackBarProvider';
 
 // Mock API call for login
 /* const mockLoginApi = async (email: string, password: string) => {
@@ -54,7 +55,7 @@ const Login: React.FC = () => {
   const location = useLocation();
   const { createLoginRequest, getProfile } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
-
+  const { showSnackbar } = useSnackbar();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -93,6 +94,7 @@ const Login: React.FC = () => {
           mobileNumber: mappedData.mobileNumber,
           role: mappedData.role.toLowerCase().includes('admin') ? 'ROLE_ADMIN' : mappedData.role,
           checksum: mappedData.checksum, // Assuming the token is available in the response
+          name: mappedData.name
         };
 
         // Set the customer globally (using a context or global state manager)
@@ -105,6 +107,8 @@ const Login: React.FC = () => {
         } else {
           setCustomer({ ...registeredCustomer, crNumber: profileResponse.data.data.returnedObj[0].psuid });
         }
+
+        showSnackbar('Login successful', 'success');
       } catch (error: unknown) {
         // Narrow the error type to AxiosError
         if (error instanceof AxiosError) {
@@ -122,43 +126,7 @@ const Login: React.FC = () => {
         setIsLoading(false);
       }
     },
-    /*     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      try {
-        const response = await mockLoginApi(values.email, values.password);
 
-        if (response.role.toLowerCase().includes('user')) {
-          //navigate('/ob-connect'); // Navigate to user route
-          // Retrieve the `from` state or set a default path
-          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
-
-          navigate(from, { replace: true });
-        } else if (response.role.toLowerCase().includes('admin')) {
-          const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
-          navigate(from, { replace: true });
-
-          //navigate('/companies'); // Navigate to admin route
-        }
-
-        const registeredCustomer = {
-          companyName: response.companyName,
-          email: response.email,
-          crNumber: response.crNumber,
-          mobileNumber: response.mobileNumber,
-          role: response.role,
-          checksum: response.checksum,
-        };
-
-        setCustomer(registeredCustomer);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setErrors({ email: err.message }); // Display error on email field
-        } else {
-          setErrors({ email: 'An unknown error occurred' }); // Default error message
-        }
-      } finally {
-        setSubmitting(false);
-      }
-    }, */
   });
 
   // if (isLoading) return <Spinner />;

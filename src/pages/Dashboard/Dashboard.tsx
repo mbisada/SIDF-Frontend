@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import DownloadIcon from '@mui/icons-material/Download';
-import { Box, Button, Modal, } from '@mui/material';
+import { Box, Button, Modal, Typography, } from '@mui/material';
 
 import CashFlowBarChartCard from '../../components/CashFlowBarChartCard';
 import CashFlowCard from '../../components/CashFlowCard/CashFlowCard';
@@ -17,6 +17,7 @@ import Layout from '../../templates/Layout';
 import ExportDialog from '../MainScreen/ExportDialog';
 import { useUserProfileServices } from '../../services/user/profiles';
 import { BankTabs } from './BankTabs';
+import { DASHBOARD_DATA_RESPONSE } from '../../constants/dummy';
 
 
 // const style = {
@@ -38,6 +39,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate()
   const [financialInstitutions, setFinancialInstitutions] = useState<any[]>([]);
   const [currentFinancialInstitution, setCurrentFinancialInstitution] = useState<string>('All');
   const handleClose = async () => {
@@ -46,48 +48,69 @@ export default function Dashboard() {
   const location = useLocation();
   const financialInstitutionsBANKS = location.state?.financialInstitutions || [];
   const componentRef = useRef<HTMLDivElement>(null);
-
+  const { ListUserAccounts } = useUserProfileServices()
   const userInfo = requestDetails?.userInfo;
   const financialData = requestDetails?.financialData;
 
   const { psuid } = useParams<{ psuid: string }>();
   const { getDashboardData } = useDashboardServices();
 
+  const fetchAccounts = (userInfo: any) => {
+    setIsLoading(true);
+    ListUserAccounts(true, userInfo?.psuid || "")
+      .then(res => {
+        const userFinancialInstitutionsBANKS = res.data.data?.returnedObj[0]?.Data?.AccountsLinks.map((item: any) => ({
+          FinancialInstitutionId: item?.FinancialInstitution.FinancialInstitutionId,
+          FinancialInstitutionName: {
+            NameEn: item?.FinancialInstitution?.NameEn,
+            NameAr: item?.FinancialInstitution?.NameAr,
+          },
+
+          Logo: item?.FinancialInstitution?.Logo,
+        }))
+        setFinancialInstitutions(userFinancialInstitutionsBANKS)
+      })
+      .catch(error => {
+        console.error('Error fetching user accounts:', error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const getDashboardDataHandler = async () => {
     if (!psuid) return setIsLoading(false);
 
     setIsLoading(true);
     const res = await getDashboardData(psuid, currentFinancialInstitution);
-    if (res) setRequestDetails(res);
-    setIsLoading(false);
+    if (res) {
+      setRequestDetails(res)
+      if (financialInstitutionsBANKS.length) {
+        setFinancialInstitutions(financialInstitutionsBANKS);
+        setIsLoading(false);
+      }
+      else {
+
+        if (!financialInstitutions.length) { fetchAccounts(res.userInfo) } else {
+          setIsLoading(false)
+        }
+      }
+    };
   };
 
   useEffect(() => {
     getDashboardDataHandler();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFinancialInstitution]);
 
-  const { getFinacialInstitutions } = useUserProfileServices();
 
-  useEffect(() => {
-    if (financialInstitutionsBANKS.length) { setFinancialInstitutions(financialInstitutionsBANKS); }
-    else {
-      getFinacialInstitutions()
-        .then(res => {
-          setFinancialInstitutions(res.data.Data.FinancialInstitution);
-        })
-        .catch(error => {
-          console.error('Error fetching financial institutions:', error);
-        });
-    }
-  }, []);
 
 
   return (
     <div>
 
       <Layout
-        heading="Request Details"
+
+
       >
         <Box
 
@@ -96,23 +119,65 @@ export default function Dashboard() {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
+            marginBottom: '20px',
+            borderTop: '1px solid #E9E9E9',
+            paddingTop: '15px'
           }}
         >
-          <BankTabs financialInstitutions={financialInstitutions} setCurrentFinancialInstitution={setCurrentFinancialInstitution} />
 
-          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
-            <Button variant="contained" endIcon={<DownloadIcon />} onClick={() => setOpen(true)}>
-              {t('EXPORT_REPORT')}
+          <Typography sx={{ fontSize: '34px', fontWeight: 'bold', color: '#151538' }}>Dashboard</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', columnGap: '10px' }}>
+            <Button
+              type="submit"
+              variant="contained"
+              autoCapitalize="off"
+              disableElevation
+              style={{
+                backgroundColor: '#F36D21',
+                alignSelf: 'flex-end',
+                width: '240px',
+                height: '48px',
+                borderRadius: '10px',
+                fontSize: '13px',
+                textTransform: 'none',
+              }}
+              onClick={() => {
+                navigate('/ob-connect/connect');
+              }}
+              fullWidth
+              sx={{
+                padding: 1,
+                borderRadius: 2,
+                fontWeight: 700,
+              }}
+            >
+              {'Connect New Bank Account'}
+            </Button>
+            <Button variant="contained" style={{
+              backgroundColor: '#FFE4D5',
+              alignSelf: 'flex-end',
+              width: '240px',
+              height: '48px',
+              borderRadius: '10px',
+              fontSize: '13px',
+              textTransform: 'none',
+              color: '#F36D21'
+            }} endIcon={<DownloadIcon color='primary' />} onClick={() => { !isLoading && setOpen(true) }}>
+              <Typography style={{ color: '#F36D21', fontSize: 13, fontWeight: '600' }}>{t('Exports E-Statements As')}</Typography>
             </Button>
           </Box>
         </Box>
+
         {isLoading && <Spinner />}
         {!isLoading && <div ref={componentRef}>
+          <BankTabs financialInstitutions={financialInstitutions ?? []} currentFinancialInstitution={currentFinancialInstitution} setCurrentFinancialInstitution={setCurrentFinancialInstitution} />
           <ProfileCard
             crNumber={userInfo?.psuid}
             mobileNumber={userInfo?.mobileNumber}
             email={userInfo?.email}
             companyName={userInfo?.companyName}
+            banks={financialInstitutions?.map(item => item.FinancialInstitutionName.NameEn).join(", ")}
+            currentFinancialInstitution={currentFinancialInstitution}
           />
           <Box
             sx={{
@@ -164,9 +229,7 @@ export default function Dashboard() {
 
         </div>}
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ''} componentRef={componentRef} />
-
-
+          <ExportDialog close={handleClose} PSUId={userInfo?.psuid || ''} componentRef={componentRef} financialInstitutions={financialInstitutions} />
         </Modal>
       </Layout>
     </div>
