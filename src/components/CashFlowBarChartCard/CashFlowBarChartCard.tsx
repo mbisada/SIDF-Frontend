@@ -79,6 +79,8 @@ export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthl
     <Card
       sx={{
         flex: 1,
+        border: '1px solid #DADADA',
+        borderRadius: '12px',
       }}
     >
       <CardHeader title={t('CASHFLOW_PERFORMANCE_THIS_PERIOD')} />

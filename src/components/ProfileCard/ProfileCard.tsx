@@ -27,6 +27,8 @@ export default function ProfileCard({ crNumber, mobileNumber, email, companyName
         alignItems: 'stretch',
         backgroundColor: 'white',
         border: '1px solid #DADADA',
+        marginTop: '25px',
+        borderRadius: '12px',
       }}
     >
       <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>

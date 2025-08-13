@@ -135,6 +135,8 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
         flexDirection: 'row',
         alignItems: 'center',
         minHeight: '300px',
+        border: '1px solid #DADADA',
+        borderRadius: '12px',
         '@media (max-width: 400px)': {
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -143,31 +145,32 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
         },
       }}
     >
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={cashInChart}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={90}
-            outerRadius={110}
-            startAngle={90}
-            endAngle={-270}
-            cornerRadius={20}
-            paddingAngle={-20}
-          >
-            {cashInChart.map((_, index) => (
-              <Cell key={index} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
+      {cashInChart?.some(item => item?.value !== 0) && (
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              data={cashInChart}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              innerRadius={90}
+              outerRadius={110}
+              startAngle={90}
+              endAngle={-270}
+              cornerRadius={20}
+              paddingAngle={-20}
+            >
+              {cashInChart.map((_, index) => (
+                <Cell key={index} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
 
-          <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
-        </PieChart>
-      </ResponsiveContainer>
-
-      {cashOutChart?.[0]?.value != 0 && cashOutChart?.[1]?.value != 0 && (
+            <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
+      {cashOutChart?.some(item => item?.value !== 0) && (
         <ResponsiveContainer>
           <PieChart>
             <Pie

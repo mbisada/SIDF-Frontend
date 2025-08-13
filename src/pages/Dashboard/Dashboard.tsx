@@ -188,8 +188,9 @@ export default function Dashboard() {
                 flexWrap: 'wrap',
                 alignItems: 'stretch',
                 justifyContent: 'space-between',
-                gap: 1,
+                gap: 2,
                 marginBottom: 1,
+                marginTop: '20px',
               }}
             >
               <CashFlowCard
@@ -208,8 +209,9 @@ export default function Dashboard() {
                 flexWrap: 'wrap',
                 alignItems: 'stretch',
                 justifyContent: 'space-between',
-                gap: 1,
+                gap: 2,
                 marginBottom: 1,
+                marginTop: '20px',
               }}
             >
               <CashFlowBarChartCard

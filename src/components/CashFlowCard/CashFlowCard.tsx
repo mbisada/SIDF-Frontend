@@ -23,7 +23,9 @@ export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut 
   return (
     <Card
       sx={{
+        border: '1px solid #DADADA',
         flex: 4, // Default ratio for desktop
+        borderRadius: '12px',
         '@media (max-width: 900px)': {
           flex: '1 1 100%', // Full width for medium screens
         },

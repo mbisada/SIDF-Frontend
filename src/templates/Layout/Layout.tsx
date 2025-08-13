@@ -129,7 +129,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', backgroundColor: 'rgb(249, 248, 251)' }}>
       <CssBaseline />
 
       {/* Sidebar */}
