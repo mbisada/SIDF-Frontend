@@ -17,6 +17,7 @@ import Layout from '../../templates/Layout';
 import ExportDialog from '../MainScreen/ExportDialog';
 import { useUserProfileServices } from '../../services/user/profiles';
 import { BankTabs } from './BankTabs';
+import { useCustomer } from '../../contexts/CustomerContext/useContext';
 
 // const style = {
 //   position: 'absolute',
@@ -41,6 +42,7 @@ export default function Dashboard() {
   const handleClose = async () => {
     setOpen(false);
   };
+  const { customer } = useCustomer()
   const location = useLocation();
   const financialInstitutionsBANKS = location.state?.financialInstitutions || [];
   const componentRef = useRef<HTMLDivElement>(null);
@@ -114,7 +116,7 @@ export default function Dashboard() {
         >
           <Typography sx={{ fontSize: '34px', fontWeight: 'bold', color: '#151538' }}>Dashboard</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', columnGap: '10px' }}>
-            <Button
+            {customer?.role == 'ROLE_USER' && <Button
               type="submit"
               variant="contained"
               autoCapitalize="off"
@@ -139,7 +141,7 @@ export default function Dashboard() {
               }}
             >
               {'Connect New Bank Account'}
-            </Button>
+            </Button>}
             <Button
               variant="contained"
               style={{

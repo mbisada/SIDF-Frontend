@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 
 import CompanyCard from '../../components/CompanyCard';
 import Spinner from '../../components/Spinner';
@@ -12,6 +12,7 @@ import Referral from '../../assets/referral.svg';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import CopyIcon from '../../assets/CopyIcon.svg';
 import CloseButton from '../../assets/CloseButton.svg';
+import { useSnackbar } from '../../utils/SnackBarProvider';
 
 function Companies() {
   const [companiesList, setCompaniesList] = useState<Company[]>();
@@ -35,11 +36,11 @@ function Companies() {
   if (isLoading) return <Spinner />;
 
   const textToCopy = `${import.meta.env.VITE_BACKEND_BASE_URL_NAVIGATION}/register?referalCode=${customer?.referralCode}`;
-
+  const { showSnackbar } = useSnackbar();
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(textToCopy);
-      alert('Copied to clipboard!');
+      showSnackbar('Copied to clipboard!', 'success');
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
@@ -67,7 +68,7 @@ function Companies() {
           }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: '16px' }}>
-            <Typography color="#151538" variant={'h5'} fontWeight={'semibold'}>
+            <Typography color="#151538" variant={'h5'} fontWeight={'bold'}>
               Companies List Details
             </Typography>
             <Button
@@ -109,148 +110,146 @@ function Companies() {
       </Layout>
 
       {showDialouge && (
-        <Box
-          style={{
-            position: 'absolute',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            width: '100%',
-            height: '100%',
-            zIndex: 100,
-            alignItems: 'center',
-            justifyContent: 'center',
-            top: 0,
-            left: 240,
-          }}
-          display={'flex'}
-        >
+        <Modal open={showDialouge} onClose={() => setShowDialouge(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <Box
             style={{
-              flexDirection: 'column',
-              padding: '16px',
+
+              width: '100%',
+              height: '100%',
+              zIndex: 100,
               alignItems: 'center',
-              alignSelf: 'center',
               justifyContent: 'center',
-              width: '640px',
-              height: 'auto',
-              backgroundColor: 'white',
-              borderRadius: '12px',
+              top: 0,
+              left: 240,
             }}
+            display={'flex'}
           >
             <Box
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                width: '100%',
+                flexDirection: 'column',
+                padding: '16px',
+                alignItems: 'center',
+                alignSelf: 'center',
+                justifyContent: 'center',
+                width: '640px',
+                height: 'auto',
+                backgroundColor: 'white',
+                borderRadius: '12px',
               }}
             >
               <Box
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  alignItems: 'center',
-
-                  columnGap: '16px',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  width: '100%',
                 }}
               >
                 <Box
-                  style={{ alignSelf: 'center' }}
-                  component="img"
-                  loading="lazy"
-                  sx={{
-                    height: '65px',
-                    width: '65px',
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+
+                    columnGap: '16px',
                   }}
-                  alt="neotek logo"
-                  src={Referral}
-                  paddingTop={1}
-                />
-                <Box style={{}}>
-                  <Typography variant={'h6'}>Generate referral code</Typography>
+                >
+                  <Box
+                    style={{ alignSelf: 'center' }}
+                    component="img"
+                    loading="lazy"
+                    sx={{
+                      height: '65px',
+                      width: '65px',
+                    }}
+                    alt="neotek logo"
+                    src={Referral}
+                    paddingTop={1}
+                  />
+                  <Box style={{}}>
+                    <Typography variant={'h6'}>Generate referral code</Typography>
 
-                  <Typography variant={'body2'} color="#475467" fontWeight={'400'} fontSize={'13px'} style={{ marginTop: 0 }}>
-                    Change this later
-                  </Typography>
+                  </Box>
                 </Box>
-              </Box>
-              <Box
-                style={{}}
-                component="img"
-                loading="lazy"
-                sx={{
-                  height: '25px',
-                  width: '25px',
-                  paddingTop: '10px',
-                }}
-                alt="neotek logo"
-                src={CloseButton}
-                paddingTop={1}
-                onClick={() => {
-                  setShowDialouge(false);
-                }}
-              />
-            </Box>
-            <Typography variant={'body2'} color="#475467" fontWeight={'400'} fontSize={'15px'} style={{ marginTop: 20 }}>
-              Copy link url below
-            </Typography>
-            <Box
-              style={{
-                padding: '10px',
-                borderRadius: '7px',
-                margin: '20px 0',
-                backgroundColor: '#1018280D',
-                width: '100%',
-                height: 'auto',
-              }}
-            >
-              <Typography variant={'body2'} color="#101828" fontWeight={'400'} fontSize={'15px'} style={{ marginTop: 0 }}>
-                {textToCopy}
-              </Typography>
-            </Box>
-            <Box
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                columnGap: '10px',
-                width: '100%',
-                height: 'auto',
-              }}
-            >
-              <Typography variant={'body2'} color="#475467" fontWeight={'400'} fontSize={'13px'} style={{ marginTop: 0 }}>
-                Cancel
-              </Typography>
-              <Button
-                style={{ alignSelf: 'center', display: 'flex', flexDirection: 'row', columnGap: '10px' }}
-                onClickCapture={() => {
-                  handleCopy();
-                }}
-                variant={'contained'}
-                onClick={() => {
-                  setShowDialouge(false);
-                }}
-              >
                 <Box
-                  style={{ alignSelf: 'center' }}
+                  style={{}}
                   component="img"
                   loading="lazy"
                   sx={{
                     height: '25px',
                     width: '25px',
-                    paddingTop: '0px',
+                    paddingTop: '10px',
                   }}
                   alt="neotek logo"
-                  src={CopyIcon}
+                  src={CloseButton}
                   paddingTop={1}
+                  onClick={() => {
+                    setShowDialouge(false);
+                  }}
                 />
-                <Typography variant={'body2'} color="white" fontWeight={'400'} fontSize={'13px'} style={{ marginTop: 0 }}>
-                  Copy Url
+              </Box>
+              <Typography variant={'body2'} color="#475467" fontWeight={'400'} fontSize={'15px'} style={{ marginTop: 20 }}>
+                Copy link url below
+              </Typography>
+              <Box
+                style={{
+                  padding: '10px',
+                  borderRadius: '7px',
+                  margin: '20px 0',
+                  backgroundColor: '#1018280D',
+                  width: '100%',
+                  height: 'auto',
+                }}
+              >
+                <Typography variant={'body2'} color="#101828" fontWeight={'400'} fontSize={'15px'} style={{ marginTop: 0 }}>
+                  {textToCopy}
                 </Typography>
-              </Button>
+              </Box>
+              <Box
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  columnGap: '10px',
+                  width: '100%',
+                  height: 'auto',
+                }}
+              >
+                <Typography variant={'body2'} color="#475467" fontWeight={'400'} fontSize={'13px'} style={{ marginTop: 0 }}>
+                  Cancel
+                </Typography>
+                <Button
+                  style={{ alignSelf: 'center', display: 'flex', flexDirection: 'row', columnGap: '10px' }}
+                  onClickCapture={() => {
+                    handleCopy();
+                  }}
+                  variant={'contained'}
+                  onClick={() => {
+                    setShowDialouge(false);
+                  }}
+                >
+                  <Box
+                    style={{ alignSelf: 'center' }}
+                    component="img"
+                    loading="lazy"
+                    sx={{
+                      height: '25px',
+                      width: '25px',
+                      paddingTop: '0px',
+                    }}
+                    alt="neotek logo"
+                    src={CopyIcon}
+                    paddingTop={1}
+                  />
+                  <Typography variant={'body2'} color="white" fontWeight={'400'} fontSize={'13px'} style={{ marginTop: 0 }}>
+                    Copy Url
+                  </Typography>
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </Modal>
       )}
     </>
   );

@@ -367,7 +367,7 @@ const ReviewBelowInformation: React.FC = () => {
         >
           <List
             accounts={[
-              { title: 'Account Number', name: 'Turki Construction Co' },
+
               { title: 'Bank Name', name: inistituation?.FinancialInstitutionName.NameEn },
             ]}
           />
