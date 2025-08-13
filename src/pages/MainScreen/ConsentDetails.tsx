@@ -5,7 +5,7 @@ import Layout from '../../templates/Layout';
 import { useUserProfileServices } from '../../services/user/profiles';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import Spinner from '../../components/Spinner';
-import emptyList from '../../assets/emptyList.svg';
+import emptyList from '../../assets/emptylist.svg';
 import { useSnackbar } from '../../utils/SnackBarProvider';
 
 const ConsentDetails: React.FC<{ calculated: boolean }> = ({ calculated }) => {
