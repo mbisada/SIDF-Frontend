@@ -197,7 +197,11 @@ export default function Dashboard() {
                 totalCashIn={financialData?.TotalCashIn ?? 0}
                 totalCashOut={financialData?.TotalCashOut ?? 0}
               />
-              <LoansCard liability={financialData?.Liabilities ?? 0} averageBalance={financialData?.AverageBalance ?? 0} balance={financialData?.Balance ?? 0} />
+              <LoansCard
+                liability={financialData?.Liabilities ?? 0}
+                averageBalance={financialData?.AverageBalance ?? 0}
+                balance={financialData?.Balance ?? 0}
+              />
             </Box>
             <Box
               sx={{

@@ -2,13 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import useWindowSize from '../../hooks/useWindowSize';
 import { formatNumberWithCommas } from '../../utils/numberHelpers';
 import { CashFlowBarChartCardProps } from './CashFlowBarChartCard.types';
-import Riyal from "../../assets/Riyal.svg"
+import Riyal from '../../assets/Riyal.svg';
 
 export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthlyCashFlow }: CashFlowBarChartCardProps) {
   const { t } = useTranslation();

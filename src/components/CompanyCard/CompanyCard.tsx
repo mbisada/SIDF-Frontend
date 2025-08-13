@@ -6,25 +6,27 @@ import Typography from '@mui/material/Typography';
 import { Box, Button, CardContent } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
-import dashboardIcon from "../../assets/dashboardIcon.svg"
+import dashboardIcon from '../../assets/dashboardIcon.svg';
 interface CompanyCardProps {
   crNumber: string;
   identifier: string;
-  calculationStatus: string
+  calculationStatus: string;
 }
 export default function CompanyCard({ crNumber, identifier, calculationStatus }: CompanyCardProps) {
   const navigate = useNavigate();
   const handleNavigateClick = () => {
+    if (calculationStatus == 'COMPLETED') {
 
-    calculationStatus == "COMPLETED" ?
       navigate(`/companies/${crNumber}`, {
         state: {},
-      }) : null
+      })
+    }
+
   };
 
   return (
     <div style={{ width: '50%' }}>
-      <Card sx={{ margin: 1, padding: .5, height: '100%', backgroundColor: 'white', border: '1px solid #DADADA', paddingBottom: '0px' }}>
+      <Card sx={{ margin: 1, padding: 0.5, height: '100%', backgroundColor: 'white', border: '1px solid #DADADA', paddingBottom: '0px' }}>
         <CardHeader
           avatar={
             <Avatar sx={{ border: '1px solid #DADADA', bgcolor: '#F9F9F9', width: 50, height: 50, borderRadius: 25 }} aria-label="recipe">
@@ -41,9 +43,13 @@ export default function CompanyCard({ crNumber, identifier, calculationStatus }:
             </Avatar>
           }
           action={
-            <Button variant={"contained"} onClick={handleNavigateClick} style={{ backgroundColor: calculationStatus == "COMPLETED" ? '' : 'gray', borderRadius: '8px', }}>
+            <Button
+              variant={'contained'}
+              onClick={handleNavigateClick}
+              style={{ backgroundColor: calculationStatus == 'COMPLETED' ? '' : 'gray', borderRadius: '8px' }}
+            >
               <Typography variant="body2" color="white" fontWeight={'600'} fontSize={'13px'} style={{ padding: '5px' }}>
-                {calculationStatus == "COMPLETED" ? "View Details" : "No Details Available"}
+                {calculationStatus == 'COMPLETED' ? 'View Details' : 'No Details Available'}
               </Typography>
             </Button>
           }
@@ -60,6 +66,6 @@ export default function CompanyCard({ crNumber, identifier, calculationStatus }:
           </Typography>
         </CardContent>
       </Card>
-    </div >
+    </div>
   );
 }

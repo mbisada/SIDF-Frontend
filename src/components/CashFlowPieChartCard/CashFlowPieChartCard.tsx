@@ -113,7 +113,7 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
       payload?: { value: number; name: string };
     }[];
   }
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const CustomLegend: React.FC<CustomLegendProps> = ({ payload }) => {
     if (!payload) return null;
 

@@ -95,8 +95,14 @@ function Companies() {
             {companiesList &&
               companiesList.length > 0 &&
               companiesList?.map(company => {
-                console.log("company", company)
-                return <CompanyCard identifier={company.companyName} key={company.psuid} calculationStatus={company.calculationStatus} crNumber={company.psuid ?? ''} />;
+                return (
+                  <CompanyCard
+                    identifier={company.companyName}
+                    key={company.psuid}
+                    calculationStatus={company.calculationStatus}
+                    crNumber={company.psuid ?? ''}
+                  />
+                );
               })}
           </div>
         </Box>
