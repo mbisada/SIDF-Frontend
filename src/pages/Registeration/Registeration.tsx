@@ -4,12 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, /*  Button, */ Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, Link, Stack, TextField, Typography } from '@mui/material';
 
 import chart from '../../assets/favorite-chart.svg';
 import logo from '../../assets/logoWhite.svg';
 import GradientBackground from '../../components/GradientBackground';
-import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useRegisterationServices } from '../../services/registeration/registeration';
 import { useSnackbar } from '../../utils/SnackBarProvider';
 
@@ -26,7 +25,6 @@ const validationSchema = Yup.object({
 
 const Registration = () => {
   const navigate = useNavigate();
-  const { setCustomer } = useCustomer();
   const { createRegisterationRequest } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();

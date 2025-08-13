@@ -29,8 +29,6 @@ import {
 import bookmark from '../../assets/bookmark.svg';
 import ic_down_arrow from '../../assets/ic_down_arrow.svg';
 import logo from '../../assets/Logo.png';
-import notification from '../../assets/notification.svg';
-import search from '../../assets/search.svg';
 import test_man from '../../assets/test_man.svg';
 import { ROLES } from '../../constants/roles';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
@@ -53,7 +51,6 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { customer } = useCustomer();
-  console.log('customer', customer);
   const navigate = useNavigate();
   const logout = useLogout();
 
@@ -213,7 +210,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
                 borderRadius: '16px',
                 border: '1px solid #E9E9E9',
               }}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <Box
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', columnGap: '10px' }}

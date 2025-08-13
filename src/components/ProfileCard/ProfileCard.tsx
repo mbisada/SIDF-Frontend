@@ -1,9 +1,7 @@
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { /* Button, */ Box, CardContent } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import { grey } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import dashboardIcon from '../../assets/dashboardIcon.svg';
 interface ProfileCardProps {

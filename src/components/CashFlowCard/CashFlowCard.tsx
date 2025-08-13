@@ -1,8 +1,6 @@
-import { useTranslation } from 'react-i18next';
 
 import { CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 
 import arrowDownIcon from '../../assets/arrowDown.svg';
 import arrowUpIcon from '../../assets/arrowUp.svg';
@@ -12,7 +10,6 @@ import CashFlowItem from './CashFlowItem/CashFlowItem';
 import { CashFlowCardProps } from './CashFlowCard.types';
 
 export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut }: CashFlowCardProps) {
-  const { t } = useTranslation();
 
   const cardItems = [
     { icon: cashflowIcon, label: 'CASHFLOW', title: 'ACTUAL_CASHFLOW', value: totalCashFlow },

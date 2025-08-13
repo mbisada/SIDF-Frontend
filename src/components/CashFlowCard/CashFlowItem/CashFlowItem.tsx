@@ -10,7 +10,7 @@ import Riyal from '../../../assets/Riyal.svg';
 import RiyalGreen from '../../../assets/RiyalGreen.svg';
 import RiyalRed from '../../../assets/RiyalRed.svg';
 
-export default function CashFlowItem({ icon, label, title, value, color = 'text.primary', isLast }: CashFlowItemProps) {
+export default function CashFlowItem({ icon, label, title, value, isLast }: CashFlowItemProps) {
   const { t } = useTranslation();
   return (
     <>
