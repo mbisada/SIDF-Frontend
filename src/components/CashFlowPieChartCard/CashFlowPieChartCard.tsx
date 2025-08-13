@@ -4,6 +4,8 @@ import { CashFlowPieChartCardProps } from './CashFlowPieChartCard.types';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import './styles.css';
 import styled from 'styled-components';
+import { Box, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const LegendContainer = styled.div`
   display: flex;
@@ -82,8 +84,8 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
   }
 
   // Generate shades dynamically
-  const COLORS = generateShades('#27AE60', 5); // 5 shades of green
-  const COLORS2 = generateShades('#C0392B', 5); // 5 shades of red
+  const COLORS = generateShades('#27AE60', 12);
+  const COLORS2 = generateShades('#C0392B', 12);
   const formatCompact = (n: any) => Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
 
   interface LegendItemProps {
@@ -111,7 +113,7 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
       payload?: { value: number; name: string };
     }[];
   }
-
+  const { t } = useTranslation()
   const CustomLegend: React.FC<CustomLegendProps> = ({ payload }) => {
     if (!payload) return null;
 
@@ -132,8 +134,8 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
       sx={{
         flex: 1,
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: 'column',
+
         minHeight: '300px',
         border: '1px solid #DADADA',
         borderRadius: '12px',
@@ -145,56 +147,61 @@ const CashFlowPieChartCard = ({ cashInTypes, cashOutTypes }: CashFlowPieChartCar
         },
       }}
     >
-      {cashInChart?.some(item => item?.value !== 0) && (
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={cashInChart}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              innerRadius={90}
-              outerRadius={110}
-              startAngle={90}
-              endAngle={-270}
-              cornerRadius={20}
-              paddingAngle={-20}
-            >
-              {cashInChart.map((_, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
+      <Typography variant="h6" sx={{ fontWeight: '900', color: '#3F4254', paddingLeft: '16px', paddingTop: '16px' }}>
+        {t('CASHFLOW_PERFORMANCE_THIS_PERIOD')}
+      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
+        {cashInChart?.some(item => item?.value !== 0) && (
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={cashInChart}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                innerRadius={90}
+                outerRadius={110}
+                startAngle={90}
+                endAngle={-270}
+                cornerRadius={20}
+                paddingAngle={-20}
+              >
+                {cashInChart.map((_, index) => (
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
 
-            <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
-          </PieChart>
-        </ResponsiveContainer>
-      )}
-      {cashOutChart?.some(item => item?.value !== 0) && (
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={cashOutChart}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              innerRadius={90}
-              outerRadius={110}
-              startAngle={90}
-              endAngle={-270}
-              cornerRadius={20}
-              paddingAngle={-20}
-            >
-              {cashOutChart.map((_, index) => (
-                <Cell key={index} fill={COLORS2[index % COLORS2.length]} />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
+              <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
+        {cashOutChart?.some(item => item?.value !== 0) && (
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={cashOutChart}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                innerRadius={90}
+                outerRadius={110}
+                startAngle={90}
+                endAngle={-270}
+                cornerRadius={20}
+                paddingAngle={-20}
+              >
+                {cashOutChart.map((_, index) => (
+                  <Cell key={index} fill={COLORS2[index % COLORS2.length]} />
+                ))}
+              </Pie>
+              <Legend verticalAlign="bottom" align="center" layout="horizontal" content={<CustomLegend />} />
 
-            <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
-          </PieChart>
-        </ResponsiveContainer>
-      )}
+              <Tooltip formatter={(val, _name, entry) => [formatCompact(val), entry?.payload?.name || '']} />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
+      </Box>
     </Card>
   );
 };

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { CardContent } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
@@ -31,10 +31,12 @@ export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut 
         },
       }}
     >
-      <CardHeader title={t('CASHFLOW')} />
+      <Typography variant="h6" sx={{ fontWeight: '900', color: '#3F4254', paddingLeft: '16px', paddingTop: '16px' }}>
+        Cashflow
+      </Typography>
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-        {cardItems.map(cardItem => (
-          <CashFlowItem key={cardItem.label} {...cardItem} />
+        {cardItems.map((cardItem, index) => (
+          <CashFlowItem key={cardItem.label} {...cardItem} isLast={index === cardItems.length - 1} />
         ))}
       </CardContent>
     </Card>

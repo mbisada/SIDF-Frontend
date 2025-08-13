@@ -1,17 +1,13 @@
-import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 
 import { formatNumberWithCommas } from '../../utils/numberHelpers';
 
 import { LoansCardProps } from './LoansCard.types';
 import Riyal from '../../assets/Riyal.svg';
 
-export default function LoansCard({ liability, averageBalance }: LoansCardProps) {
-  const { t } = useTranslation();
-
+export default function LoansCard({ liability, averageBalance, balance }: LoansCardProps) {
   return (
     <>
       <Card
@@ -39,7 +35,7 @@ export default function LoansCard({ liability, averageBalance }: LoansCardProps)
               <Typography variant="h6" sx={{ fontWeight: '900', color: '#3F4254' }}>
                 Balance
               </Typography>
-              {formatNumberWithCommas(liability)}
+              {formatNumberWithCommas(balance)}
               <Box
                 style={{ alignSelf: 'center' }}
                 component="img"

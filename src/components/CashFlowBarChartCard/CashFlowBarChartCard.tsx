@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CardContent, Typography } from '@mui/material';
+import { Box, CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -8,6 +8,7 @@ import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 import useWindowSize from '../../hooks/useWindowSize';
 import { formatNumberWithCommas } from '../../utils/numberHelpers';
 import { CashFlowBarChartCardProps } from './CashFlowBarChartCard.types';
+import Riyal from "../../assets/Riyal.svg"
 
 export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthlyCashFlow }: CashFlowBarChartCardProps) {
   const { t } = useTranslation();
@@ -83,10 +84,24 @@ export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthl
         borderRadius: '12px',
       }}
     >
-      <CardHeader title={t('CASHFLOW_PERFORMANCE_THIS_PERIOD')} />
+      <Typography variant="h6" sx={{ fontWeight: '900', color: '#3F4254', paddingLeft: '16px', paddingTop: '16px' }}>
+        {t('CASHFLOW_PERFORMANCE_THIS_PERIOD')}
+      </Typography>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', width: '100%', paddingTop: 0 }}>
         <Typography variant="h3" sx={{ color: 'text.primary', mb: 2 }}>
-          {formatNumberWithCommas(totalFlow)} <span style={{ fontStyle: 'italic' }}>{t('SAR')}</span>
+          {formatNumberWithCommas(totalFlow)}
+          <Box
+            style={{ alignSelf: 'center' }}
+            component="img"
+            loading="lazy"
+            sx={{
+              height: '45px',
+              width: '45px',
+            }}
+            alt="neotek logo"
+            src={Riyal}
+            paddingTop={1}
+          />
         </Typography>
 
         <ResponsiveContainer width="100%" style={{ marginLeft: '-50px' }} height={chartHeight}>
@@ -100,7 +115,7 @@ export default function CashFlowBarChartCard({ inflowTotal, outflowTotal, monthl
             />
             <YAxis tickFormatter={formatValue} />
             <Tooltip />
-            <Legend verticalAlign="top" align="center" layout="horizontal" />
+            <Legend verticalAlign="bottom" align="center" layout="horizontal" />
             <Bar dataKey="CashIn" name={t('INFLOW')} fill="#27AE65" radius={[7, 7, 0, 0]} />
             <Bar dataKey="CashOut" name={t('OUTFLOW')} fill="#FC5555" radius={[7, 7, 0, 0]} />
             <Line

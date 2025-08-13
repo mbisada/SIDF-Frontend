@@ -52,8 +52,8 @@ function Companies() {
           { label: 'Dashboard', href: '/' },
           { label: 'Companies List Details', href: '/companies' },
         ]}
-        // heading="Companies List Details"
-        //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */
+      // heading="Companies List Details"
+      //  subheading="Select One Of The Supported Banks To Request Your Financial Data" */
       >
         <Box
           sx={{
@@ -95,7 +95,8 @@ function Companies() {
             {companiesList &&
               companiesList.length > 0 &&
               companiesList?.map(company => {
-                return <CompanyCard identifier={company.companyName} key={company.psuid} crNumber={company.psuid ?? ''} />;
+                console.log("company", company)
+                return <CompanyCard identifier={company.companyName} key={company.psuid} calculationStatus={company.calculationStatus} crNumber={company.psuid ?? ''} />;
               })}
           </div>
         </Box>

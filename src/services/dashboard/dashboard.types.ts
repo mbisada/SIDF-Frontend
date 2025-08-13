@@ -21,6 +21,7 @@ interface FinancialData {
   CashInTypes: CashType[];
   CashOutTypes: CashType[];
   AverageBalance?: number; // Optional property for average balance
+  Balance?: number;
 }
 
 interface UserInfo {

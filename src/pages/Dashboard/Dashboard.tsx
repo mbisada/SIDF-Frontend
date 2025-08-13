@@ -17,7 +17,6 @@ import Layout from '../../templates/Layout';
 import ExportDialog from '../MainScreen/ExportDialog';
 import { useUserProfileServices } from '../../services/user/profiles';
 import { BankTabs } from './BankTabs';
-import { DASHBOARD_DATA_RESPONSE } from '../../constants/dummy';
 
 // const style = {
 //   position: 'absolute',
@@ -198,7 +197,7 @@ export default function Dashboard() {
                 totalCashIn={financialData?.TotalCashIn ?? 0}
                 totalCashOut={financialData?.TotalCashOut ?? 0}
               />
-              <LoansCard liability={financialData?.Liabilities ?? 0} averageBalance={financialData?.AverageBalance ?? 0} />
+              <LoansCard liability={financialData?.Liabilities ?? 0} averageBalance={financialData?.AverageBalance ?? 0} balance={financialData?.Balance ?? 0} />
             </Box>
             <Box
               sx={{

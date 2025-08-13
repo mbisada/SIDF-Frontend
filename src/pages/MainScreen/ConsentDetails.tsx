@@ -17,7 +17,7 @@ const ConsentDetails: React.FC<{ calculated: boolean }> = ({ calculated }) => {
   const [loading, setLoading] = useState(false);
   const fetchAccounts = () => {
     setLoading(true);
-    ListUserAccounts(calculated, '')
+    ListUserAccounts(calculated, customer?.crNumber || '')
       .then(res => {
         setAccounts(res.data.data?.returnedObj[0]?.Data?.AccountsLinks);
       })

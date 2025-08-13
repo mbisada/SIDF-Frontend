@@ -59,12 +59,11 @@ const ConnectBankAccount: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { getFinacialInstitutions } = useUserProfileServices();
 
-  const getFinancial = getFinacialInstitutions();
   const [financialInstitutions, setFinancialInstitutions] = useState<any[]>([]);
 
   useEffect(() => {
     setLoading(true);
-    getFinancial
+    getFinacialInstitutions()
       .then(res => {
         setFinancialInstitutions(res.data.Data.FinancialInstitution);
       })
