@@ -249,7 +249,7 @@ const Login: React.FC = () => {
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>
         <Typography variant="body1" gutterBottom color="white">
-          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding
+          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling SIDF to provide tailored funding
           solutions that meet your needs.
         </Typography>
         <Typography variant="body1" color="white" gutterBottom paddingTop={5}>
