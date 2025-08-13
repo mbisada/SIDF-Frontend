@@ -26,9 +26,16 @@ export const useRegisterationServices = () => {
       },
     });
   };
+  const getProfile = async (isAdmin: boolean) => {
+    if (isAdmin) {
+      return await backendAxiosInstance.get('/admin/profile');
+    }
+    return await backendAxiosInstance.get('/user/profile');
+  };
 
   return {
     createRegisterationRequest,
     createLoginRequest,
+    getProfile,
   };
 };

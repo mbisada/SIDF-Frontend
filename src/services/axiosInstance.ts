@@ -38,8 +38,8 @@ backendAxiosInstance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       const url = error.config.url?.toLowerCase();
       if (url && !url.endsWith('/login')) {
-        localStorage.clear();
-        window.location.replace('/login');
+        // localStorage.clear();
+        // window.location.replace('/login');
       }
     }
     return Promise.reject(error);

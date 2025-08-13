@@ -2,11 +2,13 @@ import React, { ReactNode } from 'react';
 import { t } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { AccountBalance, ListAlt, Logout } from '@mui/icons-material';
+import { ListAlt, Logout } from '@mui/icons-material';
+import Dasboard from '../../assets/Dasboard.svg';
+import Consents from '../../assets/Consents.svg';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Avatar,
   Box,
   CssBaseline,
   Divider,
@@ -17,16 +19,22 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Modal,
   Toolbar,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 
+import bookmark from '../../assets/bookmark.svg';
+import ic_down_arrow from '../../assets/ic_down_arrow.svg';
 import logo from '../../assets/Logo.png';
+import test_man from '../../assets/test_man.svg';
 import { ROLES } from '../../constants/roles';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useLogout } from '../../hooks/useLogout';
+import BookMarkDialog from '../../pages/MainScreen/BookmarkDialog';
+import AdminDialog from '../../pages/MainScreen/AdminDialog';
 
 interface LayoutProps {
   breadcrumbs?: { label: string; href?: string }[];
@@ -39,7 +47,7 @@ const drawerWidth = 240;
 
 const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const [show, setShow] = React.useState(false);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { customer } = useCustomer();
@@ -54,14 +62,43 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
     <Box sx={{ overflow: 'auto', paddingTop: 2 }}>
       <List>
         {customer?.role === ROLES.user && (
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/ob-connect')}>
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                <AccountBalance sx={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary={t('CONSENTS')} />
-            </ListItemButton>
-          </ListItem>
+          <>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate('/ob-connect')}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <Box
+                    component="img"
+                    loading="lazy"
+                    sx={{
+                      height: '25px',
+                      width: '25px',
+                    }}
+                    alt="neotek logo"
+                    src={Dasboard}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={t('Dashboard')} />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate('/consent-details')}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <Box
+                    component="img"
+                    loading="lazy"
+                    sx={{
+                      height: '25px',
+                      width: '25px',
+                    }}
+                    alt="neotek logo"
+                    src={Consents}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={t('Consents Details')} />
+              </ListItemButton>
+            </ListItem>
+          </>
         )}
         {customer?.role === ROLES.admin && (
           <ListItem disablePadding>
@@ -89,7 +126,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', backgroundColor: 'rgb(249, 248, 251)' }}>
       <CssBaseline />
 
       {/* Sidebar */}
@@ -101,12 +138,14 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            background: 'linear-gradient(to bottom, #BF360C, #000000)',
+            background: 'linear-gradient(to bottom, #F26F22, #000000)',
             color: 'white',
+            borderTopRightRadius: '26px',
+            borderTopLeftRadius: '26px',
+            marginTop: '69px',
           },
         }}
       >
-        <Toolbar />
         {drawerContent}
       </Drawer>
 
@@ -117,9 +156,10 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
           zIndex: theme.zIndex.drawer + 1,
           backgroundColor: 'white',
           color: 'black',
+          '--Paper-shadow': 'none !important',
         }}
       >
-        <Toolbar>
+        <Toolbar style={{ backgroundColor: '#f9f8fb' }}>
           {isSmallScreen && (
             <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
               <MenuIcon />
@@ -131,7 +171,7 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               sx={{
                 height: 'auto',
                 width: 100,
-                display: { xs: 'none', md: 'flex' },
+                display: { md: 'flex' },
                 mr: 10,
                 cursor: 'pointer',
               }}
@@ -139,9 +179,73 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
               src={logo}
             />
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="subtitle1">{customer ? `${customer.crNumber}` : 'Guest'}</Typography>
-            <Avatar sx={{ cursor: 'pointer', margin: 1 }}>{/* Optional Avatar */}</Avatar>
+          <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} display={'flex'}>
+            <Box
+              component="img"
+              loading="lazy"
+              sx={{
+                height: '40px',
+                width: '52px',
+              }}
+              alt="neotek logo"
+              src={bookmark}
+              onClick={() => {
+                setShow(true);
+              }}
+            />
+
+            <Box
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                paddingLeft: '18px',
+                paddingRight: '16px',
+                justifyContent: 'space-between',
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#F7F8FA',
+                width: '240px',
+                height: '54px',
+                marginLeft: 6,
+                borderRadius: '16px',
+                border: '1px solid #E9E9E9',
+              }}
+              onClick={() => { }}
+            >
+              <Box
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', columnGap: '10px' }}
+              >
+                <Box
+                  style={{ alignSelf: 'center' }}
+                  component="img"
+                  loading="lazy"
+                  sx={{
+                    height: '40px',
+                    width: '40px',
+                  }}
+                  alt="neotek logo"
+                  src={test_man}
+                />
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="body2" color="black" fontWeight={'bold'} fontSize={'15px'} style={{ marginTop: 2 }}>
+                    {customer?.name}
+                  </Typography>
+                  <Typography variant="body2" color="#72788E" fontWeight={'400'} fontSize={'12px'} style={{ marginTop: 2 }}>
+                    {customer?.email}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                component="img"
+                loading="lazy"
+                sx={{
+                  height: '24px',
+                  width: '24px',
+                }}
+                alt="neotek logo"
+                src={ic_down_arrow}
+              />
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
@@ -151,14 +255,15 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          padding: 3,
+          padding: 1,
           marginLeft: { sm: `${drawerWidth}px` },
           marginTop: '64px',
           minHeight: '100vh',
+          backgroundColor: '#f9f8fb',
         }}
       >
         {heading && (
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" gutterBottom color="#151538">
             {heading}
           </Typography>
         )}
@@ -169,6 +274,10 @@ const Layout: React.FC<LayoutProps> = ({ heading, subheading, children }) => {
         )}
         <Box>{children}</Box>
       </Box>
+
+      <Modal open={show} onClose={() => setShow(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        {customer?.role == 'ROLE_USER' ? <BookMarkDialog close={() => setShow(false)} /> : <AdminDialog close={() => setShow(false)} />}
+      </Modal>
     </Box>
   );
 };

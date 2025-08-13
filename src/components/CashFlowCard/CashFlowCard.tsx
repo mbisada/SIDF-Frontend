@@ -1,8 +1,6 @@
-import { useTranslation } from 'react-i18next';
 
-import { CardContent } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 
 import arrowDownIcon from '../../assets/arrowDown.svg';
 import arrowUpIcon from '../../assets/arrowUp.svg';
@@ -12,7 +10,6 @@ import CashFlowItem from './CashFlowItem/CashFlowItem';
 import { CashFlowCardProps } from './CashFlowCard.types';
 
 export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut }: CashFlowCardProps) {
-  const { t } = useTranslation();
 
   const cardItems = [
     { icon: cashflowIcon, label: 'CASHFLOW', title: 'ACTUAL_CASHFLOW', value: totalCashFlow },
@@ -23,16 +20,20 @@ export default function CashFlowCard({ totalCashFlow, totalCashIn, totalCashOut 
   return (
     <Card
       sx={{
+        border: '1px solid #DADADA',
         flex: 4, // Default ratio for desktop
+        borderRadius: '12px',
         '@media (max-width: 900px)': {
           flex: '1 1 100%', // Full width for medium screens
         },
       }}
     >
-      <CardHeader title={t('CASHFLOW')} />
+      <Typography variant="h6" sx={{ fontWeight: '900', color: '#3F4254', paddingLeft: '16px', paddingTop: '16px' }}>
+        Cashflow
+      </Typography>
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-        {cardItems.map(cardItem => (
-          <CashFlowItem key={cardItem.label} {...cardItem} />
+        {cardItems.map((cardItem, index) => (
+          <CashFlowItem key={cardItem.label} {...cardItem} isLast={index === cardItems.length - 1} />
         ))}
       </CardContent>
     </Card>

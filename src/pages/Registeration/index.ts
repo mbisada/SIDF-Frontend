@@ -1,1 +1,1 @@
-export {default} from './Registeration'
+export { default } from './Registeration';

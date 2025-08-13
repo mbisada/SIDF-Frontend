@@ -4,4 +4,5 @@ export interface CashFlowItemProps {
   title: string;
   value: string | number;
   color?: string;
+  isLast?: boolean;
 }
