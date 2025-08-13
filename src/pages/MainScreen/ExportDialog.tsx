@@ -25,7 +25,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-
+  width: '40%',
   borderRadius: '20px !important',
 };
 const ExportDialog: React.FC<Props> = ({
@@ -117,7 +117,7 @@ const ExportDialog: React.FC<Props> = ({
             alt="neotek logo"
             src={bank.selected ? ic_selected : ic_unselected}
           />
-          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => {}}>
+          <Typography variant="body2" color="black" fontWeight={'500'} fontSize={'14px'} style={{ marginLeft: 8 }} onClick={() => { }}>
             {bank?.FinancialInstitutionName?.NameEn ?? ''}
           </Typography>
         </Box>
