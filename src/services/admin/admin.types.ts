@@ -7,6 +7,7 @@ export interface Company {
   status: string;
   psuid: string | null; // psuid === crNumber can be null
   role: string;
+  calculationStatus: string;
 }
 
 // Define the type for the data structure returned by the API

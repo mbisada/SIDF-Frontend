@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { LoadingButton } from '@mui/lab';
-import { Box, /* Button, */ Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, /* Button, */ Stack, TextField, Typography } from '@mui/material';
 
 import chart from '../../assets/favorite-chart.svg';
 import logo from '../../assets/logoWhite.svg';
@@ -15,6 +15,7 @@ import GradientBackground from '../../components/GradientBackground';
 import { useCustomer } from '../../contexts/CustomerContext/useContext';
 import { useRegisterationServices } from '../../services/registeration/registeration';
 import { LoginDTOMapper } from '../../services/registeration/registerationMappers';
+import { useSnackbar } from '../../utils/SnackBarProvider';
 
 // Mock API call for login
 /* const mockLoginApi = async (email: string, password: string) => {
@@ -52,9 +53,9 @@ const Login: React.FC = () => {
   const { t } = useTranslation();
   const { setCustomer } = useCustomer();
   const location = useLocation();
-  const { createLoginRequest } = useRegisterationServices();
+  const { createLoginRequest, getProfile } = useRegisterationServices();
   const [isLoading, setIsLoading] = useState(false);
-
+  const { showSnackbar } = useSnackbar();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -73,21 +74,17 @@ const Login: React.FC = () => {
           email: values.email,
           password: values.password,
         });
-
         // Map the response using the LoginDTOMapper
-        const mappedData = LoginDTOMapper(response.data);
+        const mappedData = LoginDTOMapper(response.data, response.headers.checksum);
         // Check the role and navigate accordingly
         if (mappedData.role.toLowerCase().includes('user')) {
           //navigate('/ob-connect'); // Navigate to user route
           // Retrieve the `from` state or set a default path
           const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
-
           navigate(from, { replace: true });
         } else if (mappedData.role.toLowerCase().includes('admin')) {
           const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
           navigate(from, { replace: true });
-
-          //navigate('/companies'); // Navigate to admin route
         }
         // Create a global customer object
         const registeredCustomer = {
@@ -95,12 +92,23 @@ const Login: React.FC = () => {
           email: mappedData.email,
           crNumber: mappedData.crNumber,
           mobileNumber: mappedData.mobileNumber,
-          role: mappedData.role,
+          role: mappedData.role.toLowerCase().includes('admin') ? 'ROLE_ADMIN' : mappedData.role,
           checksum: mappedData.checksum, // Assuming the token is available in the response
+          name: mappedData.name,
         };
 
         // Set the customer globally (using a context or global state manager)
         setCustomer(registeredCustomer);
+
+        const profileResponse = await getProfile(mappedData.role.toLowerCase().includes('admin'));
+
+        if (mappedData.role.toLowerCase().includes('admin')) {
+          setCustomer({ ...registeredCustomer, referralCode: profileResponse.data.data.returnedObj[0].referralCode });
+        } else {
+          setCustomer({ ...registeredCustomer, crNumber: profileResponse.data.data.returnedObj[0].psuid });
+        }
+
+        showSnackbar('Login successful', 'success');
       } catch (error: unknown) {
         // Narrow the error type to AxiosError
         if (error instanceof AxiosError) {
@@ -118,48 +126,11 @@ const Login: React.FC = () => {
         setIsLoading(false);
       }
     },
-    /*     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      try {
-        const response = await mockLoginApi(values.email, values.password);
-
-        if (response.role.toLowerCase().includes('user')) {
-          //navigate('/ob-connect'); // Navigate to user route
-          // Retrieve the `from` state or set a default path
-          const from = (location.state as { from?: Location })?.from?.pathname || '/ob-connect';
-
-          navigate(from, { replace: true });
-        } else if (response.role.toLowerCase().includes('admin')) {
-          const from = (location.state as { from?: Location })?.from?.pathname || '/companies';
-          navigate(from, { replace: true });
-
-          //navigate('/companies'); // Navigate to admin route
-        }
-
-        const registeredCustomer = {
-          companyName: response.companyName,
-          email: response.email,
-          crNumber: response.crNumber,
-          mobileNumber: response.mobileNumber,
-          role: response.role,
-          checksum: response.checksum,
-        };
-
-        setCustomer(registeredCustomer);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setErrors({ email: err.message }); // Display error on email field
-        } else {
-          setErrors({ email: 'An unknown error occurred' }); // Default error message
-        }
-      } finally {
-        setSubmitting(false);
-      }
-    }, */
   });
 
   // if (isLoading) return <Spinner />;
   return (
-    <GradientBackground>
+    <GradientBackground flexDirection="row">
       <Box
         sx={{
           width: { xs: '100%', md: '50%' },
@@ -227,12 +198,12 @@ const Login: React.FC = () => {
             >
               {formik.isSubmitting ? 'Logging in...' : 'Login'}
             </LoadingButton>
-            <Typography variant="body2" color="white">
+            {/* <Typography variant="body2" color="white">
               Don’t have an account?{' '}
               <Link href="/register" underline="none" color="white">
                 Sign up
               </Link>
-            </Typography>
+            </Typography> */}
           </Stack>
         </form>
 
@@ -278,7 +249,7 @@ const Login: React.FC = () => {
           Securely Connect and Simplify Your Path to Financial Support
         </Typography>
         <Typography variant="body1" gutterBottom color="white">
-          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling Fund X to provide tailored funding
+          Our portal ensures safe, transparent, and efficient sharing of financial data, enabling SIDF to provide tailored funding
           solutions that meet your needs.
         </Typography>
         <Typography variant="body1" color="white" gutterBottom paddingTop={5}>

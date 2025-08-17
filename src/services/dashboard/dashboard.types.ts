@@ -20,6 +20,8 @@ interface FinancialData {
   MonthlyCashFlow: CashFlowData[];
   CashInTypes: CashType[];
   CashOutTypes: CashType[];
+  AverageBalance?: number; // Optional property for average balance
+  Balance?: number;
 }
 
 interface UserInfo {

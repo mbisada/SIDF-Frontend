@@ -10,12 +10,12 @@ interface SpinnerProps {
 
 const Spinner: React.FC<SpinnerProps> = ({ loading, cssOverride }) => {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" sx={cssOverride}>
+    <Box display="flex" justifyContent="center" alignItems="center" sx={{ marginTop: '20vh', ...cssOverride }}>
       <ClipLoader
         color={'#F36D21'}
         loading={loading}
         cssOverride={cssOverride}
-        size={150}
+        size={100}
         aria-label="Loading Spinner"
         data-testid="loader"
       />

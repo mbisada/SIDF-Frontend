@@ -17,5 +17,6 @@ export const CompaniesListDTOMapper = (data: CompaniesListDTO): Company[] => {
     status: company.status,
     psuid: company.psuid, // Assuming psuid is mapped to crNumber
     role: company.role,
+    calculationStatus: company.calculationStatus,
   }));
 };
