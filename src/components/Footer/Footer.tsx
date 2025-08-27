@@ -1,4 +1,3 @@
-
 import { Box, Typography, Container } from '@mui/material';
 
 const Footer = () => {
@@ -13,9 +12,7 @@ const Footer = () => {
       }}
     >
       <Container>
-        <Typography variant="body2">
-          © {new Date().getFullYear()} Saudi Industrial Development Fund
-        </Typography>
+        <Typography variant="body2">© {new Date().getFullYear()} Saudi Industrial Development Fund</Typography>
       </Container>
     </Box>
   );

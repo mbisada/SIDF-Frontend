@@ -215,7 +215,7 @@ components:
             Errors:
               - Code: ERROR.405.001
                 Message: The method is not allowed for the requested URL.
-                Url: https://portal-www.neo-tek.com 
+                Url: https://portal-www.neo-tek.com
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
@@ -223,7 +223,7 @@ components:
             Errors:
               - Code: ERROR.405.001
                 Message: The method is not allowed for the requested URL.
-                Url: https://portal-www.neo-tek.com 
+                Url: https://portal-www.neo-tek.com
     406Error:
       description: Not Acceptable
       headers:
@@ -375,7 +375,7 @@ components:
           description: >-
             URL to help remediate the problem, or provide more information, or
             to API Reference, or help etc
-          example: 
+          example:
     InitiateRiskAssessmentRequest:
       title: InitiateRiskAssessmentRequest
       type: object
@@ -415,31 +415,29 @@ components:
           $ref: '#/components/schemas/Liabilities'
         MonthlyCashFlow:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/MonthlyCashFlowItem'
         CashInTypes:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/CashFlowCategoriesItem'
-          example:
-            '[{"Category": "POS", "Percentage": 5000}]'
+          example: '[{"Category": "POS", "Percentage": 5000}]'
         CashOutTypes:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/CashFlowCategoriesItem'
-          example:
-            '[{"Category": "Transfer", "Percentage": 2000}]'
+          example: '[{"Category": "Transfer", "Percentage": 2000}]'
     MonthlyCashFlowItem:
       type: object
       properties:
         Month:
           description: Cash Flow Month
           type: string
-          example: "Jan"
+          example: 'Jan'
         Year:
           description: Cash Flow Year
           type: string
-          example: "2024"
+          example: '2024'
         CashIn:
           description: Cash In Amount in this month
           type: number
@@ -458,8 +456,8 @@ components:
         Category:
           description: Cash Flow Category
           type: string
-          example: "Transfer"
-          enum: 
+          example: 'Transfer'
+          enum:
             - POS
             - ECommerce
             - Transfers
@@ -472,27 +470,27 @@ components:
       title: PSUId
       description: Specifies the Payment Service User Identifier
       type: string
-      example: "20112"
+      example: '20112'
     TotalCashFlow:
       title: TotalCashFlow
       description: Specifies the PSU total cash flow for the past two years
       type: number
-      example: "300000"
+      example: '300000'
     TotalCashIn:
       title: TotalCashIn
       description: Specifies the PSU total cash in for the past two years
       type: number
-      example: "210000"
+      example: '210000'
     TotalCashOut:
       title: TotalCashOut
       description: Specifies the PSU total cash out for the past two years
       type: number
-      example: "90000"
+      example: '90000'
     Liabilities:
       title: Liabilities
       description: Specifies the PSU total loans in the past month
       type: number
-      example: "10000"
+      example: '10000'
   parameters:
     authorization:
       in: header
@@ -515,7 +513,7 @@ components:
       required: true
       schema:
         type: string
-        example: "20112"
+        example: '20112'
   securitySchemes:
     OAuth2Security:
       type: oauth2
